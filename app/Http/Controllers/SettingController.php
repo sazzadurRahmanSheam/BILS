@@ -29,7 +29,6 @@ class SettingController extends Controller
 
 	//Update General  Setting
 	public function generalSettingUpdate(Request $request){
-
 		$rule = [
             'company_name' => 'Required|max:100',
             'short_name' => 'Required|max:10',
@@ -65,10 +64,10 @@ class SettingController extends Controller
 				//dd($column_value);
 
 				//$response = Setting::create($column_value);
-
-				$data = Setting::first();
+				//$data = new Setting;
+				$data = Setting::find($request->id);
 				$data->update($column_value);
-				
+				// dd($data);
 				
 				DB::commit();
 				$return['result'] = "1";
@@ -82,6 +81,8 @@ class SettingController extends Controller
 			}
 		}
 	}
+
+	
 
 
 }

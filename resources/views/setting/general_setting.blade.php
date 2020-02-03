@@ -27,6 +27,7 @@
 							<form id="general_setting" name="admin_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
+									<input type="hidden" name="id" id="id" value="{{ $setting['id'] }}">
 									<div class="col-md-9">
 										<div class="form-group">
 											<label for="company_name" class="control-label col-md-2 col-sm-2 col-xs-6">Company Name<span class="required">*</span></label>

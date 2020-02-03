@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit' , 'uses' =>'AdminController@adminUserEdit'));
 	Route::get('/general/setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
 	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
+	Route::get('/module/webaction-management',array('as'=>'Web Action' , 'uses' =>'MenuController@webActionManagement'));
+
+	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'MenuController@ajaxMenuList'));
 	
 	
 });

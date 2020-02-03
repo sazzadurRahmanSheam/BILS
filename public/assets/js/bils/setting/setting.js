@@ -38,7 +38,7 @@ $(document).ready(function () {
 				cache:false,
 				contentType:false,processData:false,
 				success: function(data){
-		 			/*var response = JSON.parse(data);
+		 			var response = JSON.parse(data);
 				
 					if(response['result'] == '0'){
 						var errors	= response['errors'];					
@@ -52,58 +52,42 @@ $(document).ready(function () {
 						clear_form();
 					}
 					else{				
-						success_or_error_msg('#master_message_div',"success","Save Successfully");
+						success_or_error_msg('#master_message_div',"success","Updated Successful");
 						$("#admin_user_list_button").trigger('click');
-						admin_datatable.ajax.reload();
-						clear_form();
+						location.reload(true);
+						//clear_form();
 
 					}
-					$(window).scrollTop();*/
+					$(window).scrollTop();
 				 }	
 			});
 		}	
-	})
-	
-		
-		
-	
-		
-		
+	});
 
-	
-		
 
-			
-	//Delete Admin-user	
-	/**delete_admin_user = function delete_admin_user(id){
-		var delete_id = id;
-		swal({
-			title: "Are you sure?",
-			text: "You wants to delete item parmanently!",
-			icon: "warning",
-			buttons: true,
-			dangerMode: true,
-		}).then((willDelete) => {
-			if (willDelete) {
-				$.ajax({
-					url: url+'/admin/delete/'+delete_id,
-					cache: false,
-					success: function(response){
-						var response = JSON.parse(response);
-						swal(response['deleteMessage'], {
-						icon: "success",
-						});
-						admin_datatable.ajax.reload();
-					}
-				});
-			} 
-			else {
-				swal("Your Data is safe..!", {
-				icon: "warning",
-				});
-			}
-		});
-	}*/
+
+
+
+	/*var menu_datatable = $('#menus_table').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/module/menu-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'module_name' },
+			{ mData: 'menu_title'},
+			{ mData: 'parent_id'},
+			{ mData: 'menu_url'},
+			{ mData: 'menu_icon_class'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});*/
+
+
+
+
 	
 	
 });
