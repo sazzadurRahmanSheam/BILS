@@ -2,6 +2,7 @@
 $(function () {
 	var url = $('.site_url').val();
 	// load admin type user datatable @ajax
+	
 	$('#admin_user_table').DataTable({
 		"processing": true,
 		"serverSide": false,
