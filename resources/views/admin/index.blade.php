@@ -1,17 +1,24 @@
 @extends('layout.master')
 @section('content')
+	<!--MESSAGE-->
+	<div class="row ">
+		<div class="col-md-10 col-md-offset-1" id="master_message_div">
+		</div>
+	</div>
+	<!--END MESSAGE-->
+
     <!--PAGE CONTENT -->
     <div class="row ">
         <div class="col-sm-12">
             <div class="tabbable">
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
-                        <a data-toggle="tab" href="#user_list_div">
+                        <a id="admin_user_list_button" data-toggle="tab" href="#user_list_div">
                            <b> Admin User List</b>
                         </a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#entry_form_div">
+                        <a data-toggle="tab" href="#entry_form_div" id="admin_user_add_button">
                            <b> Add Admin User</b>
                         </a>
                     </li>
@@ -67,12 +74,7 @@
                     <!-- PANEL FOR CHANGE PASSWORD -->
                     <div id="entry_form_div" class="tab-pane in">
                         <div class="row no-margin-row">
-                            <!--ERROR MESSAGE-->
-							<div class="row ">
-								<div class="col-md-12" id="master_message_div">
-								</div>
-							</div>
-							<!--END ERROR MESSAGE-->
+                            
 							
 							<form id="admin_user_form" name="admin_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
@@ -148,7 +150,8 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
-									<input type="hidden" id="emp_id" name="emp_id" />    
+									<input type="hidden" id="emp_id" name="emp_id" />
+									<input type="" name="id" id="id">  
 									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-primary">Clear</button>                         
 								</div>
@@ -166,14 +169,18 @@
     </div>
     </div>
     <!--END PAGE CONTENT-->
+
 @endsection
 
 
 @section('JScript')
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
 <script>
 // save the state of the page in local storage
 </script>
+
+
 
 @endsection
 

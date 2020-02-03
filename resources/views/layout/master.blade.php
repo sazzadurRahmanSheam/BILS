@@ -100,6 +100,55 @@
         <span class="go-top"><i class="clip-chevron-up"></i></span>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="admin_user_view" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div id="order-div">
+                <div class="title text-center">
+                    <h4 class="text-info ">Admin User Info</h4><hr>
+                </div>
+                <div class="done_registration ">                                
+                    <div class="doc_content">
+                        <div class="col-md-12">
+                            <div class="col-md-2">              
+                                <div class="byline">
+                                    <h4>ID :</h4>
+                                    <h4>Name :</h4>
+                                    <h4>NID NO :</h4>
+                                    <h4>Contact NO :</h4>
+                                    <h4>Email :</h4>
+                                    <h4>Address :</h4>
+                                    <h4>User Type :</h4>
+                                    <h4>Login Status :</h4>
+                                    <h4>Status :</h4>
+                                    
+                                </div>  
+                            </div>
+                            <div class="col-md-10" style="text-align:left">
+                                <div class="byline">
+                                    <span id="modal_body"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                  
+                </div>                          
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+     
+   
+</div>
+{{-- End Modal --}}
+
+
+
 <!-- end: FOOTER -->
 <!-- start: MAIN JAVASCRIPTS -->
 <!--[if lt IE 9]>
