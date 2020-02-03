@@ -11,3 +11,7 @@ function success_or_error_msg(div_to_show, class_name, message, field_id){
 		clearInterval(set_interval);
 	}, 2000);
 }
+
+function clear_form(){
+	$('.form')[0].reset();
+}

@@ -37,9 +37,9 @@ class AdminController extends Controller
 		$return_arr = array();
 		foreach($adminUser as $user){			
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
-			$user['actions']="<a id=edit_" . $user->id . " href='#' class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></a>"
-							." <a id='view_" . $user->id . "' href='#' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></a>"
-							." <a id='delete_" . $user->id . "' href='#' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></a>";
+			$user['actions']="<button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>"
+							." <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
 			$return_arr[] = $user;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -65,13 +65,29 @@ class AdminController extends Controller
 			return json_encode($return);
         }
 		else{
-            #EmailCheck
+			//insert
+			if ($request->id == ''){
+				#EmailCheck
             $email_verification = User::where('email',$request->email)->first();
             if(isset($email_verification->id)){
 				$return['result'] = "0";
 				$return['errors'][] = $request->email." is already exists";
 				return json_encode($return);
 			}
+			}
+			//update
+			else{
+				// get the ids data
+				 $email_verification = User::where(['email',$request->email],['id', '!=', $request->id])->first();
+           		if(isset($email_verification->id)){
+					$return['result'] = "0";
+					$return['errors'][] = $request->email." is already exists";
+					return json_encode($return);
+				}
+			}
+
+
+            
 					
 			
 			try{
@@ -89,7 +105,14 @@ class AdminController extends Controller
 					//'user_profile_image'=>$image_name,	
 				];
 				
-				$response = User::create($column_value);
+				if ($request->id == '') {
+					$response = User::create($column_value);
+				}
+				else if($request->id != ''){
+					$data = User::find($request->id);
+					$data->update($column_value);
+					// echo $data;
+				}
 				DB::commit();
 				$return['result'] = "1";
 				return json_encode($return);
@@ -102,6 +125,29 @@ class AdminController extends Controller
 			}
 		}		
 		//echo $request->q;		
-	}	
+	}
+
+
+	//Admin user delete
+	public function adminDestroy($id){
+		User::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	//Admin User View
+	public function adminUserView($id){
+		$data = User::find($id);
+		return json_encode($data);
+	}
+
+
+	public function adminUserEdit($id){
+		$data = User::find($id);
+		return json_encode($data);
+	}
+
+
 }
 
