@@ -1,0 +1,124 @@
+a {
+    color: #37C0C0
+}
+
+.navbar-default .navbar-nav>.active>a:before,
+.navbar>.container .navbar-brand i,
+.navbar>.container .navbar-brand:hover i,
+a:active,
+a:focus,
+a:hover {
+    color: #499696
+}
+
+p strong {
+    color: #499696
+}
+
+.btn-main-color,
+.mega-menu .mega-menu-content ul.sub-menu .active>a {
+    background-color: #499696;
+    color: #FFF
+}
+
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>li.dropdown.open>a,
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+    border-bottom-color: #499696
+}
+
+.navbar-nav>li>.dropdown-menu {
+    border-top-color: #499696
+}
+
+.dropdown-menu>.active>a,
+.dropdown-menu>.active>a:focus,
+.dropdown-menu>.active>a:hover {
+    background-color: #499696
+}
+
+.btn-main-color {
+    border-color: #37C0C0
+}
+
+.btn-main-color.active,
+.btn-main-color:active,
+.btn-main-color:focus,
+.btn-main-color:hover {
+    background-color: #37C0C0;
+    border-color: #37C0C0;
+    color: #fff
+}
+
+.circle-icon.circle-main-color,
+.slide_subtitle {
+    background-color: #499696;
+    color: #FFF
+}
+
+.circle-icon.circle-main-color {
+    border-color: #499696
+}
+
+.progress-bar.main-color {
+    background-color: #37C0C0!important
+}
+
+.accordion-teal .panel-heading .accordion-toggle {
+    color: #499696
+}
+
+.accordion-teal .panel-heading .accordion-toggle>.icon-arrow:before {
+    background-color: #499696;
+    color: #FFF
+}
+
+.sb_toggle {
+    border-color: transparent #499696 transparent transparent
+}
+
+#scroll-top {
+    background-color: #499696;
+    border: 1px solid #499696;
+    color: #EEE
+}
+
+#scroll-top:hover {
+    background-color: #FCFCFC;
+    border: 1px solid #E1E1E1;
+    color: #499696
+}
+
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
+.pagination>.active>span:hover {
+    background-color: #499696;
+    border-color: #37C0C0;
+    color: #FFF
+}
+
+div.post-media h4 {
+    color: #499696
+}
+
+.portfolio-page ul.nav li a:hover,
+.portfolio-page ul.nav li.active a {
+    background: #499696;
+    color: #FFF
+}
+
+.feature-box .feature-icon {
+    color: #499696
+}
+
+.colored-top-bar #topbar {
+    background: #499696;
+    color: #FFF;
+    border-bottom: 1px solid #499696
+}
