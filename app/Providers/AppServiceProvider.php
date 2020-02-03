@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\Settings;
+use App\Setting;
 use App\Menu;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
 		//get the settings data from DB and deliver to master layout
 		view()->composer('layout.master', function($view){
-			$site_settings = Settings::first();
+			$site_settings = Setting::first();
 			$view->with('site_settings',$site_settings);
 		});
 		

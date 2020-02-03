@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/admin/delete/{id}',array('as'=>'Admin Delete' , 'uses' =>'AdminController@adminDestroy'));
 	Route::get('/admin/admin-view/{id}',array('as'=>'Admin View' , 'uses' =>'AdminController@adminUserView'));
 	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit' , 'uses' =>'AdminController@adminUserEdit'));
+	Route::get('/general/setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
+	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
 	
 	
 });

@@ -233,6 +233,7 @@
     </script>
 
 <input type="hidden" class="site_url" value="{{url('/')}}">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @yield('JScript')
 <script>
    /* // Enable pusher logging - don't include this in production

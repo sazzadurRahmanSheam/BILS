@@ -77,18 +77,13 @@ class AdminController extends Controller
 			}
 			//update
 			else{
-				// get the ids data
-				 $email_verification = User::where(['email',$request->email],['id', '!=', $request->id])->first();
+				 $email_verification = User::where([['email',$request->email],['id', '!=', $request->id]])->first();
            		if(isset($email_verification->id)){
 					$return['result'] = "0";
 					$return['errors'][] = $request->email." is already exists";
 					return json_encode($return);
 				}
-			}
-
-
-            
-					
+			}		
 			
 			try{
 				DB::beginTransaction();
@@ -123,8 +118,7 @@ class AdminController extends Controller
 				$return['errors'][] ="Faild to save";
 				return json_encode($return);
 			}
-		}		
-		//echo $request->q;		
+		}			
 	}
 
 
@@ -147,7 +141,5 @@ class AdminController extends Controller
 		$data = User::find($id);
 		return json_encode($data);
 	}
-
-
 }
 

@@ -174,7 +174,7 @@
 
 
 @section('JScript')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
 <script>
 // save the state of the page in local storage
