@@ -58,8 +58,9 @@
 }
 
 .modal-body {
-	max-height: none;
-	overflow: visible;
+  max-height: none;
+  overflow: visible;
+  overflow-y: auto;
 }
 
 .modal.modal-absolute {
