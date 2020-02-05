@@ -201,6 +201,135 @@ $(document).ready(function () {
 			}
 		});
 	}
+
+
+	//Admin User Group Entry And update
+	$('#save_group').click(function(event){		
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#save_group_form')[0]);
+		if($.trim($('#group_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Group Name","#group_name");			
+		}
+		else if($.trim($('#type').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Select Type","#type");			
+		}
+		else{
+			$.ajax({
+				url: url+"/admin/admin-group-entry",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+				
+					if(response['result'] == '0'){
+						var errors	= response['errors'];					
+						resultHtml = '<ul>';
+							$.each(errors,function (k,v) {
+							resultHtml += '<li>'+ v + '</li>';
+						});
+						resultHtml += '</ul>';
+						success_or_error_msg('#master_message_div',"danger",resultHtml);
+						//load_data("");
+						clear_form();
+					}
+					else{				
+						success_or_error_msg('#master_message_div',"success","Save Successfully");
+						
+						admin_group.ajax.reload();
+						clear_form();
+
+					}
+					$(window).scrollTop();
+				 }	
+			});
+		}	
+	})
+
+
+	//Admin Group list
+	var admin_group = $('#admin_group').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/admin/admin-group-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'group_name' },
+			{ mData: 'type'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});
+
+
+	//Admin Group Edit
+	admin_group_edit = function admin_group_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/admin/admin-group-edit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#save_group").html('Update');
+				$("#clear_button").hide();
+				$("#edit_id").val(data['id']);
+				$("#group_name").val(data['group_name']);
+				$("#type").val(data['type']).change();
+				if(data['status']=='1'){
+					$("#is_active").icheck('checked');
+				}
+				// else{
+				// 	$("#is_active").prop('checked', true);
+				// }
+
+			}
+		});
+	}
+
+
+	//Delete Admin-user	
+	admin_group_delete = function admin_group_delete(id){
+		var delete_id = id;
+		swal({
+			title: "Are you sure?",
+			text: "You wants to delete item parmanently!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: url+'/admin/admin-group-delete/'+delete_id,
+					cache: false,
+					success: function(response){
+						var response = JSON.parse(response);
+						swal(response['deleteMessage'], {
+						icon: "success",
+						});
+						admin_group.ajax.reload();
+					}
+				});
+			} 
+			else {
+				swal("Your Data is safe..!", {
+				icon: "warning",
+				});
+			}
+		});
+	}
+
+
+
+
 	
 	
 });

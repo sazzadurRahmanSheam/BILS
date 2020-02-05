@@ -8,6 +8,7 @@ use Session;
 use DB;
 use \App\System;
 use \App\User;
+use App\User_group;
 
 class AdminController extends Controller
 {
@@ -141,5 +142,94 @@ class AdminController extends Controller
 		$data = User::find($id);
 		return json_encode($data);
 	}
+
+
+	//Admin User Groups
+	public function admin_user_groups(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+        return view('admin.admin_groups', $data);
+	}
+
+	public function admin_groups_entry_or_update(Request $request){ 
+
+		$rule = [
+            'group_name' => 'Required|max:50',
+            'type' => 'Required',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{		
+			try{
+				DB::beginTransaction();
+				$status = ($request->is_active =="")?'0':'1';
+				
+				$column_value = [
+					'group_name'=>$request->group_name,
+					'type'=>$request->type,
+					'status'=>$status,	
+				];
+				
+				if ($request->edit_id == '') {
+					$response = User_group::create($column_value);
+				}
+				else{
+					$data = User_group::find($request->edit_id);
+					$data->update($column_value);
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+
+	//Admin Group show
+	public function admin_groups_list(){
+		$admin_group_list = User_group::Select('id', 'group_name', 'type','status')->get();		
+		$return_arr = array();
+		foreach($admin_group_list as $admin_group_list){
+			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
+			$admin_group_list['status']=($admin_group_list->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$admin_group_list['actions']="<button title='Permission' onclick='group_permission(".$admin_group_list->id.")' id=permission_" . $admin_group_list->id . "  class='btn btn-xs btn-warning' ><i class='clip-grid-3'></i></button>"
+				." <button title='Edit' onclick='admin_group_edit(".$admin_group_list->id.")' id=edit_" . $admin_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>"
+				." <button title='Delete' onclick='admin_group_delete(".$admin_group_list->id.")' id='delete_" . $admin_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+			$return_arr[] = $admin_group_list;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	//Admin Group Edit
+	public function admin_group_edit($id){
+		$data = User_group::Select('id','group_name','type','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	//admin group delete
+	public function admin_group_delete($id){
+		User_group::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+
+
+
+
+
+
 }
 

@@ -42,10 +42,35 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit' , 'uses' =>'AdminController@adminUserEdit'));
 	Route::get('/general/setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
 	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
-	Route::get('/module/webaction-management',array('as'=>'Web Action' , 'uses' =>'MenuController@webActionManagement'));
-
-	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'MenuController@ajaxMenuList'));
 	
+	Route::get('/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
+
+	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
+	
+	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));
+	
+	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));
+	
+	Route::post('/module/module-entry/',array('as'=>'Module Entry' , 'uses' =>'SettingController@moduleEntry'));
+
+	Route::get('/module/edit/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleEdit'));
+	Route::get('/module/delete/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleDelete'));
+
+	/*--------------Web Action start-------------*/
+	Route::get('/web/action-management',array('as'=>'Web Action Management' , 'uses' =>'SettingController@webActionManagement'));
+	Route::get('/web-action/get-module-name',array('as'=>'Web Action Management' , 'uses' =>'SettingController@getModuleName'));
+	Route::post('/web-action/web-action-entry',array('as'=>'Web Action Entry' , 'uses' =>'SettingController@webActionEntry'));
+	Route::get('/web-action/action-lists',array('as'=>'Web Action List' , 'uses' =>'SettingController@webActionList'));
+	Route::get('/web-action/edit/{id}',array('as'=>'Web Action Edit' , 'uses' =>'SettingController@web_action_edit'));
+	/*--------------Web Action End-------------*/
+	
+	/*--------------Groups start-------------*/
+	Route::get('admin/admin-group-management',array('as'=>'Admin Groups Management' , 'uses' =>'AdminController@admin_user_groups'));
+	Route::post('/admin/admin-group-entry',array('as'=>'Admin Groups Entry' , 'uses' =>'AdminController@admin_groups_entry_or_update'));
+	Route::get('/admin/admin-group-list',array('as'=>'Admin Groups List' , 'uses' =>'AdminController@admin_groups_list'));
+	Route::get('/admin/admin-group-edit/{id}',array('as'=>'Admin Groups Edit' , 'uses' =>'AdminController@admin_group_edit'));
+	Route::get('/admin/admin-group-delete/{id}',array('as'=>'Admin Groups Delete' , 'uses' =>'AdminController@admin_group_delete'));
+	/*--------------Groups End-------------*/
 	
 });
 

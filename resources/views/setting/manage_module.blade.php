@@ -13,45 +13,40 @@
         <div class="col-sm-12">
             
         	<div class="col-md-6 col-sm-12">
+        		<h4 class="text-info">Manage Module</h4><hr>
         		<div id="entry_form_div" class="tab-pane in">
                         <div class="row no-margin-row">
-                            
-							
-							<form id="admin_user_form" name="admin_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+							<form id="web_action_form" name="web_action_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
+								<input type="hidden" name="edit_id" id="edit_id">
+								<input type="hidden" name="parent_id" id="parent_id">
 								<div class="row">
 								<div class="col-md-12">
-									  
-									
 									<div class="form-group"> 
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Menu Name</label>
 										<div class="col-md-10 col-sm-10  col-xs-6">
-											<input type="text" id="" name="" class="form-control col-lg-12" list="existed_menu" />
-											<datalist id="existed_menu">
-												<option value="Internet Explorer">
-												<option value="Firefox">
-												<option value="Chrome">
-												<option value="Opera">
-												<option value="Safari">
+											<input type="text" id="module_name" name="module_name" class="form-control col-lg-12" list="existed_menu" />
+											<datalist id="existed_menu" class="dropdown">
+												
 											</datalist>
 										</div>
 									</div>
 									<div class="form-group"> 
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Menu Title</label>
 										<div class="col-md-10 col-sm-10  col-xs-6">
-											<input type="text" id="" name="" class="form-control col-lg-12" />
+											<input type="text" id="menu_title" name="menu_title" class="form-control col-lg-12" />
 										</div>
 									</div>
 									<div class="form-group"> 
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Menu URL</label>
 										<div class="col-md-10 col-sm-10  col-xs-6">
-											<input type="text" id="" name="" class="form-control col-lg-12" />
+											<input type="text" id="menu_url" name="menu_url" class="form-control col-lg-12" />
 										</div>
 									</div>
 									<div class="form-group"> 
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Icon Class</label>
 										<div class="col-md-10 col-sm-10  col-xs-6">
-											<input type="text" id="" name="" class="form-control col-lg-12" />
+											<input type="text" id="menu_icon_class" name="menu_icon_class" class="form-control col-lg-12" />
 										</div>
 									</div>
 									
@@ -65,9 +60,9 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
-									<input type="hidden" id="emp_id" name="emp_id" />
+									
 									<input type="hidden" name="id" id="id">  
-									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
+									<button type="submit" id="save_module" class="btn btn-success">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-primary">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
@@ -112,9 +107,6 @@
 											<th> ID</th>
 											<th>Module Name</th>
 											<th>Menu Title </th>
-											<th>Parent ID </th>
-											<th>Menu URL </th>
-											<th>Menu Icon Class </th>
 											<th class="hidden-xs">Status</th>
 											<th>Actions</th>
 										</tr>
