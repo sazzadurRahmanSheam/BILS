@@ -9,6 +9,9 @@ use DB;
 use \App\System;
 use \App\User;
 use App\User_group;
+use App\User_group_member;
+use App\Menu;
+use App\User_group_permission;
 
 class AdminController extends Controller
 {
@@ -27,8 +30,8 @@ class AdminController extends Controller
     }
 	
 	public function adminUserManagement(){
-		 $data['page_title'] = $this->page_title;
-		 $data['module_name']= "User";
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "User";
         return view('admin.index', $data);
 	}
 	
@@ -50,6 +53,9 @@ class AdminController extends Controller
 	// emp_name nid_no contact_no email address password is_active remarks emp_image_upload
 	
 	public function ajaxAdminEntry(Request $request){
+
+		
+		
 		
 		$rule = [
             'emp_name' => 'Required|max:220',
@@ -103,11 +109,34 @@ class AdminController extends Controller
 				
 				if ($request->id == '') {
 					$response = User::create($column_value);
+					$emp_id = $response->id;
+					$group = $request->input('group');
+					$status = 1;
+					if ($group!="") {
+						foreach ($group as $group ) {
+							$data_for_group_entry = new User_group_member();
+							$data_for_group_entry->group_id=$group;
+							$data_for_group_entry->emp_id=$emp_id;
+							$data_for_group_entry->status=$status;
+							$data_for_group_entry->save();
+						}
+					}
+
 				}
 				else if($request->id != ''){
 					$data = User::find($request->id);
 					$data->update($column_value);
-					// echo $data;
+					$group = $request->input('group');
+					$status = 1;
+					if ($group!="") {
+						foreach ($group as $group ) {
+							$data_for_group_entry = new User_group_member();
+							$data_for_group_entry->group_id=$group;
+							$data_for_group_entry->emp_id=$request->id;
+							$data_for_group_entry->status=$status;
+							$data_for_group_entry->save();
+						}
+					}
 				}
 				DB::commit();
 				$return['result'] = "1";
@@ -225,6 +254,52 @@ class AdminController extends Controller
 		));
 	}
 
+
+
+	 public function load_user_groups(){
+		$user_groups = User_group::Select('id','group_name')
+			->where('status','1')
+			->get();
+		echo json_encode(array('data'=>$user_groups));
+    }
+
+    public function load_actions_for_group_permission(){
+    	$actions = Menu::Select('id','menu_title')
+			->where('status','1')
+			->where('parent_id','<>','0')
+			->get();
+		echo json_encode(array('data'=>$actions));
+    }
+
+
+    public function permission_action_entry_update(Request $request){
+		$permission_action = $request->input('permission_action');
+		$group_id = $request->group_id;
+		$status = 1;
+		try{
+			DB::beginTransaction();
+			if ($permission_action != "") {
+				foreach ($permission_action as $permission_action ) {
+					$data_for_permission_action_entry = new User_group_permission();
+					$data_for_permission_action_entry->action_id=$permission_action;
+					$data_for_permission_action_entry->group_id=$group_id;
+					$data_for_permission_action_entry->status=$status;
+					$data_for_permission_action_entry->save();
+				}
+			}
+			DB::commit();
+			$return['result'] = "1";
+			return json_encode($return);
+		}
+		catch (\Exception $e){
+			DB::rollback();
+			$return['result'] = "0";
+			$return['errors'][] ="Faild to save";
+			return json_encode($return);
+		}
+
+
+    }
 
 
 

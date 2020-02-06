@@ -14,12 +14,12 @@
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
                         <a id="admin_user_list_button" data-toggle="tab" href="#user_list_div">
-                           <b> Admin User List</b>
+                           <b> App User List</b>
                         </a>
                     </li>
                     <li class="">
                         <a data-toggle="tab" href="#entry_form_div" id="admin_user_add_button">
-                           <b> Add Admin User</b>
+                           <b> Add App User</b>
                         </a>
                     </li>
                 </ul>
@@ -50,7 +50,7 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover admin_user_table" id="app_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
 												<th>Photo</th>
@@ -76,7 +76,7 @@
                         <div class="row no-margin-row">
                             
 							
-							<form id="admin_user_form" name="admin_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+							<form id="app_user_form" name="app_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
 								<div class="col-md-9">
@@ -90,16 +90,7 @@
 											<input type="text" id="nid_no" name="nid_no" class="form-control col-lg-12" />
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Designation</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="designation_name" name="designation_name"  class="form-control col-lg-12"/>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Department</label>
-										<div class="col-md-4 col-sm-4 col-xs-4">
-											<input type="text" id="department_name" name="department_name"  class="form-control col-lg-12"/>
-										</div>						
-									</div>  
+									  
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Contact No<span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
@@ -142,7 +133,8 @@
 									<div class="ln_solid"></div>
 								</div>
 								<div class="col-md-3">
-									<img src="src" width="70%" height="70%" class="img-thumbnail" id="emp_img">
+									<img src="src="{{ url('/') }}/audio/crow.ogg"
+									<?php //echo $activity_url ?>images/no_image.png" width="70%" height="70%" class="img-thumbnail" id="emp_img">
 									<input type="file" name="emp_image_upload" id="emp_image_upload"> 
 								</div>
 								</div>
@@ -150,9 +142,9 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
 									
-									<input type="hidden" name="id" id="id">  
+									<input type="hidden" name="edit_id" id="edit_id">  
 									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
-									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+									<button type="button" id="clear_button" class="btn btn-primary">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>
@@ -174,7 +166,7 @@
 
 @section('JScript')
 
-<script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
+<script src="{{ asset('assets/js/bils/app user/app_user.js')}}"></script>
 <script>
 // save the state of the page in local storage
 </script>
