@@ -1,17 +1,16 @@
 // All the user related js functions will be here
 $(document).ready(function () {	
-	// load admin type user datatable @ajax
-	//adminDataTable();
-	
 	
 	// for get site url
 	var url = $('.site_url').val();
-	//function for data table
-	var admin_datatable = $('#admin_user_table').DataTable({
+
+	/*App User Data Tables*/
+	
+	var app_user_datatable = $('#app_user_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/admin/ajax/admin-list",
+		"ajax": url+"/app-user/app-user-list",
 		"aoColumns": [
 			{ mData: 'user_profile_image', className: "text-center"}, 
 			{ mData: 'id'},
@@ -20,12 +19,8 @@ $(document).ready(function () {
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
-		/*'rowCallback': function (nRow, aData, iDisplayIndex) {
-			nRow.id = aData[0];
-			nRow.className = "danger";
-			return nRow;
-		},*/
 	});
+	
 	
 
 	// icheck for the inputs
@@ -33,27 +28,25 @@ $(document).ready(function () {
 		checkboxClass: 'icheckbox_flat-green',
 		radioClass: 'iradio_flat-green'
 	});	
-	
 	$('.flat_radio').iCheck({
-		//checkboxClass: 'icheckbox_flat-green'
 		radioClass: 'iradio_flat-green'
 	});
+
 		
 		
-	// save and update for public post/notice
-	$('#save_admin_info').click(function(event){		
+	/*-------- App Users Entry And Update Start --------*/
+	$('#save_app_user_info').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
-		var formData = new FormData($('#admin_user_form')[0]);
-		formData.append("q","insert_or_update");
-		if($.trim($('#emp_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Name","#emp_name");			
+
+		var formData = new FormData($('#app_user_form')[0]);
+
+		if($.trim($('#app_user_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Name","#app_user_name");			
 		}
 		else if($.trim($('#nid_no').val()) == ""){
 			success_or_error_msg('#form_submit_error','danger',"Please Insert NID no","#nid_no");			
@@ -65,17 +58,14 @@ $(document).ready(function () {
 			success_or_error_msg('#form_submit_error','danger',"Select Email","#email");			
 		}	
 		else{
-		//	$('#save_emp_info').attr('disabled','disabled');
-			
-			//alert(url);return;
-			
 			$.ajax({
-				url: url+"/admin/admin-user-entry",
+				url: url+"/app-user/app-user-entry",
 				type:'POST',
 				data:formData,
 				async:false,
 				cache:false,
-				contentType:false,processData:false,
+				contentType:false,
+				processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
 				
@@ -92,17 +82,22 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						$("#admin_user_list_button").trigger('click');
-						admin_datatable.ajax.reload();
+						$("#app_user_list_button").trigger('click');
+						app_user_datatable.ajax.reload();
 						clear_form();
-
+						$("#app_user_button").html('Add App User');
+						$("#save_app_user_info").html('Save');
+						$("#cancle_app_user_update").addClass('hide');
 					}
 					$(window).scrollTop();
 				 }	
 			});
 		}	
-	})
+	});
+
+	/*-------- App Users Entry And Update End --------*/
 	
+
 	//Clear form
 	$("#clear_button").on('click',function(){
 		clear_form();
@@ -116,69 +111,8 @@ $(document).ready(function () {
 	
 		
 		
-	//Admin User Edit
-	admin_user_edit = function admin_user_edit(id){
-		var edit_id = id;
-		$.ajax({
-			url: url+'/admin/edit/'+edit_id,
-			cache: false,
-			success: function(response){
-				var data = JSON.parse(response);
-				$("#admin_user_add_button").trigger('click');
-				$("#admin_user_add_button").html('Update Admin User');
-				$("#save_admin_info").html('Update');
-				$("#emp_name").val(data['name']);
-				$("#nid_no").val(data['nid_no']);
-				$("#id").val(data['id']);
-				// $("#designation_name").val(data['']);
-				// $("#department_name").val(data['']);
-				$("#contact_no").val(data['contact_no']);
-				$("#email").val(data['email']);
-				$("#address").val(data['address']);
-				//$("#password").hide();
-				$("#remarks").val(data['remarks']);
-				// $("#").val(data['']);
-				// $("#").val(data['']);
-				// $("#").val(data['']);
-			}
-		});
-	}
-		
-		
-
-	//Admin User View
-	 admin_user_view = function admin_user_view(id){	
-		var user_id = id;
-		$.ajax({
-			url: url+'/admin/admin-view/'+user_id,
-			success: function(response){
-				var data = JSON.parse(response);
-				$("#admin_user_view").modal();
-				var user_type,login_status,status;
-				(data['user_type']=="1")? user_type = "Admin" : "App User";
-				(data['login_status']=="1")? login_status = "Logged In" : "Not Logged In";
-				(data['status']=="1")? status = "Active" : "In-active";
-				var admin_info = "";
-				admin_info+="<h4>"+data['id']+"</h4>";
-				admin_info+="<h4>"+data['name']+"</h4>";
-				admin_info+="<h4>"+data['nid_no']+"</h4>";
-				admin_info+="<h4>"+data['contact_no']+"</h4>";
-				admin_info+="<h4>"+data['email']+"</h4>";
-				admin_info+="<h4>"+data['address']+"</h4>";
-				admin_info+="<h4>"+user_type+"</h4>";
-				admin_info+="<h4>"+login_status+"</h4>";
-				admin_info+="<h4>"+status+"</h4>";
-				
-				$("#modal_body").html(admin_info);
-				console.log(data);
-			}
-		});
-	}
-		
-
-			
-	//Delete Admin-user	
-	delete_admin_user = function delete_admin_user(id){
+	/*-------- App Users Delete Start --------*/
+	delete_app_user = function delete_app_user(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -189,14 +123,14 @@ $(document).ready(function () {
 		}).then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: url+'/admin/delete/'+delete_id,
+					url: url+'/app-user/app-user-delete/'+delete_id,
 					cache: false,
 					success: function(response){
 						var response = JSON.parse(response);
 						swal(response['deleteMessage'], {
 						icon: "success",
 						});
-						admin_datatable.ajax.reload();
+						app_user_datatable.ajax.reload();
 					}
 				});
 			} 
@@ -207,7 +141,82 @@ $(document).ready(function () {
 			}
 		});
 	}
+	/*-------- App Users Delete End --------*/
 
+		
+	
+	/*-------- App Users Edit Start --------*/
+	
+	app_user_edit = function app_user_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/app-user/app-user-editedit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#app_user_button").trigger('click');
+				$("#app_user_button").html('Update App User');
+				$("#save_app_user_info").html('Update');
+				$("#cancle_app_user_update").removeClass('hide');
+
+				$("#app_user_edit_id").val(data['id']);
+				$("#app_user_name").val(data['name']);
+				$("#nid_no").val(data['nid_no']);
+				$("#contact_no").val(data['contact_no']);
+				$("#email").val(data['email']);
+				$("#address").val(data['address']);
+				
+				$("#remarks").val(data['remarks']);
+				
+			}
+		});
+	}
+	/*-------- App Users Edit End --------*/
+
+
+	/*-------- Cancle App Users Update Start --------*/
+	$("#cancle_app_user_update").click(function(){
+		clear_form();
+		$("#app_user_list_button").trigger('click');
+		$("#app_user_button").html('Add App User');
+		$("#save_app_user_info").html('Save');
+		$("#cancle_app_user_update").addClass('hide');
+
+	});
+	/*-------- Cancle App Users Update End --------*/
+
+	
+	//Admin User View
+	 app_user_view = function app_user_view(id){	
+		var user_id = id;
+		$.ajax({
+			url: url+'/app-user/app-user-view/'+user_id,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#admin_user_view").modal();
+				$("#modal_title").html("App User Info");
+				var status,user_type;
+				(data['status']=='0')?status='In-active':status='Active';
+				(data['user_type']=='2')?user_type='App User':user_type='Admin';
+				var app_user_info = "";
+				app_user_info+="<h3>ID: <small>"+data['id']+"</small></h3>";
+				app_user_info+="<h3>Name: <small>"+data['name']+"</small></h3>";
+				app_user_info+="<h3>NID NO: <small>"+data['nid_no']+"</small></h3>";
+				app_user_info+="<h3>Contact NO: <small>"+data['contact_no']+"</small></h3>";
+				app_user_info+="<h3>Email: <small>"+data['email']+"</small></h3>";
+				app_user_info+="<h3>Address: <small>"+data['address']+"</small></h3>";
+				app_user_info+="<h3>Remarks: <small>"+data['remarks']+"</small></h3>";
+				app_user_info+="<h3>Status: <small>"+status+"</small></h3>";
+				app_user_info+="<h3>User Type: <small>"+user_type+"</small></h3>";
+				$("#modal_body").html(app_user_info);
+			}
+		});
+	}
+		
+
+
+	
+/*
 
 	//Admin User Group Entry And update
 	$('#save_group').click(function(event){		
@@ -334,7 +343,7 @@ $(document).ready(function () {
 	}
 
 
-	
+	*/
 
 /*------------------------Load User Groups--------------------------*/
 	$.ajax({
@@ -353,18 +362,18 @@ $(document).ready(function () {
 				html +='</table>';	
 			}
 			$('#group_select').html(html);
-			$('#admin_user_form').iCheck({
+			$('#app_user_form').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 					radioClass: 'iradio_flat-green'
 			});									
 			
-			$('#admin_user_form input#check-all').on('ifChecked', function () {
+			$('#app_user_form input#check-all').on('ifChecked', function () {
 				
-				$("#admin_user_form .tableflat").iCheck('check');
+				$("#app_user_form .tableflat").iCheck('check');
 			});
-			$('#admin_user_form input#check-all').on('ifUnchecked', function () {
+			$('#app_user_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#admin_user_form .tableflat").iCheck('uncheck');
+				$("#app_user_form .tableflat").iCheck('uncheck');
 			});
 		}
 	});
@@ -407,10 +416,10 @@ $(document).ready(function () {
 					$.each(data, function(i,data){
 						console.log(data);
 						if(data['status']==1){
-							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="'+data["action_id"]+'"/> '+data["activity_name"]+'</div>';
+							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
 						}
 						else{
-							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="'+data["action_id"]+'"/> '+data["activity_name"]+'</div>';
+							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
 						}
 					});
 				html += '</td></tr>';

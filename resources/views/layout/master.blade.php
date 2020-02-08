@@ -59,6 +59,7 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 {{--    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">--}}
     <link rel="shortcut icon" href="favicon.ico" />
+    @yield('style')
 </head>
 <!-- end: HEAD -->
 <!-- start: BODY -->
@@ -108,25 +109,11 @@
         <div class="modal-body">
             <div id="order-div">
                 <div class="title text-center">
-                    <h4 class="text-info ">Admin User Info</h4><hr>
+                    <h4 class="text-info" id="modal_title"></h4><hr>
                 </div>
                 <div class="done_registration ">                                
                     <div class="doc_content">
                         <div class="col-md-12">
-                            <div class="col-md-2">              
-                                <div class="byline">
-                                    <h4>ID :</h4>
-                                    <h4>Name :</h4>
-                                    <h4>NID NO :</h4>
-                                    <h4>Contact NO :</h4>
-                                    <h4>Email :</h4>
-                                    <h4>Address :</h4>
-                                    <h4>User Type :</h4>
-                                    <h4>Login Status :</h4>
-                                    <h4>Status :</h4>
-                                    
-                                </div>  
-                            </div>
                             <div class="col-md-10" style="text-align:left">
                                 <div class="byline">
                                     <span id="modal_body"></span>
@@ -233,6 +220,8 @@
     </script>
 
 <input type="hidden" class="site_url" value="{{url('/')}}">
+{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+<script src="{{ asset('assets/js/sweetalert.min.js')}}"></script>
 @yield('JScript')
 <script>
    /* // Enable pusher logging - don't include this in production

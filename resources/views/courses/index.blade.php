@@ -13,19 +13,19 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
-                        <a id="admin_user_list_button" data-toggle="tab" href="#user_list_div">
-                           <b> Admin User List</b>
+                        <a id="courses_list_button" data-toggle="tab" href="#courses_list_div">
+                           <b> Courses List</b>
                         </a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#entry_form_div" id="admin_user_add_button">
-                           <b> Add Admin User</b>
+                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
+                           <b> Add Courses</b>
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
-                    <div id="user_list_div" class="tab-pane in active">
+                    <div id="courses_list_div" class="tab-pane in active">
 						<div class="row no-margin-row">
                            <!-- List of Categories -->
 							<div class="panel panel-default">
@@ -50,7 +50,10 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
+									<div class="text-center">
+										<h2 class="text-info">Courses Grid Summary</h2>
+									</div>
+									<!--<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
 												<th>Photo</th>
@@ -63,7 +66,7 @@
 										</thead>
 										<tbody>
 										</tbody>
-									</table>
+									</table> -->
 								</div>
 							</div>
 							<!-- END Categoreis -->
@@ -76,50 +79,48 @@
                         <div class="row no-margin-row">
                             
 							
-							<form id="admin_user_form" name="admin_user_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+							<form id="courses_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
-								<div class="col-md-9">
+								<div class="col-md-12">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Full Name<span class="required">*</span></label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Name<span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="emp_name" name="emp_name" required class="form-control col-lg-12"/>
+											<input type="text" id="" name="" class="form-control col-lg-12"/>
 										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >NID No<span class="required">*</span></label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Course Type<span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="nid_no" name="nid_no" class="form-control col-lg-12" />
+											<select name="" id="" class="form-control col-lg-12">
+												<option value="" disabled selected>Select Survey Type</option>
+												<option value="">Type 1</option>
+												<option value="">Type 2</option>
+												<option value="">Type 3</option>
+												<option value="">Type 4</option>
+											</select>
 										</div>
 									</div>
+									
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Designation</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Start Date<span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="designation_name" name="designation_name"  class="form-control col-lg-12"/>
+											<input type="date" id="" name=""  class="form-control col-lg-12"/>
 										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Department</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >End Date<span class="required">*</span></label>
 										<div class="col-md-4 col-sm-4 col-xs-4">
-											<input type="text" id="department_name" name="department_name"  class="form-control col-lg-12"/>
+											<input type="date" id="" name="" class="form-control col-lg-12"/>
 										</div>						
 									</div>  
+									
+										
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Contact No<span class="required">*</span></label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course People</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="contact_no" name="contact_no" required class="form-control col-lg-12"/>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Email<span class="required">*</span></label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="email" id="email" name="email" required class="form-control col-lg-12"/>
-										</div>
-									</div>
-									<div class="form-group"> 
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Address</label>
-										<div class="col-md-10 col-sm-10  col-xs-6">
-											<input type="text" id="address" name="address" class="form-control col-lg-12" />
-										</div>
-									</div>	
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Password</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="password" id="password" name="password"  class="form-control col-lg-12"/>
+											<select name="" id="" class="form-control col-lg-12">
+												<option value="" disabled selected>Select Course People</option>
+												<option value="">All</option>
+												<option value="">Group</option>
+												<option value="">--</option>
+											</select>
 										</div>
 									</div>
 									<div class="form-group">
@@ -130,27 +131,20 @@
 									</div>
 									<br/>
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Remarks</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Description</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
-											<textarea rows="2" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea> 
+											<textarea rows="4" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea> 
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >User Group</label>
-										<div id="group_select" class="col-md-10 col-sm-10 col-xs-12"></div>
-									</div>
+									
+									
 									<div class="ln_solid"></div>
 								</div>
-								<div class="col-md-3">
-									<img src="src" width="70%" height="70%" class="img-thumbnail" id="emp_img">
-									<input type="file" name="emp_image_upload" id="emp_image_upload"> 
-								</div>
+								
 								</div>
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
-								<div class="col-md-3 col-sm-3 col-xs-12">
-									
-									<input type="hidden" name="id" id="id">  
+								<div class="col-md-3 col-sm-3 col-xs-12"> 
 									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
@@ -173,11 +167,6 @@
 
 
 @section('JScript')
-
-<script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
-<script>
-// save the state of the page in local storage
-</script>
 
 
 

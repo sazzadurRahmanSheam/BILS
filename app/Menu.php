@@ -13,6 +13,6 @@ class Menu extends Model
      * @var array
      */
     protected $fillable = [
-        'menu_title'
+        'module_name','menu_title','parent_id','menu_url','serial_no','menu_icon_class','status',
     ];
 }
