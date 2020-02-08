@@ -38,14 +38,14 @@
 								<div class="col-md-12">
 									<input type="hidden" name="edit_id" id="edit_id">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Group Name<span class="required">*</span></label>
-										<div class="col-md-10 col-sm-10 col-xs-6">
+										<label class="control-label col-md-3 col-sm-3 col-xs-6">Group Name<span class="required">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-6">
 											<input type="text" id="group_name" name="group_name" required class="form-control col-lg-12"/>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Type<span class="required">*</span></label>
-										<div class="col-md-10 col-sm-10 col-xs-6">
+										<label class="control-label col-md-3 col-sm-3 col-xs-6">Type<span class="required">*</span></label>
+										<div class="col-md-9 col-sm-9 col-xs-6">
 											<select name="type" id="type" class="form-control">
 												<option value="">Select Type</option>
 												<option value="1">Admin Uaer</option>
@@ -143,7 +143,7 @@
 								
 								</div>
 								<div class="form-group">
-								<div class="col-md-4 col-sm-4 col-xs-12">
+								<div class="col-md-5 col-sm-5 col-xs-12 text-center">
 									
 									<input type="" name="group_id" id="group_id">  
 									<button type="submit" id="save_permission" class="btn btn-success">Save Permission</button>                    

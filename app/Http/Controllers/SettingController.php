@@ -10,6 +10,8 @@ use \App\System;
 use \App\Setting;
 use App\Menu;
 use App\Web_action;
+use App\User_group;
+use App\User_group_permission;
 
 class SettingController extends Controller
 {
@@ -246,9 +248,22 @@ class SettingController extends Controller
 				if($request->edit_id !=""){
 					$data = Web_action::find($request->edit_id);
 					$data->update($column_value);
+
 				}
 				else{
 					$response = Web_action::create($column_value);
+					//get action id
+					$action_id = $response->id;
+					//get group id
+					$group_id = User_group::Select('id')->get();
+					// insert a row in user_group_permissions for each group of the action id
+					foreach ($group_id as $group_id) {
+						$user_group_permissions = new User_group_permission();
+						$user_group_permissions->group_id=$group_id['id'];
+						$user_group_permissions->action_id=$action_id;
+						$user_group_permissions->status='0';
+						$user_group_permissions->save();
+					}
 				}
 				
 				DB::commit();

@@ -74,6 +74,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*--------------App User Start-------------*/
 	Route::get('app-user/app-user-management',array('as'=>'App User Management' , 'uses' =>'AppUserController@index'));
+	Route::post('/app-user/app-user-entry',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_entry_update'));
+	Route::get('/app-user/app-user-list',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_list'));
+	Route::get('/app-user/app-user-delete/{id}',array('as'=>'App User Delete' , 'uses' =>'AppUserController@app_user_delete'));
+	Route::get('/app-user/app-user-editedit/{id}',array('as'=>'App User Edit' , 'uses' =>'AppUserController@app_user_edit'));
+	Route::get('/app-user/app-user-view/{id}',array('as'=>'App User View' , 'uses' =>'AppUserController@app_user_view'));
 	/*--------------App User End-------------*/
 
 	/*--------------User Group Start-------------*/
@@ -81,8 +86,28 @@ Route::group(['middleware' => ['auth']], function () {
 	/*--------------User Group End-------------*/
 
 	/*-------------- Actions For Permission Start-------------*/
-	Route::get('/admin/load-actions-for-group-permission',array('as'=>'Load Actions' , 'uses' =>'AdminController@load_actions_for_group_permission'));
+	Route::get('/admin/load-actions-for-group-permission/{id}',array('as'=>'Load Actions' , 'uses' =>'AdminController@load_actions_for_group_permission'));
 	Route::post('/admin/permission-action-entry-update',array('as'=>'Permission Entry' , 'uses' =>'AdminController@permission_action_entry_update'));
 	/*-------------- Actions For Permission End-------------*/
+
+
+
+
+	/*-------------- Messages Start-------------*/
+	Route::get('messages/all-messages-management',array('as'=>'All Messages Management' , 'uses' =>'MessageController@all_messages'));
+	/*-------------- Messages End-------------*/
+
+
+
+	/*-------------- Surveys Start-------------*/
+	Route::get('survey/management',array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index'));
+	/*-------------- Surveys End-------------*/
+
+
+	/*-------------- Courses Start-------------*/
+	Route::get('cources/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	/*-------------- Courses End-------------*/
+
+
 	
 });

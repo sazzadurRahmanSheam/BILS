@@ -385,28 +385,39 @@ $(document).ready(function () {
 		$("#permission_list").removeClass('hide');
 		$("#permission_tab").trigger('click');
 		$("#group_id").val(id);
-		load_actions_for_group_permission();
-
+		load_actions_for_group_permission(id);
+		
 	}
 	/*------------------------Permission Panel Open End--------------------------*/
+	
 
 	/*------------------------Load Permission Actions--------------------------*/
-	load_actions_for_group_permission = function load_actions_for_group_permission(){
+	load_actions_for_group_permission = function load_actions_for_group_permission(id){
+		var group_id_for_selected_action = id;
 		$.ajax({
-		url: url+"/admin/load-actions-for-group-permission",
+		url: url+"/admin/load-actions-for-group-permission/"+group_id_for_selected_action,
 		dataType: 'json',
 		success: function(response) {
 		var data = response.data;	
+			
 			
 			if(!jQuery.isEmptyObject(data)){
 				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" name="permission_action[]"  class="tableflat"  value="'+data["id"]+'"/> '+data["menu_title"]+'</div>';	
+						console.log(data);
+						if(data['status']==1){
+							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="'+data["action_id"]+'"/> '+data["activity_name"]+'</div>';
+						}
+						else{
+							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="'+data["action_id"]+'"/> '+data["activity_name"]+'</div>';
+						}
 					});
 				html += '</td></tr>';
 				html +='</table>';	
 			}
+			
+
 			$('#action_select').html(html);
 			$('#action_select_form').iCheck({
 					checkboxClass: 'icheckbox_flat-green',

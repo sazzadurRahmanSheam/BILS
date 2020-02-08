@@ -12,6 +12,7 @@ use App\User_group;
 use App\User_group_member;
 use App\Menu;
 use App\User_group_permission;
+use App\Web_action;
 
 class AdminController extends Controller
 {
@@ -47,7 +48,6 @@ class AdminController extends Controller
 			$return_arr[] = $user;
 		}
 		return json_encode(array('data'=>$return_arr));
-       // return view('admin.manage', $data);
 	}	
 	
 	// emp_name nid_no contact_no email address password is_active remarks emp_image_upload
@@ -206,6 +206,18 @@ class AdminController extends Controller
 				
 				if ($request->edit_id == '') {
 					$response = User_group::create($column_value);
+					//get group id
+					$group_id = $response->id;
+					
+					//get Action id
+					$action_id = Web_action::Select('id')->get();
+					foreach ($action_id as $action_id) {
+						$user_group_permissions = new User_group_permission();
+						$user_group_permissions->group_id=$group_id;
+						$user_group_permissions->action_id=$action_id['id'];
+						$user_group_permissions->status='0';
+						$user_group_permissions->save();
+					}
 				}
 				else{
 					$data = User_group::find($request->edit_id);
@@ -227,7 +239,7 @@ class AdminController extends Controller
 
 	//Admin Group show
 	public function admin_groups_list(){
-		$admin_group_list = User_group::Select('id', 'group_name', 'type','status')->get();		
+		$admin_group_list = User_group::Select('id', 'group_name', 'type','status')->where('type','1')->get();		
 		$return_arr = array();
 		foreach($admin_group_list as $admin_group_list){
 			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
@@ -263,30 +275,39 @@ class AdminController extends Controller
 		echo json_encode(array('data'=>$user_groups));
     }
 
-    public function load_actions_for_group_permission(){
-    	$actions = Menu::Select('id','menu_title')
-			->where('status','1')
-			->where('parent_id','<>','0')
-			->get();
-		echo json_encode(array('data'=>$actions));
+    public function load_actions_for_group_permission($id){
+    	$group_id = $id;
+    	$permission_details = DB::table('user_group_permissions as up')
+    							->leftJoin('web_actions as wa', 'up.action_id', '=', 'wa.id')
+    							->leftJoin('menus as m','wa.module_id','=','m.id')
+    							->where('up.group_id',$group_id)
+    							->where('wa.status','1')
+    							->select('up.*', 'wa.activity_name', 'm.module_name')
+    							->get();
+		return json_encode(array('data'=>$permission_details));
     }
 
 
     public function permission_action_entry_update(Request $request){
 		$permission_action = $request->input('permission_action');
 		$group_id = $request->group_id;
-		$status = 1;
+		
 		try{
 			DB::beginTransaction();
-			if ($permission_action != "") {
+			
+			if($permission_action!=""){	
 				foreach ($permission_action as $permission_action ) {
-					$data_for_permission_action_entry = new User_group_permission();
-					$data_for_permission_action_entry->action_id=$permission_action;
-					$data_for_permission_action_entry->group_id=$group_id;
-					$data_for_permission_action_entry->status=$status;
-					$data_for_permission_action_entry->save();
+
+					if (isset($permission_action)) {
+						$status = '1';
+						$data_for_permission_action_update = DB::table('User_group_permissions')
+															->where('group_id',$group_id)
+															->where('action_id',$permission_action)
+															->update(['status'=>$status]);
+					}
 				}
 			}
+			
 			DB::commit();
 			$return['result'] = "1";
 			return json_encode($return);

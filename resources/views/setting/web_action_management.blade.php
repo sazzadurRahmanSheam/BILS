@@ -22,16 +22,16 @@
 									<div class="col-md-12">
 										<input type="hidden" name="edit_id" id="edit_id">
 										<div class="form-group"> 
-											<label class="control-label col-md-2 col-sm-2 col-xs-6" >Module Name<span class="required">*</span></label>
-											<div class="col-md-10 col-sm-10  col-xs-6">
+											<label class="control-label col-md-3 col-sm-3 col-xs-6" >Module Name<span class="required">*</span></label>
+											<div class="col-md-9 col-sm-9  col-xs-6">
 												<select class="form-control col-lg-12" id="module_name_for_web_action" name="module_name_for_web_action">
 													<option value="" disabled selected>Select Module Name</option>
 												</select>
 											</div>
 										</div>
 										<div class="form-group"> 
-											<label class="control-label col-md-2 col-sm-2 col-xs-6" >Action Name<span class="required">*</span></label>
-											<div class="col-md-10 col-sm-10  col-xs-6">
+											<label class="control-label col-md-3 col-sm-3 col-xs-6" >Action Name<span class="required">*</span></label>
+											<div class="col-md-9 col-sm-9  col-xs-6">
 												<input type="text" id="activity_name" name="activity_name" class="form-control col-lg-12" />
 											</div>
 										</div>
@@ -48,7 +48,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
 									<button type="submit" id="save_web_action" class="btn btn-success">Save</button>                    
-									<button type="button" id="clear_button" class="btn btn-primary">Clear</button>                         
+									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>
