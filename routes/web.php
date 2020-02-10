@@ -20,6 +20,9 @@ Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Su
 
 Route::group(['middleware' => ['auth']], function () {
     #logout
+	
+	//echo "hold on";die;
+	Route::get('/',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
     Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));	
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
 	Route::get('/admin/admin-user-management',array('as'=>'Admin Users' , 'uses' =>'AdminController@adminUserManagement'));
