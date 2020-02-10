@@ -8,6 +8,7 @@ use Session;
 use DB;
 use \App\System;
 use App\App_user;
+use App\User_group;
 
 class AppUserController extends Controller
 {
@@ -141,6 +142,27 @@ class AppUserController extends Controller
 		return json_encode($data);
     }
     /*----- App User View End -----*/
+
+
+    /*----- App User Group Start -----*/
+    public function app_user_management(){
+    	$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+        return view('app_user.app_user_groups', $data);
+    }
+    public function load_app_user_groups(){
+    	$app_user_group_list = User_group::Select('id', 'group_name', 'type','status')->where('type','2')->get();		
+		$return_arr = array();
+		foreach($app_user_group_list as $app_user_group_list){
+			$app_user_group_list['type']=($app_user_group_list->type == 1)?"Admin User":"App User";
+			$app_user_group_list['status']=($app_user_group_list->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$app_user_group_list['actions']=" <button title='Edit' onclick='admin_group_edit(".$app_user_group_list->id.")' id=edit_" . $app_user_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>"
+				." <button title='Delete' onclick='admin_group_delete(".$app_user_group_list->id.")' id='delete_" . $app_user_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+			$return_arr[] = $app_user_group_list;
+		}
+		return json_encode(array('data'=>$return_arr));
+    }
+    /*----- App User Group End -----*/
 
 
    

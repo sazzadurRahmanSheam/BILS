@@ -216,10 +216,10 @@ $(document).ready(function () {
 
 
 	
-/*
 
-	//Admin User Group Entry And update
-	$('#save_group').click(function(event){		
+
+	//App User Group Entry And update With Admin controller
+	$('#save_app_user_group').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -230,9 +230,6 @@ $(document).ready(function () {
 		var formData = new FormData($('#save_group_form')[0]);
 		if($.trim($('#group_name').val()) == ""){
 			success_or_error_msg('#form_submit_error','danger',"Please Insert Group Name","#group_name");			
-		}
-		else if($.trim($('#type').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Select Type","#type");			
 		}
 		else{
 			$.ajax({
@@ -253,14 +250,16 @@ $(document).ready(function () {
 						});
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
-						//load_data("");
+						
 						clear_form();
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
 						
-						admin_group.ajax.reload();
+						app_user_group.ajax.reload();
 						clear_form();
+						$("#cancle_admin_user_group_button").addClass('hidden');
+						$(".save").html('Save');
 
 					}
 					$(window).scrollTop();
@@ -270,12 +269,12 @@ $(document).ready(function () {
 	})
 
 
-	//Admin Group list
-	var admin_group = $('#admin_group').DataTable({
+	//App User Group list
+	var app_user_group = $('#app_user_group').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/admin/admin-group-list",
+		"ajax": url+"/app-user/app-user-group-list",
 		"aoColumns": [ 
 			{ mData: 'id'},
 			{ mData: 'group_name' },
@@ -286,6 +285,7 @@ $(document).ready(function () {
 	});
 
 
+/*
 	//Admin Group Edit
 	admin_group_edit = function admin_group_edit(id){
 		var edit_id = id;
@@ -346,150 +346,150 @@ $(document).ready(function () {
 	*/
 
 /*------------------------Load User Groups--------------------------*/
-	$.ajax({
-		url: url+"/admin/load-user-groups",
-		dataType: 'json',
-		success: function(response) {
-		var data = response.data;	
+	// $.ajax({
+	// 	url: url+"/admin/load-user-groups",
+	// 	dataType: 'json',
+	// 	success: function(response) {
+	// 	var data = response.data;	
 			
-			if(!jQuery.isEmptyObject(data)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
-					html += '<tr><td colspan="2">';
-					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
-					});
-					html += '</td></tr>';
-				html +='</table>';	
-			}
-			$('#group_select').html(html);
-			$('#app_user_form').iCheck({
-					checkboxClass: 'icheckbox_flat-green',
-					radioClass: 'iradio_flat-green'
-			});									
+	// 		if(!jQuery.isEmptyObject(data)){
+	// 			var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+	// 				html += '<tr><td colspan="2">';
+	// 				$.each(data, function(i,data){
+	// 					html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+	// 				});
+	// 				html += '</td></tr>';
+	// 			html +='</table>';	
+	// 		}
+	// 		$('#group_select').html(html);
+	// 		$('#app_user_form').iCheck({
+	// 				checkboxClass: 'icheckbox_flat-green',
+	// 				radioClass: 'iradio_flat-green'
+	// 		});									
 			
-			$('#app_user_form input#check-all').on('ifChecked', function () {
+	// 		$('#app_user_form input#check-all').on('ifChecked', function () {
 				
-				$("#app_user_form .tableflat").iCheck('check');
-			});
-			$('#app_user_form input#check-all').on('ifUnchecked', function () {
+	// 			$("#app_user_form .tableflat").iCheck('check');
+	// 		});
+	// 		$('#app_user_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#app_user_form .tableflat").iCheck('uncheck');
-			});
-		}
-	});
-	/*------------------------Load User Groups End--------------------------*/
+	// 			$("#app_user_form .tableflat").iCheck('uncheck');
+	// 		});
+	// 	}
+	// });
+	// /*------------------------Load User Groups End--------------------------*/
 
-	/*------------------------Permission Panel Hide Start--------------------------*/
-	permission_panale_hide = function permission_panale_hide(){
-		$("#permission_list").addClass('hide');
-	}
-	$("#user_group_management_tab").click(function(){
-		permission_panale_hide();
-	});
-	/*------------------------Permission Panel Hide End--------------------------*/
+	// /*------------------------Permission Panel Hide Start--------------------------*/
+	// permission_panale_hide = function permission_panale_hide(){
+	// 	$("#permission_list").addClass('hide');
+	// }
+	// $("#user_group_management_tab").click(function(){
+	// 	permission_panale_hide();
+	// });
+	// /*------------------------Permission Panel Hide End--------------------------*/
 	
 
-	/*------------------------Permission Panel Open Start--------------------------*/
-	group_permission = function group_permission(id){
-		$("#permission_list").removeClass('hide');
-		$("#permission_tab").trigger('click');
-		$("#group_id").val(id);
-		load_actions_for_group_permission(id);
+	// /*------------------------Permission Panel Open Start--------------------------*/
+	// group_permission = function group_permission(id){
+	// 	$("#permission_list").removeClass('hide');
+	// 	$("#permission_tab").trigger('click');
+	// 	$("#group_id").val(id);
+	// 	load_actions_for_group_permission(id);
 		
-	}
-	/*------------------------Permission Panel Open End--------------------------*/
+	// }
+	// /*------------------------Permission Panel Open End--------------------------*/
 	
 
-	/*------------------------Load Permission Actions--------------------------*/
-	load_actions_for_group_permission = function load_actions_for_group_permission(id){
-		var group_id_for_selected_action = id;
-		$.ajax({
-		url: url+"/admin/load-actions-for-group-permission/"+group_id_for_selected_action,
-		dataType: 'json',
-		success: function(response) {
-		var data = response.data;	
+	// /*------------------------Load Permission Actions--------------------------*/
+	// load_actions_for_group_permission = function load_actions_for_group_permission(id){
+	// 	var group_id_for_selected_action = id;
+	// 	$.ajax({
+	// 	url: url+"/admin/load-actions-for-group-permission/"+group_id_for_selected_action,
+	// 	dataType: 'json',
+	// 	success: function(response) {
+	// 	var data = response.data;	
 			
 			
-			if(!jQuery.isEmptyObject(data)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
-					html += '<tr><td colspan="2">';
-					$.each(data, function(i,data){
-						console.log(data);
-						if(data['status']==1){
-							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
-						}
-						else{
-							html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
-						}
-					});
-				html += '</td></tr>';
-				html +='</table>';	
-			}
+	// 		if(!jQuery.isEmptyObject(data)){
+	// 			var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+	// 				html += '<tr><td colspan="2">';
+	// 				$.each(data, function(i,data){
+	// 					console.log(data);
+	// 					if(data['status']==1){
+	// 						html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
+	// 					}
+	// 					else{
+	// 						html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
+	// 					}
+	// 				});
+	// 			html += '</td></tr>';
+	// 			html +='</table>';	
+	// 		}
 			
 
-			$('#action_select').html(html);
-			$('#action_select_form').iCheck({
-					checkboxClass: 'icheckbox_flat-green',
-					radioClass: 'iradio_flat-green'
-			});									
+	// 		$('#action_select').html(html);
+	// 		$('#action_select_form').iCheck({
+	// 				checkboxClass: 'icheckbox_flat-green',
+	// 				radioClass: 'iradio_flat-green'
+	// 		});									
 			
-			$('#action_select_form input#check-all').on('ifChecked', function () {
+	// 		$('#action_select_form input#check-all').on('ifChecked', function () {
 				
-				$("#action_select_form .tableflat").iCheck('check');
-			});
-			$('#action_select_form input#check-all').on('ifUnchecked', function () {
+	// 			$("#action_select_form .tableflat").iCheck('check');
+	// 		});
+	// 		$('#action_select_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#action_select_form .tableflat").iCheck('uncheck');
-			});
-		}
-	});
-	}
-	/*------------------------Load Permission Actions End--------------------------*/
+	// 			$("#action_select_form .tableflat").iCheck('uncheck');
+	// 		});
+	// 	}
+	// });
+	// }
+	// /*------------------------Load Permission Actions End--------------------------*/
 
 
-	/*------------------------Entry And Update Permission Actions Start--------------------------*/
-	$('#save_permission').click(function(event){		
-		event.preventDefault();
-		$.ajaxSetup({
-			headers:{
-				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-			}
-		});
-		var formData = new FormData($('#action_select_form')[0]);	
-		$.ajax({
-			url: url+"/admin/permission-action-entry-update",
-			type:'POST',
-			data:formData,
-			async:false,
-			cache:false,
-			contentType:false,
-			processData:false,
-			success: function(data){
-				var response = JSON.parse(data);
+	// /*------------------------Entry And Update Permission Actions Start--------------------------*/
+	// $('#save_permission').click(function(event){		
+	// 	event.preventDefault();
+	// 	$.ajaxSetup({
+	// 		headers:{
+	// 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+	// 		}
+	// 	});
+	// 	var formData = new FormData($('#action_select_form')[0]);	
+	// 	$.ajax({
+	// 		url: url+"/admin/permission-action-entry-update",
+	// 		type:'POST',
+	// 		data:formData,
+	// 		async:false,
+	// 		cache:false,
+	// 		contentType:false,
+	// 		processData:false,
+	// 		success: function(data){
+	// 			var response = JSON.parse(data);
 			
-				if(response['result'] == '0'){
-					var errors	= response['errors'];					
-					resultHtml = '<ul>';
-						$.each(errors,function (k,v) {
-						resultHtml += '<li>'+ v + '</li>';
-					});
-					resultHtml += '</ul>';
-					success_or_error_msg('#master_message_div',"danger",resultHtml);
-					clear_form();
-				}
-				else{				
-					success_or_error_msg('#master_message_div',"success","Save Successfully");
-					//$("#admin_user_list_button").trigger('click');
-					//admin_group.ajax.reload();
-					clear_form();
-					permission_panale_hide();
-					$("#user_group_management_tab").trigger('click');
-				}
-				$(window).scrollTop();
-			 }	
-		});
-	});
-	/*----------------------Entry And Update Permission Actions Start------------------------*/
+	// 			if(response['result'] == '0'){
+	// 				var errors	= response['errors'];					
+	// 				resultHtml = '<ul>';
+	// 					$.each(errors,function (k,v) {
+	// 					resultHtml += '<li>'+ v + '</li>';
+	// 				});
+	// 				resultHtml += '</ul>';
+	// 				success_or_error_msg('#master_message_div',"danger",resultHtml);
+	// 				clear_form();
+	// 			}
+	// 			else{				
+	// 				success_or_error_msg('#master_message_div',"success","Save Successfully");
+	// 				//$("#admin_user_list_button").trigger('click');
+	// 				//admin_group.ajax.reload();
+	// 				clear_form();
+	// 				permission_panale_hide();
+	// 				$("#user_group_management_tab").trigger('click');
+	// 			}
+	// 			$(window).scrollTop();
+	// 		 }	
+	// 	});
+	// });
+	// /*----------------------Entry And Update Permission Actions Start------------------------*/
 
 
 

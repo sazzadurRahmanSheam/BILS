@@ -1,23 +1,12 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 #Login
 
 Route::get('/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
 Route::get('/',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
 Route::get('/auth',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
 Route::get('auth/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
-Route::post('auth/post/login',array('as'=>'Sign in' , 'uses' =>'SystemAuthController@authPostLogin'));
+Route::post('auth/post/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authPostLogin'));
 
 
 
@@ -64,8 +53,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/web-action/edit/{id}',array('as'=>'Web Action Edit' , 'uses' =>'SettingController@web_action_edit'));
 	/*--------------Web Action End-------------*/
 	
-	/*--------------Groups start-------------*/
-	Route::get('admin/admin-group-management',array('as'=>'User Groups Management' , 'uses' =>'AdminController@admin_user_groups'));
+	/*--------------Admin User Groups start-------------*/
+	Route::get('admin/admin-group-management',array('as'=>'Admin User Groups Management' , 'uses' =>'AdminController@admin_user_groups'));
+	##Updating
 	Route::post('/admin/admin-group-entry',array('as'=>'Admin Groups Entry' , 'uses' =>'AdminController@admin_groups_entry_or_update'));
 	Route::get('/admin/admin-group-list',array('as'=>'Admin Groups List' , 'uses' =>'AdminController@admin_groups_list'));
 	Route::get('/admin/admin-group-edit/{id}',array('as'=>'Admin Groups Edit' , 'uses' =>'AdminController@admin_group_edit'));
@@ -79,10 +69,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/app-user/app-user-delete/{id}',array('as'=>'App User Delete' , 'uses' =>'AppUserController@app_user_delete'));
 	Route::get('/app-user/app-user-editedit/{id}',array('as'=>'App User Edit' , 'uses' =>'AppUserController@app_user_edit'));
 	Route::get('/app-user/app-user-view/{id}',array('as'=>'App User View' , 'uses' =>'AppUserController@app_user_view'));
+	Route::get('app-user/app-user-group-management',array('as'=>'App User Group Management' , 'uses' =>'AppUserController@app_user_management'));
 	/*--------------App User End-------------*/
 
 	/*--------------User Group Start-------------*/
 	Route::get('/admin/load-user-groups',array('as'=>'Load User Groups' , 'uses' =>'AdminController@load_user_groups'));
+	Route::get('/app-user/app-user-group-list',array('as'=>'Load User Groups' , 'uses' =>'AppUserController@load_app_user_groups'));
 	/*--------------User Group End-------------*/
 
 	/*-------------- Actions For Permission Start-------------*/

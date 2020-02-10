@@ -125,7 +125,7 @@
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Active</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
+											<input type="checkbox" id="is_active" name="is_active" checked="checked" value="1" class="form-control col-lg-12"/>
 										</div>
 									</div>
 									<br/>
@@ -150,7 +150,7 @@
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
 									
-									<input type="hidden" name="id" id="id">  
+									<input type="" name="id" id="id">  
 									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
