@@ -90,7 +90,7 @@ class AdminController extends Controller
 			try{
 				DB::beginTransaction();
 				$is_active = ($request->is_active=="")?"2":"1";
-				//dd ($is_active);
+				
 				$password = ($request->password =="")?md5('1234'):md5($request->password);
 				$column_value = [
 					'name'=>$request->emp_name,
@@ -169,22 +169,17 @@ class AdminController extends Controller
 	}
 
 
-/*public function load_user_groups(){
-		$user_groups = User_group::Select('id','group_name')
-			->where('status','1')
-			->where('type','1')
-			->get();
-		return json_encode(array('data'=>$user_groups));
-    }*/
-
-
-
+	/*-----Admin User Data for edit and get group-----*/
 	public function adminUserEdit($id){
 		$emp_id = $id;
 		$data = User::find($emp_id);
-		$user_group_member_details = User_group_member::Select('emp_id','status')
-										->where('emp_id',$emp_id)
-										->get();
+
+		$user_group_member_details = DB::table('User_groups as ug')
+									->leftJoin('User_group_members as ugm','ug.id','=','ugm.group_id')
+									->where('ug.type','1')
+									->where('ugm.emp_id',$emp_id)
+									->select('ug.id as id','ug.group_name as group_name','ugm.emp_id as emp_id','ugm.status as status')
+									->get();
 		return json_encode(array(
 			"data"=>$data,
 			"user_group_member_details"=>$user_group_member_details

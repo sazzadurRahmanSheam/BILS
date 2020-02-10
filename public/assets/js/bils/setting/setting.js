@@ -357,6 +357,65 @@ $(document).ready(function () {
 	}
 
 
+	/*----- Publication Category Save Start -----*/
+
+	$("#save_publication_category").on('click',function(){
+
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		
+		var formData = new FormData($('#save_publication_category_form')[0]);
+
+		if($.trim($('#category_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+		}
+		else{
+			
+			$.ajax({
+				url: url+"/publication/publication-category-entry",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+				
+					if(response['result'] == '0'){
+						var errors	= response['errors'];					
+						resultHtml = '<ul>';
+							$.each(errors,function (k,v) {
+							resultHtml += '<li>'+ v + '</li>';
+						});
+						resultHtml += '</ul>';
+						success_or_error_msg('#master_message_div',"danger",resultHtml);
+						clear_form();
+					}
+					else{				
+						success_or_error_msg('#master_message_div',"success","Save Successfully");
+						
+						//menu_datatable.ajax.reload();
+						clear_form();
+						
+						$("#save_module").html('Save');
+
+					}
+					$(window).scrollTop();
+				 }	
+			});
+		}
+
+		
+	});
+
+	/*----- Publication Category Save End -----*/
+
+
 	
 
 

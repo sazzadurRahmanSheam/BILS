@@ -89,7 +89,9 @@ $(document).ready(function () {
 						$("#admin_user_list_button").trigger('click');
 						admin_datatable.ajax.reload();
 						clear_form();
-
+						$("#save_admin_info").html("save");
+						$("#admin_user_add_button").html('Add Admin User');
+						$("#cancle_admin_update").addClass('hidden');
 					}
 					$(window).scrollTop();
 				 }	
@@ -115,9 +117,11 @@ $(document).ready(function () {
 				var data = JSON.parse(response);
 				var emp_data = data['data'];
 				var user_group_member_details = data['user_group_member_details'];
+
 				$("#admin_user_add_button").trigger('click');
 				$("#admin_user_add_button").html('Update Admin User');
 				$("#save_admin_info").html('Update');
+				$("#cancle_admin_update").removeClass('hidden');
 				$("#emp_name").val(emp_data['name']);
 				$("#nid_no").val(emp_data['nid_no']);
 				$("#id").val(emp_data['id']);
@@ -125,12 +129,40 @@ $(document).ready(function () {
 				$("#email").val(emp_data['email']);
 				$("#address").val(emp_data['address']);
 				$("#remarks").val(emp_data['remarks']);
+				
 				(emp_data['status']==2)?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
-				//!jQuery.isEmptyObject(data)
-				//working
-				$.each(user_group_member_details,function (k,v) {
-							console.log(v['status']);
-						});
+				/*get group for edit*/
+				if(!jQuery.isEmptyObject(user_group_member_details)){
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+					html += '<tr><td colspan="2">';
+					$.each(user_group_member_details, function(i,row){
+						if (row['status']=='0') {
+							html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+row["id"]+'"/> '+row["group_name"]+'</div>';
+						}
+						else{
+							html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat"  value="'+row["id"]+'"/> '+row["group_name"]+'</div>';
+						}
+					});
+					html += '</td></tr>';
+				html +='</table>';	
+			}
+			$('#group_select').html(html);
+			$('#admin_user_form').iCheck({
+					checkboxClass: 'icheckbox_flat-green',
+					radioClass: 'iradio_flat-green'
+			});									
+			
+			$('#admin_user_form input#check-all').on('ifChecked', function () {
+				
+				$("#admin_user_form .tableflat").iCheck('check');
+			});
+			$('#admin_user_form input#check-all').on('ifUnchecked', function () {
+				
+				$("#admin_user_form .tableflat").iCheck('uncheck');
+			});
+
+
+
 
 			}
 		});
@@ -351,10 +383,10 @@ $(document).ready(function () {
 		var data = response.data;	
 			
 			if(!jQuery.isEmptyObject(data)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input checked type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
 					});
 					html += '</td></tr>';
 				html +='</table>';	
