@@ -17,6 +17,7 @@ Route::get('auth/forget/password/{user_id}/verify',array('as'=>'Forgot Password 
 Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Submit' , 'uses' =>'SystemAuthController@authSystemNewPasswordPost'));
 
 
+Route::get('survey/management', function (){echo "Stop Here";}/*array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index')*/);
 
 Route::group(['middleware' => ['auth']], function () {
     #logout
@@ -36,15 +37,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
 	
 	Route::get('/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
-
-	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
-	
-	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));
-	
-	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));
-	
+	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));	
+	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));	
+	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));	
 	Route::post('/module/module-entry/',array('as'=>'Module Entry' , 'uses' =>'SettingController@moduleEntry'));
-
 	Route::get('/module/edit/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleEdit'));
 	Route::get('/module/delete/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleDelete'));
 
@@ -85,13 +81,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/admin/permission-action-entry-update',array('as'=>'Permission Entry' , 'uses' =>'AdminController@permission_action_entry_update'));
 	/*-------------- Actions For Permission End-------------*/
 
-
-
-
 	/*-------------- Messages Start-------------*/
 	Route::get('messages/all-messages-management',array('as'=>'All Messages Management' , 'uses' =>'MessageController@all_messages'));
 	/*-------------- Messages End-------------*/
-
 
 
 	/*-------------- Surveys Start-------------*/
