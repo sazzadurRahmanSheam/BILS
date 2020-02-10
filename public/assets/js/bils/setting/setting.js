@@ -4,6 +4,18 @@ $(document).ready(function () {
 	// for get site url
 	var url = $('.site_url').val();
 
+	// icheck for the inputs
+	$('.form').iCheck({
+		checkboxClass: 'icheckbox_flat-green',
+		radioClass: 'iradio_flat-green'
+	});	
+	
+	$('.flat_radio').iCheck({
+		//checkboxClass: 'icheckbox_flat-green'
+		radioClass: 'iradio_flat-green'
+	});
+		
+
 	// Update General Setting
 	$('#save_general_setting').click(function(event){		
 		event.preventDefault();
@@ -357,8 +369,9 @@ $(document).ready(function () {
 	}
 
 
-	/*----- Publication Category Save Start -----*/
+	/*----- Publication Start -----*/
 
+	//Publication Category Entry And Update
 	$("#save_publication_category").on('click',function(){
 
 		event.preventDefault();
@@ -377,7 +390,7 @@ $(document).ready(function () {
 		else{
 			
 			$.ajax({
-				url: url+"/publication/publication-category-entry",
+				url: url+"/settings/publication/publication-category-entry",
 				type:'POST',
 				data:formData,
 				async:false,
@@ -397,23 +410,102 @@ $(document).ready(function () {
 						clear_form();
 					}
 					else{				
-						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						
-						//menu_datatable.ajax.reload();
+						if (response['success']=='insert') {
+							success_or_error_msg('#master_message_div',"success","Publication Category Inserted Successful");
+						}else{
+							success_or_error_msg('#master_message_div',"success","Updated Successful");
+						}
+						publication_category.ajax.reload();
 						clear_form();
-						
-						$("#save_module").html('Save');
-
+						$("#save_publication_category").html('Save');
+						$("#cancle_publication_category").addClass('hidden');
 					}
 					$(window).scrollTop();
 				 }	
 			});
 		}
-
-		
 	});
 
-	/*----- Publication Category Save End -----*/
+	//Publication Categories data table
+	var publication_category = $('#publication_category').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/setting/publication/publication-categories-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'category_name' },
+			{ mData: 'details'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});
+	//Edit
+	publication_category_edit = function publication_category_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/setting/publication/publication-categories-edit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#save_publication_category").html('Update');
+				$("#cancle_publication_category").removeClass('hidden');
+				$("#category_name").val(data['category_name']);
+				$("#publication_category_edit_id").val(data['id']);
+				$("#details").val(data['details']);
+				(data['status']=="1")?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+			}
+		});
+	}
+
+	//Cancle Publication Categoru update
+	$("#cancle_publication_category").click(function(){
+		clear_form();
+		$("#cancle_publication_category").addClass('hidden');
+		$("#save_publication_category").html('Save');
+	});
+
+	//Delete
+	publication_category_delete = function publication_category_delete(id){
+		var delete_id = id;
+		swal({
+			title: "Are you sure?",
+			text: "You wants to delete item parmanently!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: url+'/setting/publication/publication-category-delete/'+delete_id,
+					cache: false,
+					success: function(response){
+						var response = JSON.parse(response);
+						if (response['parentmessage']) {
+							swal(response['parentmessage'], {
+								icon: "warning",
+							});
+						}
+						else{
+							swal(response['deleteMessage'], {
+								icon: "success",
+							});
+							publication_category.ajax.reload();
+						}
+					}
+				});
+			} 
+			else {
+				swal("Your Data is safe..!", {
+				icon: "warning",
+				});
+			}
+		});
+	}
+
+
+
+	/*----- Publication End -----*/
 
 
 	

@@ -105,7 +105,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Publication Start-------------*/
 	Route::get('settings/publication/publication-category',array('as'=>'Publication Category Management' , 'uses' =>'SettingController@publication_category_management'));
-	Route::post('/publication/publication-category-entry',array('as'=>'Publication Category Entry' , 'uses' =>'SettingController@publication_category_entry_update'));
+	Route::post('/settings/publication/publication-category-entry',array('as'=>'Publication Category Entry' , 'uses' =>'SettingController@publication_category_entry_update'));
+	Route::get('/setting/publication/publication-categories-list',array('as'=>'Get Publication Category' , 'uses' =>'SettingController@publication_categories_get'));
+	Route::get('/setting/publication/publication-categories-edit/{id}',array('as'=>'Edit Publication Category' , 'uses' =>'SettingController@publication_category_edit'));
+	Route::get('/setting/publication/publication-category-delete/{id}',array('as'=>'Delete Publication Category' , 'uses' =>'SettingController@publication_category_delete'));
 	/*-------------- Publication End-------------*/
 
 

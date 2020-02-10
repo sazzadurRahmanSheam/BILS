@@ -27,6 +27,7 @@ class CoursesController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "Courses";
+        $data['sub_module']= "Open Courses";
         return view('courses.index', $data);
     }
 }

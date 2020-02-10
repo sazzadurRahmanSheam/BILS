@@ -30,6 +30,7 @@
 								<form id="save_publication_category_form" name="save_publication_category_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 									@csrf
 									<div class="row">
+										<input type="hidden" name="publication_category_edit_id" id="publication_category_edit_id">
 										<div class="col-md-12">
 											<input type="hidden" name="edit_id" id="edit_id">
 											<div class="form-group">
@@ -48,19 +49,19 @@
 											<div class="form-group">
 												<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Active</label>
 												<div class="col-md-4 col-sm-4 col-xs-6">
-													<input type="checkbox" name="is_active" id="is_active" value="1" checked="checked">
+													<input type="checkbox" name="is_active" id="is_active" value="1" checked>
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
-										<div class="col-md-4 col-sm-4 col-xs-12">
+										<div class="col-md-5 col-sm-5 col-xs-12">
 											<button type="submit" id="save_publication_category" class="btn btn-success save">Save</button>                    
 											<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 											<button type="button" id="cancle_publication_category" class="btn btn-danger hidden">Cancle</button>                         
 										</div>
-										<div class="col-md-6 col-sm-6 col-xs-12">
+										<div class="col-md-5 col-sm-5 col-xs-12">
 											<div id="form_submit_error" class="text-center" style="display:none"></div>
 										</div>
 									</div>
@@ -99,8 +100,8 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>Group Name</th>
-												<th>Type</th>
+												<th>Category Name</th>
+												<th>Dtails</th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>
 											</tr>

@@ -27,6 +27,7 @@ class SettingController extends Controller
 	public function generalSetting(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "General Setting";
 		$data['setting'] = Setting::first();
 		//return response()->json($data['setting']);
 		return view('setting.general_setting',$data);
@@ -92,6 +93,7 @@ class SettingController extends Controller
 	public function moduleManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "Manage Module";
 		$data['menu'] = Menu::all();
 		return view('setting.manage_module',$data);
 	}
@@ -107,7 +109,6 @@ class SettingController extends Controller
 			$return_arr[] = $menu;
 		}
 		return json_encode(array('data'=>$return_arr));
-       // return view('admin.manage', $data);
 	}
 
 	//getting parent menu
@@ -215,6 +216,7 @@ class SettingController extends Controller
 	public function webActionManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "Web Actions";
 		$data['setting'] = Setting::first();
 		return view('setting.web_action_management',$data);
 	}
@@ -314,6 +316,7 @@ class SettingController extends Controller
 	public function publication_category_management(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
+		$data['sub_module']= "Publication Category";
 		$data['setting'] = Setting::first();
 		return view('publication.publication_category',$data);
 	}
@@ -339,9 +342,15 @@ class SettingController extends Controller
 					'details'=>$request->details,	
 					'status'=>$status,	
 				];
-
-				$response = Publication_category::create($column_value);
-				
+				if ($request->publication_category_edit_id == '') {
+					$response = Publication_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Publication_category::find($request->publication_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
 				DB::commit();
 				$return['result'] = "1";
 				return json_encode($return);
@@ -354,6 +363,32 @@ class SettingController extends Controller
 			}
 		}
 	}
+	#Pubilacation Categories List
+	public function publication_categories_get(){
+		$publication_categories_list = Publication_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($publication_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='publication_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='publication_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	public function publication_category_edit($id){
+		$data = Publication_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	public function publication_category_delete($id){
+		Publication_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+
 
 	/*----- Publication Management End -----*/
 
