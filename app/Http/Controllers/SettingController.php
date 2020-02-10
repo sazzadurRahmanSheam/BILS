@@ -12,6 +12,7 @@ use App\Menu;
 use App\Web_action;
 use App\User_group;
 use App\User_group_permission;
+use App\Publication_category;
 
 class SettingController extends Controller
 {
@@ -305,10 +306,56 @@ class SettingController extends Controller
 		$data = Web_action::Select('id','activity_name','module_id')->where('id',$id)->first();
 		return json_encode($data);
 	}
-
-
-
 	//Web Action Management End
+
+
+	/*----- Publication Management Start -----*/
+
+	public function publication_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['setting'] = Setting::first();
+		return view('publication.publication_category',$data);
+	}
+
+	#publication Category Entry & Update
+	public function publication_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+
+				$response = Publication_category::create($column_value);
+				
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	/*----- Publication Management End -----*/
 
 
 

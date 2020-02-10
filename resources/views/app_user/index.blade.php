@@ -128,8 +128,8 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >User Group</label>
-										<div id="group_select" class="col-md-10 col-sm-10 col-xs-12"></div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >App User Group</label>
+										<div id="select_app_user_group" class="col-md-10 col-sm-10 col-xs-12"></div>
 									</div>
 									<div class="ln_solid"></div>
 								</div>

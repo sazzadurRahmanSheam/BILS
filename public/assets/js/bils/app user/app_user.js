@@ -153,21 +153,54 @@ $(document).ready(function () {
 			url: url+'/app-user/app-user-editedit/'+edit_id,
 			cache: false,
 			success: function(response){
-				var data = JSON.parse(response);
+				var response = JSON.parse(response);
+				var app_user_info = response.app_user;
+				var user_group_member_details = response.user_group_member_details;
 				$("#app_user_button").trigger('click');
 				$("#app_user_button").html('Update App User');
 				$("#save_app_user_info").html('Update');
 				$("#cancle_app_user_update").removeClass('hide');
 
-				$("#app_user_edit_id").val(data['id']);
-				$("#app_user_name").val(data['name']);
-				$("#nid_no").val(data['nid_no']);
-				$("#contact_no").val(data['contact_no']);
-				$("#email").val(data['email']);
-				$("#address").val(data['address']);
+				$("#app_user_edit_id").val(app_user_info['id']);
+				$("#app_user_name").val(app_user_info['name']);
+				$("#nid_no").val(app_user_info['nid_no']);
+				$("#contact_no").val(app_user_info['contact_no']);
+				$("#email").val(app_user_info['email']);
+				$("#address").val(app_user_info['address']);
+				$("#remarks").val(app_user_info['remarks']);
+				(app_user_info['status']=='0')?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
+				// console.log(user_group_member_details);
+
+				/*get group for edit*/
+				if(!jQuery.isEmptyObject(user_group_member_details)){
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+					html += '<tr><td colspan="2">';
+					$.each(user_group_member_details, function(i,row){
+						if (row['status']=='0') {
+							html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+row["id"]+'"/> '+row["group_name"]+'</div>';
+						}
+						else{
+							html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat"  value="'+row["id"]+'"/> '+row["group_name"]+'</div>';
+						}
+					});
+					html += '</td></tr>';
+				html +='</table>';	
+			}
+			$('#select_app_user_group').html(html);
+			$('#app_user_form').iCheck({
+					checkboxClass: 'icheckbox_flat-green',
+					radioClass: 'iradio_flat-green'
+			});									
+			
+			$('#app_user_form input#check-all').on('ifChecked', function () {
 				
-				$("#remarks").val(data['remarks']);
+				$("#app_user_form .tableflat").iCheck('check');
+			});
+			$('#app_user_form input#check-all').on('ifUnchecked', function () {
 				
+				$("#app_user_form .tableflat").iCheck('uncheck');
+			});
+
 			}
 		});
 	}
@@ -269,7 +302,7 @@ $(document).ready(function () {
 	})
 
 
-	//App User Group list
+	//App User Group list for group details
 	var app_user_group = $('#app_user_group').DataTable({
 		destroy: true,
 		"processing": true,
@@ -284,214 +317,40 @@ $(document).ready(function () {
 		],
 	});
 
-
-/*
-	//Admin Group Edit
-	admin_group_edit = function admin_group_edit(id){
-		var edit_id = id;
-		$.ajax({
-			url: url+'/admin/admin-group-edit/'+edit_id,
-			cache: false,
-			success: function(response){
-				var data = JSON.parse(response);
-				$("#save_group").html('Update');
-				$("#clear_button").hide();
-				$("#edit_id").val(data['id']);
-				$("#group_name").val(data['group_name']);
-				$("#type").val(data['type']).change();
-				if(data['status']=='1'){
-					$("#is_active").icheck('checked');
-				}
-				// else{
-				// 	$("#is_active").prop('checked', true);
-				// }
-
-			}
-		});
-	}
-
-
-	//Delete Admin-user	
-	admin_group_delete = function admin_group_delete(id){
-		var delete_id = id;
-		swal({
-			title: "Are you sure?",
-			text: "You wants to delete item parmanently!",
-			icon: "warning",
-			buttons: true,
-			dangerMode: true,
-		}).then((willDelete) => {
-			if (willDelete) {
-				$.ajax({
-					url: url+'/admin/admin-group-delete/'+delete_id,
-					cache: false,
-					success: function(response){
-						var response = JSON.parse(response);
-						swal(response['deleteMessage'], {
-						icon: "success",
-						});
-						admin_group.ajax.reload();
-					}
-				});
-			} 
-			else {
-				swal("Your Data is safe..!", {
-				icon: "warning",
-				});
-			}
-		});
-	}
-
-
-	*/
-
-/*------------------------Load User Groups--------------------------*/
-	// $.ajax({
-	// 	url: url+"/admin/load-user-groups",
-	// 	dataType: 'json',
-	// 	success: function(response) {
-	// 	var data = response.data;	
-			
-	// 		if(!jQuery.isEmptyObject(data)){
-	// 			var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
-	// 				html += '<tr><td colspan="2">';
-	// 				$.each(data, function(i,data){
-	// 					html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
-	// 				});
-	// 				html += '</td></tr>';
-	// 			html +='</table>';	
-	// 		}
-	// 		$('#group_select').html(html);
-	// 		$('#app_user_form').iCheck({
-	// 				checkboxClass: 'icheckbox_flat-green',
-	// 				radioClass: 'iradio_flat-green'
-	// 		});									
-			
-	// 		$('#app_user_form input#check-all').on('ifChecked', function () {
-				
-	// 			$("#app_user_form .tableflat").iCheck('check');
-	// 		});
-	// 		$('#app_user_form input#check-all').on('ifUnchecked', function () {
-				
-	// 			$("#app_user_form .tableflat").iCheck('uncheck');
-	// 		});
-	// 	}
-	// });
-	// /*------------------------Load User Groups End--------------------------*/
-
-	// /*------------------------Permission Panel Hide Start--------------------------*/
-	// permission_panale_hide = function permission_panale_hide(){
-	// 	$("#permission_list").addClass('hide');
-	// }
-	// $("#user_group_management_tab").click(function(){
-	// 	permission_panale_hide();
-	// });
-	// /*------------------------Permission Panel Hide End--------------------------*/
 	
-
-	// /*------------------------Permission Panel Open Start--------------------------*/
-	// group_permission = function group_permission(id){
-	// 	$("#permission_list").removeClass('hide');
-	// 	$("#permission_tab").trigger('click');
-	// 	$("#group_id").val(id);
-	// 	load_actions_for_group_permission(id);
-		
-	// }
-	// /*------------------------Permission Panel Open End--------------------------*/
+	/*------ Get Group Name For App User Entry Start ------*/
+	$.ajax({
+		url: url+"/app-user/load-app-user-groups",
+		dataType: 'json',
+		success: function(response) {
+		var data = response.data;	
+			if(!jQuery.isEmptyObject(data)){
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input checked type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+					html += '<tr><td colspan="2">';
+					$.each(data, function(i,data){
+						html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+					});
+					html += '</td></tr>';
+				html +='</table>';	
+			}
+			$('#select_app_user_group').html(html);
+			$('#app_user_form').iCheck({
+					checkboxClass: 'icheckbox_flat-green',
+					radioClass: 'iradio_flat-green'
+			});									
+			
+			$('#app_user_form input#check-all').on('ifChecked', function () {
+				
+				$("#app_user_form .tableflat").iCheck('check');
+			});
+			$('#app_user_form input#check-all').on('ifUnchecked', function () {
+				
+				$("#app_user_form .tableflat").iCheck('uncheck');
+			});
+		}
+	});
+	/*------ Get Group Name For App User Entry End ------*/
 	
-
-	// /*------------------------Load Permission Actions--------------------------*/
-	// load_actions_for_group_permission = function load_actions_for_group_permission(id){
-	// 	var group_id_for_selected_action = id;
-	// 	$.ajax({
-	// 	url: url+"/admin/load-actions-for-group-permission/"+group_id_for_selected_action,
-	// 	dataType: 'json',
-	// 	success: function(response) {
-	// 	var data = response.data;	
-			
-			
-	// 		if(!jQuery.isEmptyObject(data)){
-	// 			var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
-	// 				html += '<tr><td colspan="2">';
-	// 				$.each(data, function(i,data){
-	// 					console.log(data);
-	// 					if(data['status']==1){
-	// 						html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox" checked name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
-	// 					}
-	// 					else{
-	// 						html += '<div class="col-md-3"  style="margin-top:5px;" ><input type="checkbox"  name="permission_action[]" class="tableflat"  value="1"/> '+data["activity_name"]+'</div>';
-	// 					}
-	// 				});
-	// 			html += '</td></tr>';
-	// 			html +='</table>';	
-	// 		}
-			
-
-	// 		$('#action_select').html(html);
-	// 		$('#action_select_form').iCheck({
-	// 				checkboxClass: 'icheckbox_flat-green',
-	// 				radioClass: 'iradio_flat-green'
-	// 		});									
-			
-	// 		$('#action_select_form input#check-all').on('ifChecked', function () {
-				
-	// 			$("#action_select_form .tableflat").iCheck('check');
-	// 		});
-	// 		$('#action_select_form input#check-all').on('ifUnchecked', function () {
-				
-	// 			$("#action_select_form .tableflat").iCheck('uncheck');
-	// 		});
-	// 	}
-	// });
-	// }
-	// /*------------------------Load Permission Actions End--------------------------*/
-
-
-	// /*------------------------Entry And Update Permission Actions Start--------------------------*/
-	// $('#save_permission').click(function(event){		
-	// 	event.preventDefault();
-	// 	$.ajaxSetup({
-	// 		headers:{
-	// 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-	// 		}
-	// 	});
-	// 	var formData = new FormData($('#action_select_form')[0]);	
-	// 	$.ajax({
-	// 		url: url+"/admin/permission-action-entry-update",
-	// 		type:'POST',
-	// 		data:formData,
-	// 		async:false,
-	// 		cache:false,
-	// 		contentType:false,
-	// 		processData:false,
-	// 		success: function(data){
-	// 			var response = JSON.parse(data);
-			
-	// 			if(response['result'] == '0'){
-	// 				var errors	= response['errors'];					
-	// 				resultHtml = '<ul>';
-	// 					$.each(errors,function (k,v) {
-	// 					resultHtml += '<li>'+ v + '</li>';
-	// 				});
-	// 				resultHtml += '</ul>';
-	// 				success_or_error_msg('#master_message_div',"danger",resultHtml);
-	// 				clear_form();
-	// 			}
-	// 			else{				
-	// 				success_or_error_msg('#master_message_div',"success","Save Successfully");
-	// 				//$("#admin_user_list_button").trigger('click');
-	// 				//admin_group.ajax.reload();
-	// 				clear_form();
-	// 				permission_panale_hide();
-	// 				$("#user_group_management_tab").trigger('click');
-	// 			}
-	// 			$(window).scrollTop();
-	// 		 }	
-	// 	});
-	// });
-	// /*----------------------Entry And Update Permission Actions Start------------------------*/
-
-
 
 
 
