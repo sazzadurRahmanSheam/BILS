@@ -26,7 +26,7 @@ class AdminController extends Controller
 	public function index()
     {
         $data['page_title'] = $this->page_title;
-		$data['module_name']= "User";
+		$data['module_name']= "";
         return view('admin.dashbord', $data);
     }
 	
@@ -37,11 +37,10 @@ class AdminController extends Controller
 	}
 	
 	public function ajaxAdminList(){
-		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')->orderBy('created_at','desc')->get();		
-	//	dd($adminUser);
+		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')->orderBy('created_at','desc')->get();
 		$return_arr = array();
 		foreach($adminUser as $user){			
-			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
+			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
 			$user['actions']="<button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>"
 							." <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>"
 							." <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
@@ -53,10 +52,6 @@ class AdminController extends Controller
 	// emp_name nid_no contact_no email address password is_active remarks emp_image_upload
 	
 	public function ajaxAdminEntry(Request $request){
-
-		
-		
-		
 		$rule = [
             'emp_name' => 'Required|max:220',
             'nid_no' => 'Required|max:20',
@@ -75,14 +70,14 @@ class AdminController extends Controller
 			//insert
 			if ($request->id == ''){
 				#EmailCheck
-            $email_verification = User::where('email',$request->email)->first();
-            if(isset($email_verification->id)){
-				$return['result'] = "0";
-				$return['errors'][] = $request->email." is already exists";
-				return json_encode($return);
+	            $email_verification = User::where('email',$request->email)->first();
+	            if(isset($email_verification->id)){
+					$return['result'] = "0";
+					$return['errors'][] = $request->email." is already exists";
+					return json_encode($return);
+				}
 			}
-			}
-			//update
+			#update
 			else{
 				 $email_verification = User::where([['email',$request->email],['id', '!=', $request->id]])->first();
            		if(isset($email_verification->id)){
@@ -94,7 +89,9 @@ class AdminController extends Controller
 			
 			try{
 				DB::beginTransaction();
-								$password = ($request->password =="")?md5('1234'):md5($request->password);
+				$is_active = ($request->is_active=="")?"2":"1";
+				//dd ($is_active);
+				$password = ($request->password =="")?md5('1234'):md5($request->password);
 				$column_value = [
 					'name'=>$request->emp_name,
 					'nid_no'=>$request->nid_no,
@@ -102,7 +99,7 @@ class AdminController extends Controller
 					'email'=>$request->email,
 					'address'=>$request->address,
 					'password'=>$password,
-					'status'=>$request->is_active,
+					'status'=>$is_active,
 					'remarks'=>$request->remarks
 					//'user_profile_image'=>$image_name,	
 				];
@@ -127,14 +124,19 @@ class AdminController extends Controller
 					$data = User::find($request->id);
 					$data->update($column_value);
 					$group = $request->input('group');
-					$status = 1;
+					//first don't permission then permission
+					$do_not_permit = DB::table('user_group_members')
+														->where('emp_id',$request->id)
+														->update(['status'=>'0']);
 					if ($group!="") {
 						foreach ($group as $group ) {
-							$data_for_group_entry = new User_group_member();
-							$data_for_group_entry->group_id=$group;
-							$data_for_group_entry->emp_id=$request->id;
-							$data_for_group_entry->status=$status;
-							$data_for_group_entry->save();
+							if (isset($group)) {
+								$status = '1';
+								$group_member_details = DB::table('user_group_members')
+														->where('emp_id',$request->id)
+														->where('group_id',$group)
+														->update(['status'=>$status]);
+							}
 						}
 					}
 				}
@@ -167,9 +169,26 @@ class AdminController extends Controller
 	}
 
 
+/*public function load_user_groups(){
+		$user_groups = User_group::Select('id','group_name')
+			->where('status','1')
+			->where('type','1')
+			->get();
+		return json_encode(array('data'=>$user_groups));
+    }*/
+
+
+
 	public function adminUserEdit($id){
-		$data = User::find($id);
-		return json_encode($data);
+		$emp_id = $id;
+		$data = User::find($emp_id);
+		$user_group_member_details = User_group_member::Select('emp_id','status')
+										->where('emp_id',$emp_id)
+										->get();
+		return json_encode(array(
+			"data"=>$data,
+			"user_group_member_details"=>$user_group_member_details
+		));
 	}
 
 
@@ -179,12 +198,11 @@ class AdminController extends Controller
 		$data['module_name']= "Settings";
         return view('admin.admin_groups', $data);
 	}
-
+	/*Entry Admin User Group And App User Group*/
 	public function admin_groups_entry_or_update(Request $request){ 
 
 		$rule = [
             'group_name' => 'Required|max:50',
-            'type' => 'Required',
         ];
 
         $validation = Validator::make($request->all(), $rule);
@@ -271,8 +289,9 @@ class AdminController extends Controller
 	 public function load_user_groups(){
 		$user_groups = User_group::Select('id','group_name')
 			->where('status','1')
+			->where('type','1')
 			->get();
-		echo json_encode(array('data'=>$user_groups));
+		return json_encode(array('data'=>$user_groups));
     }
 
     public function load_actions_for_group_permission($id){

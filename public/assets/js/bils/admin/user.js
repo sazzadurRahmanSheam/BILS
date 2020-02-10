@@ -1,7 +1,5 @@
 // All the user related js functions will be here
 $(document).ready(function () {	
-	// load admin type user datatable @ajax
-	//adminDataTable();
 	
 	
 	// for get site url
@@ -65,10 +63,6 @@ $(document).ready(function () {
 			success_or_error_msg('#form_submit_error','danger',"Select Email","#email");			
 		}	
 		else{
-		//	$('#save_emp_info').attr('disabled','disabled');
-			
-			//alert(url);return;
-			
 			$.ajax({
 				url: url+"/admin/admin-user-entry",
 				type:'POST',
@@ -108,11 +102,6 @@ $(document).ready(function () {
 		clear_form();
 	});	
 
-
-
-
-
-	
 	
 		
 		
@@ -124,22 +113,25 @@ $(document).ready(function () {
 			cache: false,
 			success: function(response){
 				var data = JSON.parse(response);
+				var emp_data = data['data'];
+				var user_group_member_details = data['user_group_member_details'];
 				$("#admin_user_add_button").trigger('click');
 				$("#admin_user_add_button").html('Update Admin User');
 				$("#save_admin_info").html('Update');
-				$("#emp_name").val(data['name']);
-				$("#nid_no").val(data['nid_no']);
-				$("#id").val(data['id']);
-				// $("#designation_name").val(data['']);
-				// $("#department_name").val(data['']);
-				$("#contact_no").val(data['contact_no']);
-				$("#email").val(data['email']);
-				$("#address").val(data['address']);
-				//$("#password").hide();
-				$("#remarks").val(data['remarks']);
-				// $("#").val(data['']);
-				// $("#").val(data['']);
-				// $("#").val(data['']);
+				$("#emp_name").val(emp_data['name']);
+				$("#nid_no").val(emp_data['nid_no']);
+				$("#id").val(emp_data['id']);
+				$("#contact_no").val(emp_data['contact_no']);
+				$("#email").val(emp_data['email']);
+				$("#address").val(emp_data['address']);
+				$("#remarks").val(emp_data['remarks']);
+				(emp_data['status']==2)?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
+				//!jQuery.isEmptyObject(data)
+				//working
+				$.each(user_group_member_details,function (k,v) {
+							console.log(v['status']);
+						});
+
 			}
 		});
 	}
@@ -170,7 +162,7 @@ $(document).ready(function () {
 				admin_info+="<h4>"+status+"</h4>";
 				
 				$("#modal_body").html(admin_info);
-				console.log(data);
+				//console.log(data);
 			}
 		});
 	}
@@ -209,7 +201,7 @@ $(document).ready(function () {
 	}
 
 
-	//Admin User Group Entry And update
+	//Admin User & App User Group (Entry And update)
 	$('#save_group').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
@@ -239,7 +231,7 @@ $(document).ready(function () {
 					if(response['result'] == '0'){
 						var errors	= response['errors'];					
 						resultHtml = '<ul>';
-							$.each(errors,function (k,v) {
+						$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
 						});
 						resultHtml += '</ul>';
@@ -252,6 +244,8 @@ $(document).ready(function () {
 						
 						admin_group.ajax.reload();
 						clear_form();
+						$("#cancle_admin_user_group_button").addClass('hidden');
+						$(".save").html('Save');
 
 					}
 					$(window).scrollTop();
@@ -261,7 +255,7 @@ $(document).ready(function () {
 	})
 
 
-	//Admin Group list
+	//Admin User Group list
 	var admin_group = $('#admin_group').DataTable({
 		destroy: true,
 		"processing": true,
@@ -285,21 +279,33 @@ $(document).ready(function () {
 			cache: false,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#save_group").html('Update');
-				$("#clear_button").hide();
+				$(".save").html('Update');
+				$("#cancle_admin_user_group_button").removeClass('hidden');
 				$("#edit_id").val(data['id']);
 				$("#group_name").val(data['group_name']);
-				$("#type").val(data['type']).change();
+				// $("#type").val(data['type']).change();
 				if(data['status']=='1'){
-					$("#is_active").icheck('checked');
+					$("#is_active").iCheck('check');
 				}
-				// else{
-				// 	$("#is_active").prop('checked', true);
-				// }
-
+				else{
+					$("#is_active").iCheck('uncheck');
+				}
+				cancle_admin_user_group_update();
 			}
 		});
 	}
+
+	//cancle (Admin & App user) group update 
+	cancle_admin_user_group_update = function cancle_admin_user_group_update(){
+		$("#cancle_admin_user_group_button").click(function(){
+			$("#cancle_admin_user_group_button").addClass('hidden');
+			$(".save").html('Save');
+			clear_form();
+		});
+	}
+
+
+
 
 
 	//Delete Admin-user	
@@ -337,6 +343,7 @@ $(document).ready(function () {
 	
 
 /*------------------------Load User Groups--------------------------*/
+		
 	$.ajax({
 		url: url+"/admin/load-user-groups",
 		dataType: 'json',
@@ -347,7 +354,7 @@ $(document).ready(function () {
 				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
 					});
 					html += '</td></tr>';
 				html +='</table>';	
