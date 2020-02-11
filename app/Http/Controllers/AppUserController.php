@@ -23,6 +23,7 @@ class AppUserController extends Controller
     public function index(){
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "User";
+		$data['sub_module']= "App Users";
         return view('app_user.index', $data);
     }
 
@@ -204,6 +205,7 @@ class AppUserController extends Controller
     public function app_user_management(){
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
+		$data['sub_module']= "App User Groups";
         return view('app_user.app_user_groups', $data);
     }
     public function load_app_user_groups(){

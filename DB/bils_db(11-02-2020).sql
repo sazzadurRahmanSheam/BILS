@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `app_users` (
 -- Dumping data for table bils_db.app_users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
-	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 0, 2, '2020-02-10 09:12:29', '2020-02-10 10:09:25');
+	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-02-11 12:47:09');
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.app_user_group_members
@@ -57,6 +57,71 @@ INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`,
 	(1, 5, 30, 1, '2020-02-10 09:12:29', '2020-02-10 09:12:29'),
 	(2, 5, 27, 1, '2020-02-10 09:48:22', '2020-02-10 09:48:22');
 /*!40000 ALTER TABLE `app_user_group_members` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.course_categories
+CREATE TABLE IF NOT EXISTS `course_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(30) DEFAULT current_timestamp(),
+  `updated_at` varchar(30) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.course_categories: ~1 rows (approximately)
+/*!40000 ALTER TABLE `course_categories` DISABLE KEYS */;
+INSERT INTO `course_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 'Math', 'Basic Math Will Here', 1, '2020-02-11 06:19:33', '2020-02-11 07:10:45');
+/*!40000 ALTER TABLE `course_categories` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.course_masters
+CREATE TABLE IF NOT EXISTS `course_masters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_title` varchar(100) NOT NULL,
+  `duration` int(11) NOT NULL,
+  `appx_start_time` varchar(50) NOT NULL,
+  `appx_end_time` varchar(50) NOT NULL,
+  `act_start_time` varchar(50) NOT NULL,
+  `act_end_time` varchar(50) NOT NULL,
+  `course_type` tinyint(1) NOT NULL COMMENT 'from course categories table',
+  `course_teacher` int(11) NOT NULL COMMENT 'form teacher table',
+  `course_responsible_person` varchar(15) NOT NULL DEFAULT 'admin',
+  `details` text DEFAULT NULL,
+  `course_status` tinyint(1) DEFAULT NULL COMMENT '1: Initiate, 2: Valid, 3: Rejected, 4: Started, 5: Completed',
+  `payment_fee` double NOT NULL,
+  `payment_method` tinyint(1) NOT NULL COMMENT 'from paymet_methods table',
+  `discount_message` text NOT NULL,
+  `Column 16` text NOT NULL,
+  `attachment` varchar(50) NOT NULL,
+  `pub_status` tinyint(1) NOT NULL COMMENT '0: Not-published, 1: Published',
+  `created_by` varchar(20) NOT NULL,
+  `updated_by` varchar(20) NOT NULL,
+  `created_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.course_masters: ~0 rows (approximately)
+/*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.course_perticipants
+CREATE TABLE IF NOT EXISTS `course_perticipants` (
+  `id` int(11) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `perticipant_id` int(11) NOT NULL,
+  `is_interested` tinyint(1) NOT NULL COMMENT '0: Not-interested, 1: Interested',
+  `is_selected` tinyint(1) NOT NULL COMMENT '0: Not-selected, 1: Selected',
+  `status` tinyint(1) NOT NULL COMMENT '1: Active, 2: Removed',
+  `created_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.course_perticipants: ~0 rows (approximately)
+/*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (
@@ -103,9 +168,9 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `created_at` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT current_timestamp(),
   `updated_at` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_db.menus: ~18 rows (approximately)
+-- Dumping data for table bils_db.menus: ~21 rows (approximately)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`, `serial_no`, `menu_icon_class`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'User', 'Users', '', 0, 1, 'clip-user-plus', 1, '', '2020-02-04 11:46:09'),
@@ -113,7 +178,7 @@ INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`,
 	(4, 'User', 'App Users', 'user/app-user/app-user-management', 1, 3, NULL, 1, '', '2020-02-04 12:28:13'),
 	(6, 'Surveys', 'Surveys', 'survey/management', 0, 3, 'clip-note', 1, '', '2020-02-04 12:28:13'),
 	(7, 'Courses', 'Courses', '', 0, 2, 'clip-book', 1, '', '2020-02-04 12:28:13'),
-	(8, 'Courses', 'Open Courses', 'cources/open-course', 7, 1, NULL, 1, '', '2020-02-04 12:28:13'),
+	(8, 'Courses', 'Open Courses', 'courses/open-course', 7, 1, NULL, 1, '', '2020-02-04 12:28:13'),
 	(10, 'Cpanel', 'Control Panel', '', 0, NULL, 'clip-settings', 1, '', '2020-02-04 12:28:13'),
 	(11, 'Cpanel', 'General Setting', 'cp/general/general-setting', 10, NULL, '', 1, '', '2020-02-04 12:28:13'),
 	(13, 'Cpanel', 'Manage Module', 'cp/module/manage-module', 10, NULL, NULL, 1, '', '2020-02-04 11:28:38'),
@@ -125,8 +190,32 @@ INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`,
 	(30, 'Messages', 'All Messages', 'messages/all-messages-management', 29, NULL, NULL, 1, '2020-02-07 13:38:13', '2020-02-07 13:38:13'),
 	(31, 'Messages', 'Group Messages', 'messages/group-messages-management', 29, NULL, NULL, 1, '2020-02-07 13:39:00', '2020-02-07 13:39:00'),
 	(32, 'Settings', 'Message Groups', 'settings/messages/all-messages-management', 26, NULL, NULL, 1, '2020-02-07 14:22:46', '2020-02-07 14:22:46'),
-	(33, 'Settings', 'Publication Category', 'settings/publication/publication-category', 26, NULL, NULL, 1, '2020-02-10 10:25:48', '2020-02-10 10:25:48');
+	(33, 'Settings', 'Publication Category', 'settings/publication/publication-category', 26, NULL, NULL, 1, '2020-02-10 10:25:48', '2020-02-10 10:25:48'),
+	(34, 'Settings', 'Course Category', 'settings/courses/manage-courses-category', 26, NULL, NULL, 1, '2020-02-11 05:47:48', '2020-02-11 05:47:48'),
+	(35, 'Settings', 'Notice Category', 'settings/notice/manage-notice-category', 26, NULL, NULL, 1, '2020-02-11 09:53:05', '2020-02-11 09:53:05'),
+	(36, 'Settings', 'Survey Category', 'settings/survey/manage-survey-category', 26, NULL, NULL, 1, '2020-02-11 13:08:18', '2020-02-11 13:08:18');
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.message_masters
+CREATE TABLE IF NOT EXISTS `message_masters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `admin_id` int(11) NOT NULL,
+  `admin_message` text NOT NULL,
+  `app_user_id` int(11) NOT NULL,
+  `app_user_message` text NOT NULL,
+  `is_seen` tinyint(1) NOT NULL COMMENT '0: Not-seen, 1: Seen',
+  `message_category` int(11) NOT NULL,
+  `message_date_time` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `attachment` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '1: Active, 2: Deleted',
+  `created_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.message_masters: ~0 rows (approximately)
+/*!40000 ALTER TABLE `message_masters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -145,6 +234,60 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(4, '2020_01_24_063021_create_jobs_table', 1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
+-- Dumping structure for table bils_db.notices
+CREATE TABLE IF NOT EXISTS `notices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `details` text NOT NULL,
+  `date` date NOT NULL,
+  `expire_date` date NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_by` varchar(20) NOT NULL,
+  `updated_by` varchar(20) NOT NULL,
+  `created_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.notices: ~0 rows (approximately)
+/*!40000 ALTER TABLE `notices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notices` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.notice_categories
+CREATE TABLE IF NOT EXISTS `notice_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(30) DEFAULT current_timestamp(),
+  `updated_at` varchar(30) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.notice_categories: ~2 rows (approximately)
+/*!40000 ALTER TABLE `notice_categories` DISABLE KEYS */;
+INSERT INTO `notice_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 'Notice Category', 'DetailS', 1, '2020-02-11 12:24:04', '2020-02-11 12:42:34'),
+	(2, 'Notice Category1', 'notice details', 0, '2020-02-11 12:40:21', '2020-02-11 12:50:57');
+/*!40000 ALTER TABLE `notice_categories` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.notifications
+CREATE TABLE IF NOT EXISTS `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `from_id` int(11) NOT NULL,
+  `to_id` int(11) NOT NULL,
+  `date_time` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `message` text NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `created_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.notifications: ~0 rows (approximately)
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+
 -- Dumping structure for table bils_db.password_resets
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -157,6 +300,26 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
+-- Dumping structure for table bils_db.publications
+CREATE TABLE IF NOT EXISTS `publications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `publication_title` varchar(150) NOT NULL,
+  `details` text NOT NULL,
+  `publication_type` tinyint(1) NOT NULL COMMENT 'From publication_categories table',
+  `authors` varchar(50) NOT NULL,
+  `attachment` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_by` varchar(20) NOT NULL,
+  `updated_by` varchar(20) NOT NULL,
+  `created_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(20) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.publications: ~0 rows (approximately)
+/*!40000 ALTER TABLE `publications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `publications` ENABLE KEYS */;
+
 -- Dumping structure for table bils_db.publication_categories
 CREATE TABLE IF NOT EXISTS `publication_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -166,12 +329,13 @@ CREATE TABLE IF NOT EXISTS `publication_categories` (
   `created_at` varchar(30) DEFAULT current_timestamp(),
   `updated_at` varchar(30) DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_db.publication_categories: ~0 rows (approximately)
+-- Dumping data for table bils_db.publication_categories: ~3 rows (approximately)
 /*!40000 ALTER TABLE `publication_categories` DISABLE KEYS */;
 INSERT INTO `publication_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 'Article', 'some article type will goes here', 1, '2020-02-10 11:38:13', '2020-02-10 11:38:13');
+	(1, 'Article', 'some article type will goes here', 1, '2020-02-10 11:38:13', '2020-02-10 11:38:13'),
+	(2, 'test', 'some article type will goes here', 0, '2020-02-10 12:17:31', '2020-02-10 12:17:31');
 /*!40000 ALTER TABLE `publication_categories` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.settings
@@ -196,6 +360,107 @@ CREATE TABLE IF NOT EXISTS `settings` (
 INSERT INTO `settings` (`id`, `company_name`, `short_name`, `site_name`, `admin_email`, `admin_mobile`, `site_url`, `admin_url`, `logo`, `address`, `created_at`, `updated_at`) VALUES
 	(1, 'Bangladesh Institute of Labour Studies', 'BILS', 'BILS APPLICATION', 'admin@bils.com', '01980340482', NULL, '/admin', NULL, 'Dhaka', NULL, '2020-02-03 17:14:58');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_categories
+CREATE TABLE IF NOT EXISTS `survey_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(30) DEFAULT current_timestamp(),
+  `updated_at` varchar(30) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_categories: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_categories` DISABLE KEYS */;
+INSERT INTO `survey_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 'Survey Category 1', NULL, 1, '2020-02-11 14:00:45', '2020-02-11 14:00:45'),
+	(3, 'Survey Category 3', 'asda', 0, '2020-02-11 14:04:45', '2020-02-11 14:06:11');
+/*!40000 ALTER TABLE `survey_categories` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_groups
+CREATE TABLE IF NOT EXISTS `survey_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_id` int(11) DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL COMMENT 'From app_user_groups',
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(50) DEFAULT current_timestamp(),
+  `updated_at` varchar(50) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_groups: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_groups` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_masters
+CREATE TABLE IF NOT EXISTS `survey_masters` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_name` varchar(200) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `survey_category` int(11) NOT NULL COMMENT 'From survey_categories ',
+  `survey_type` int(11) NOT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_by` int(11) NOT NULL COMMENT 'Admin User ID',
+  `updated_by` int(11) NOT NULL COMMENT 'Admin User ID',
+  `created_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `updated_at` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_masters: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_masters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_masters` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_participants
+CREATE TABLE IF NOT EXISTS `survey_participants` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app_user_id` int(11) NOT NULL,
+  `survey_id` int(11) NOT NULL,
+  `answer_date` date NOT NULL,
+  `notification_date` date NOT NULL,
+  `is_answered` tinyint(1) DEFAULT NULL COMMENT '0: Not-answer, 1: Answer',
+  `survey_completed` tinyint(1) DEFAULT NULL COMMENT '0: Not-completed, 1: Completed',
+  `status` tinyint(1) DEFAULT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(50) DEFAULT current_timestamp(),
+  `updated_at` varchar(50) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_participants: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_participants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_participants` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_participant_answers
+CREATE TABLE IF NOT EXISTS `survey_participant_answers` (
+  `survey_participan_id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_question_id` int(11) NOT NULL,
+  `answer` text NOT NULL,
+  `created_at` varchar(50) DEFAULT current_timestamp(),
+  `updated_at` varchar(50) DEFAULT current_timestamp(),
+  PRIMARY KEY (`survey_participan_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_participant_answers: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_participant_answers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_participant_answers` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.survey_questions
+CREATE TABLE IF NOT EXISTS `survey_questions` (
+  `survey_question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_details` text NOT NULL,
+  `question_type` int(11) NOT NULL COMMENT 'From question_categories ',
+  `created_at` varchar(50) DEFAULT current_timestamp(),
+  `updated_at` varchar(50) DEFAULT current_timestamp(),
+  PRIMARY KEY (`survey_question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.survey_questions: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_questions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_questions` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -222,7 +487,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table bils_db.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
-	(1, 'Momit', '123456', '017', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, NULL, '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-02-10 05:45:08'),
+	(1, 'Momit', '123456', '017', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, NULL, '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-02-11 09:48:09'),
 	(13, 'Momit Hasan', '78967899', '53463435', 'momit@technolife.ee', NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2020-02-02 08:44:30', '2020-02-08 10:03:50'),
 	(31, 'SiaM', '123', '01747083028', 'siam@gmail.com', NULL, 1, NULL, NULL, NULL, NULL, 2, NULL, NULL, '2020-02-09 13:25:51', '2020-02-10 07:15:45');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

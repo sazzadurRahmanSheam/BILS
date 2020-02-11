@@ -95,18 +95,42 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Surveys Start-------------*/
 	Route::get('survey/management',array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index'));
+	Route::get('settings/survey/manage-survey-category',array('as'=>'Surveys Category Management' , 'uses' =>'SettingController@survey_category_management'));
+	Route::post('/settings/survey/survey-category-entry',array('as'=>'Surveys Category Entry' , 'uses' =>'SettingController@survey_category_entry_update'));
+	Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List' , 'uses' =>'SettingController@survey_categories_get'));
+	Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surveys Category' , 'uses' =>'SettingController@survey_category_edit'));
+	Route::get('/settings/survey/survey-categories-delete/{id}',array('as'=>'Delete Surveys Category' , 'uses' =>'SettingController@survey_category_delete'));
 	/*-------------- Surveys End-------------*/
 
 
 	/*-------------- Courses Start-------------*/
-	Route::get('cources/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	Route::get('courses/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	Route::get('settings/courses/manage-courses-category',array('as'=>'Courses Category Management' , 'uses' =>'SettingController@courses_category_management'));
+	Route::post('/settings/courses/course-category-entry',array('as'=>'Courses Category Entry' , 'uses' =>'SettingController@course_category_entry_update'));
+	Route::get('/settings/courses/course-categories-list',array('as'=>'Get Courses Category List' , 'uses' =>'SettingController@course_categories_get'));
+	Route::get('/settings/courses/course-categories-edit/{id}',array('as'=>'Get Courses Category Edit' , 'uses' =>'SettingController@course_category_edit'));
+	Route::get('/setting/course/course-category-delete/{id}',array('as'=>'Get Courses Category Delete' , 'uses' =>'SettingController@course_category_delete'));
 	/*-------------- Courses End-------------*/
 
 
 	/*-------------- Publication Start-------------*/
 	Route::get('settings/publication/publication-category',array('as'=>'Publication Category Management' , 'uses' =>'SettingController@publication_category_management'));
-	Route::post('/publication/publication-category-entry',array('as'=>'Publication Category Entry' , 'uses' =>'SettingController@publication_category_entry_update'));
+	Route::post('/settings/publication/publication-category-entry',array('as'=>'Publication Category Entry' , 'uses' =>'SettingController@publication_category_entry_update'));
+	Route::get('/setting/publication/publication-categories-list',array('as'=>'Get Publication Category' , 'uses' =>'SettingController@publication_categories_get'));
+	Route::get('/setting/publication/publication-categories-edit/{id}',array('as'=>'Edit Publication Category' , 'uses' =>'SettingController@publication_category_edit'));
+	Route::get('/setting/publication/publication-category-delete/{id}',array('as'=>'Delete Publication Category' , 'uses' =>'SettingController@publication_category_delete'));
 	/*-------------- Publication End-------------*/
+
+
+
+	/*-------------- Notice Start-------------*/
+	Route::get('settings/notice/manage-notice-category',array('as'=>'Notice Category Management' , 'uses' =>'SettingController@notice_category_management'));
+	Route::post('/settings/notice/notice-category-entry',array('as'=>'Notice Category Entry' , 'uses' =>'SettingController@notice_category_entry_update'));
+	Route::get('/settings/notice/notice-categories-list',array('as'=>'Get Notice Category List' , 'uses' =>'SettingController@notice_categories_get'));
+	Route::get('/settings/notice/notice-categories-edit/{id}',array('as'=>'Edit Notice Category' , 'uses' =>'SettingController@notice_category_edit'));
+	Route::get('/setting/notice/notice-category-delete/{id}',array('as'=>'Delete Notice Category' , 'uses' =>'SettingController@notice_category_delete'));
+
+	/*-------------- Notice End-------------*/
 
 
 	

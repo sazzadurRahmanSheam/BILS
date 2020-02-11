@@ -28,26 +28,34 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   `updated_at` varchar(50) DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_db.app_users: ~4 rows (approximately)
+-- Dumping data for table bils_db.app_users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
-	(1, 'SazzaduR', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 0, 2, '2020-02-08 08:35:09', '2020-02-08 10:09:51'),
-	(2, 'sazzadur Rahman', '22', '2312', 'sazzadur1@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-08 08:36:27', '2020-02-08 08:36:27'),
-	(3, 'TEST', '123', '123', 'test@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-08 09:22:07', '2020-02-08 10:11:36');
+	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 0, 2, '2020-02-10 09:12:29', '2020-02-10 10:09:25');
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.app_user_group_members
 CREATE TABLE IF NOT EXISTS `app_user_group_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `app_user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0 : no access, 1 : access',
   `created_at` varchar(50) DEFAULT current_timestamp(),
   `updated_at` varchar(50) DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Index 2` (`group_id`,`app_user_id`),
+  KEY `FK_app_user_group_members_app_users` (`app_user_id`),
+  CONSTRAINT `FK_app_user_group_members_app_users` FOREIGN KEY (`app_user_id`) REFERENCES `app_users` (`id`),
+  CONSTRAINT `FK_app_user_group_members_user_groups` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_db.app_user_group_members: ~0 rows (approximately)
+-- Dumping data for table bils_db.app_user_group_members: ~2 rows (approximately)
 /*!40000 ALTER TABLE `app_user_group_members` DISABLE KEYS */;
+INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 5, 30, 1, '2020-02-10 09:12:29', '2020-02-10 09:12:29'),
+	(2, 5, 27, 1, '2020-02-10 09:48:22', '2020-02-10 09:48:22');
 /*!40000 ALTER TABLE `app_user_group_members` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.failed_jobs
@@ -95,28 +103,29 @@ CREATE TABLE IF NOT EXISTS `menus` (
   `created_at` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT current_timestamp(),
   `updated_at` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_db.menus: ~17 rows (approximately)
+-- Dumping data for table bils_db.menus: ~18 rows (approximately)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`, `serial_no`, `menu_icon_class`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'User', 'Users', '', 0, 1, 'clip-user-plus', 1, '', '2020-02-04 11:46:09'),
-	(2, 'User', 'Admin Users', 'admin/admin-user-management', 1, 1, NULL, 1, '', '2020-02-04 12:09:48'),
-	(4, 'User', 'App Users', 'app-user/app-user-management', 1, 3, NULL, 1, '', '2020-02-04 12:28:13'),
+	(2, 'User', 'Admin Users', 'user/admin/admin-user-management', 1, 1, NULL, 1, '', '2020-02-04 12:09:48'),
+	(4, 'User', 'App Users', 'user/app-user/app-user-management', 1, 3, NULL, 1, '', '2020-02-04 12:28:13'),
 	(6, 'Surveys', 'Surveys', 'survey/management', 0, 3, 'clip-note', 1, '', '2020-02-04 12:28:13'),
 	(7, 'Courses', 'Courses', '', 0, 2, 'clip-book', 1, '', '2020-02-04 12:28:13'),
 	(8, 'Courses', 'Open Courses', 'cources/open-course', 7, 1, NULL, 1, '', '2020-02-04 12:28:13'),
 	(10, 'Cpanel', 'Control Panel', '', 0, NULL, 'clip-settings', 1, '', '2020-02-04 12:28:13'),
-	(11, 'Cpanel', 'General Setting', 'general/setting', 10, NULL, '', 1, '', '2020-02-04 12:28:13'),
-	(13, 'Cpanel', 'Manage Module', 'module/manage-module', 10, NULL, NULL, 1, '', '2020-02-04 11:28:38'),
-	(21, 'Cpanel', 'Web Actions', 'web/action-management', 10, NULL, NULL, 1, '2020-02-04 12:20:29', '2020-02-04 12:21:40'),
+	(11, 'Cpanel', 'General Setting', 'cp/general/general-setting', 10, NULL, '', 1, '', '2020-02-04 12:28:13'),
+	(13, 'Cpanel', 'Manage Module', 'cp/module/manage-module', 10, NULL, NULL, 1, '', '2020-02-04 11:28:38'),
+	(21, 'Cpanel', 'Web Actions', 'cp/web-action/web-action-management', 10, NULL, NULL, 1, '2020-02-04 12:20:29', '2020-02-04 12:21:40'),
 	(26, 'Settings', 'Settings', '', 0, NULL, 'clip-wrench-2', 1, '2020-02-05 10:05:14', '2020-02-05 10:05:14'),
-	(27, 'Settings', 'Admin User Groups', 'admin/admin-group-management', 26, NULL, NULL, 1, '2020-02-05 10:06:31', '2020-02-05 10:07:23'),
-	(28, 'Settings', 'App User Groups', 'app-user/app-user-group-management', 26, NULL, NULL, 1, '2020-02-07 13:30:00', '2020-02-07 13:30:00'),
+	(27, 'Settings', 'Admin User Groups', 'settings/admin/admin-group-management', 26, NULL, NULL, 1, '2020-02-05 10:06:31', '2020-02-05 10:07:23'),
+	(28, 'Settings', 'App User Groups', 'settings/app-user/app-user-group-management', 26, NULL, NULL, 1, '2020-02-07 13:30:00', '2020-02-07 13:30:00'),
 	(29, 'Messages', 'Messages', '', 0, NULL, 'clip-bubbles-3', 1, '2020-02-07 13:33:57', '2020-02-07 13:36:38'),
 	(30, 'Messages', 'All Messages', 'messages/all-messages-management', 29, NULL, NULL, 1, '2020-02-07 13:38:13', '2020-02-07 13:38:13'),
-	(31, 'Messages', 'Group Messages', 'messages/all-messages-management', 29, NULL, NULL, 1, '2020-02-07 13:39:00', '2020-02-07 13:39:00'),
-	(32, 'Settings', 'Message Groups', 'messages/all-messages-management', 26, NULL, NULL, 1, '2020-02-07 14:22:46', '2020-02-07 14:22:46');
+	(31, 'Messages', 'Group Messages', 'messages/group-messages-management', 29, NULL, NULL, 1, '2020-02-07 13:39:00', '2020-02-07 13:39:00'),
+	(32, 'Settings', 'Message Groups', 'settings/messages/all-messages-management', 26, NULL, NULL, 1, '2020-02-07 14:22:46', '2020-02-07 14:22:46'),
+	(33, 'Settings', 'Publication Category', 'settings/publication/publication-category', 26, NULL, NULL, 1, '2020-02-10 10:25:48', '2020-02-10 10:25:48');
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.migrations
@@ -147,6 +156,24 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 -- Dumping data for table bils_db.password_resets: ~0 rows (approximately)
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+
+-- Dumping structure for table bils_db.publication_categories
+CREATE TABLE IF NOT EXISTS `publication_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0: In-active, 1: Active',
+  `created_at` varchar(30) DEFAULT current_timestamp(),
+  `updated_at` varchar(30) DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_db.publication_categories: ~1 rows (approximately)
+/*!40000 ALTER TABLE `publication_categories` DISABLE KEYS */;
+INSERT INTO `publication_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 'Article', 'some article type will goes here', 1, '2020-02-10 11:38:13', '2020-02-10 11:38:13'),
+	(2, 'test', 'some article type will goes here', 0, '2020-02-10 12:17:31', '2020-02-10 12:17:31');
+/*!40000 ALTER TABLE `publication_categories` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.settings
 CREATE TABLE IF NOT EXISTS `settings` (
@@ -198,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
 	(1, 'Momit', '123456', '017', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, NULL, '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-02-10 05:45:08'),
 	(13, 'Momit Hasan', '78967899', '53463435', 'momit@technolife.ee', NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2020-02-02 08:44:30', '2020-02-08 10:03:50'),
-	(31, 'siam', '123', '123', 'siam@gmail.com', NULL, 1, NULL, NULL, NULL, NULL, 2, NULL, NULL, '2020-02-09 13:25:51', '2020-02-10 05:48:48');
+	(31, 'SiaM', '123', '01747083028', 'siam@gmail.com', NULL, 1, NULL, NULL, NULL, NULL, 2, NULL, NULL, '2020-02-09 13:25:51', '2020-02-10 07:15:45');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_db.user_groups
@@ -217,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `user_groups` (
 INSERT INTO `user_groups` (`id`, `group_name`, `type`, `status`, `created_at`, `updated_at`) VALUES
 	(25, 'Sub Admin', 1, 1, '2020-02-07 10:23:56', '2020-02-08 11:34:48'),
 	(26, 'Admin', 1, 1, '2020-02-08 11:39:02', '2020-02-08 11:39:02'),
-	(27, 'Web View', 2, 0, '2020-02-08 13:02:57', '2020-02-09 12:00:49'),
+	(27, 'Web View', 2, 1, '2020-02-08 13:02:57', '2020-02-09 12:00:49'),
 	(28, 'Sub Admin 1', 1, 0, '2020-02-09 09:57:24', '2020-02-09 09:57:24'),
 	(29, 'Sub Admin 2', 1, 0, '2020-02-09 10:48:54', '2020-02-09 10:51:34'),
 	(30, 'App View', 2, 1, '2020-02-09 11:37:38', '2020-02-09 11:59:25');
@@ -262,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `user_group_permissions` (
   CONSTRAINT `FK_user_group_permission_web_actions` FOREIGN KEY (`action_id`) REFERENCES `web_actions` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_db.user_group_permissions: ~46 rows (approximately)
+-- Dumping data for table bils_db.user_group_permissions: ~48 rows (approximately)
 /*!40000 ALTER TABLE `user_group_permissions` DISABLE KEYS */;
 INSERT INTO `user_group_permissions` (`id`, `group_id`, `action_id`, `status`, `created_at`, `updated_at`) VALUES
 	(8, 25, 1, 1, '2020-02-07 10:23:56', '2020-02-07 10:23:56'),
@@ -329,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `web_actions` (
   CONSTRAINT `FK_web_actions_menus` FOREIGN KEY (`module_id`) REFERENCES `menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_db.web_actions: ~9 rows (approximately)
+-- Dumping data for table bils_db.web_actions: ~8 rows (approximately)
 /*!40000 ALTER TABLE `web_actions` DISABLE KEYS */;
 INSERT INTO `web_actions` (`id`, `activity_name`, `module_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin Users', 1, 1, '', '2020-02-05 14:13:21'),
