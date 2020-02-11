@@ -13,6 +13,7 @@ use App\Web_action;
 use App\User_group;
 use App\User_group_permission;
 use App\Publication_category;
+use App\Course_category;
 
 class SettingController extends Controller
 {
@@ -29,7 +30,6 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "General Setting";
 		$data['setting'] = Setting::first();
-		//return response()->json($data['setting']);
 		return view('setting.general_setting',$data);
 	}
 
@@ -301,8 +301,6 @@ class SettingController extends Controller
        
 	}
 
-	/*." <button onclick='web_action_delete(".$webActionList->id.")' id='delete_" . $webActionList->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>"*/
-
 	//Web Action Edit
 	public function web_action_edit($id){
 		$data = Web_action::Select('id','activity_name','module_id')->where('id',$id)->first();
@@ -388,9 +386,92 @@ class SettingController extends Controller
 		));
 	}
 
-
-
 	/*----- Publication Management End -----*/
+
+	
+	/*----- Course Management Start -----*/
+
+	#Getting Course Category Management Page
+	public function courses_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Course Category";
+		$data['setting'] = Setting::first();
+		return view('courses.course_category',$data);
+	}
+
+	#Course Category Entry & Update
+	public function course_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->course_category_edit_id == '') {
+					$response = Course_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Course_category::find($request->course_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	#Course Categories List
+	public function course_categories_get(){
+		$course_categories_list = Course_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($course_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='course_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Course Categories Edit
+	public function course_category_edit($id){
+		$data = Course_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Course Category Delete
+	public function course_category_delete($id){
+		Course_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+
+	/*----- Course Management End -----*/
 
 
 

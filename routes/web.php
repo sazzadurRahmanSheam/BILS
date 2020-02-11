@@ -100,6 +100,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Courses Start-------------*/
 	Route::get('cources/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	Route::get('settings/courses/manage-courses-categor',array('as'=>'Courses Category Management' , 'uses' =>'SettingController@courses_category_management'));
+	Route::post('/settings/courses/course-category-entry',array('as'=>'Courses Category Entry' , 'uses' =>'SettingController@course_category_entry_update'));
+	Route::get('/settings/courses/course-categories-list',array('as'=>'Get Courses Category List' , 'uses' =>'SettingController@course_categories_get'));
+	Route::get('/settings/courses/course-categories-edit/{id}',array('as'=>'Get Courses Category Edit' , 'uses' =>'SettingController@course_category_edit'));
+	Route::get('/setting/course/course-category-delete/{id}',array('as'=>'Get Courses Category Delete' , 'uses' =>'SettingController@course_category_delete'));
 	/*-------------- Courses End-------------*/
 
 

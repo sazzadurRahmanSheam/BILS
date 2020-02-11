@@ -508,10 +508,164 @@ $(document).ready(function () {
 	/*----- Publication End -----*/
 
 
+
+	/*----- Curse Start -----*/
+
+	//Course Category Entry And Update
+	$("#save_course_category").on('click',function(){
+
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		
+		var formData = new FormData($('#save_course_category_form')[0]);
+
+		if($.trim($('#category_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+		}
+		else{
+			
+			$.ajax({
+				url: url+"/settings/courses/course-category-entry",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+				
+					if(response['result'] == '0'){
+						var errors	= response['errors'];					
+						resultHtml = '<ul>';
+							$.each(errors,function (k,v) {
+							resultHtml += '<li>'+ v + '</li>';
+						});
+						resultHtml += '</ul>';
+						success_or_error_msg('#master_message_div',"danger",resultHtml);
+						clear_form();
+					}
+					else{				
+						if (response['success']=='insert') {
+							success_or_error_msg('#master_message_div',"success","Publication Category Inserted Successful");
+						}else{
+							success_or_error_msg('#master_message_div',"success","Updated Successful");
+						}
+						course_category.ajax.reload();
+						success_function();
+						
+					}
+					$(window).scrollTop();
+				 }	
+			});
+		}
+	});
+
+	//Course Categories data table
+	var course_category = $('#course_category').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/settings/courses/course-categories-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'category_name' },
+			{ mData: 'details'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});
+
+	//Edit
+	course_category_edit = function course_category_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/settings/courses/course-categories-edit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#save_course_category").html('Update');
+				cancle_btn_show();
+				cancle_function();
+				$("#category_name").val(data['category_name']);
+				$("#course_category_edit_id").val(data['id']);
+				$("#details").val(data['details']);
+				(data['status']=="1")?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+			}
+		});
+	}
+
+	//Delete Course Category
+	course_category_delete = function course_category_delete(id){
+		var delete_id = id;
+		swal({
+			title: "Are you sure?",
+			text: "You wants to delete item parmanently!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: url+'/setting/course/course-category-delete/'+delete_id,
+					cache: false,
+					success: function(response){
+						var response = JSON.parse(response);
+						if (response['parentmessage']) {
+							swal(response['parentmessage'], {
+								icon: "warning",
+							});
+						}
+						else{
+							swal(response['deleteMessage'], {
+								icon: "success",
+							});
+							course_category.ajax.reload();
+						}
+					}
+				});
+			} 
+			else {
+				swal("Your Data is safe..!", {
+				icon: "warning",
+				});
+			}
+		});
+	}
+
+	/*----- Curse End -----*/
+
+
+
+
+
+
+
+
+
 	
+	/*----- Comon Function Start -----*/
+	cancle_btn_show = function cancle_btn_show(){
+		$("#cancle_btn").removeClass('hidden');
+	}
+	cancle_function = function cancle_function(){
+		$("#cancle_btn").click(function() {
+			$("#cancle_btn").addClass('hidden');
+			clear_form();
+			success_function();
+		});
+	}
+	success_function = function success_function(){
+		$("#cancle_btn").addClass('hidden');
+		$(".save").html("Save");
+		clear_form();
 
-
-
+	}
+	/*----- Comon Function End -----*/
 
 	
 	
