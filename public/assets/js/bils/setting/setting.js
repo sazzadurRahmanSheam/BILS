@@ -509,7 +509,7 @@ $(document).ready(function () {
 
 
 
-	/*----- Curse Start -----*/
+	/*----- Course Start -----*/
 
 	//Course Category Entry And Update
 	$("#save_course_category").on('click',function(){
@@ -551,7 +551,7 @@ $(document).ready(function () {
 					}
 					else{				
 						if (response['success']=='insert') {
-							success_or_error_msg('#master_message_div',"success","Publication Category Inserted Successful");
+							success_or_error_msg('#master_message_div',"success","Course Category Inserted Successful");
 						}else{
 							success_or_error_msg('#master_message_div',"success","Updated Successful");
 						}
@@ -637,7 +637,269 @@ $(document).ready(function () {
 		});
 	}
 
-	/*----- Curse End -----*/
+	/*----- Course End -----*/
+
+	/*----- Notice Start -----*/
+
+	//notice Category Entry And Update
+	$("#save_notice_category").on('click',function(){
+
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		
+		var formData = new FormData($('#save_notice_category_form')[0]);
+
+		if($.trim($('#category_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+		}
+		else{
+			
+			$.ajax({
+				url: url+"/settings/notice/notice-category-entry",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+				
+					if(response['result'] == '0'){
+						var errors	= response['errors'];					
+						resultHtml = '<ul>';
+							$.each(errors,function (k,v) {
+							resultHtml += '<li>'+ v + '</li>';
+						});
+						resultHtml += '</ul>';
+						success_or_error_msg('#master_message_div',"danger",resultHtml);
+						clear_form();
+					}
+					else{				
+						if (response['success']=='insert') {
+							success_or_error_msg('#master_message_div',"success","Notice Category Inserted Successful");
+						}else{
+							success_or_error_msg('#master_message_div',"success","Updated Successful");
+						}
+						notice_category.ajax.reload();
+						success_function();
+						
+					}
+					$(window).scrollTop();
+				 }	
+			});
+		}
+	});
+
+	//Notice Categories data table
+	var notice_category = $('#notice_category').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/settings/notice/notice-categories-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'category_name' },
+			{ mData: 'details'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});
+
+	//Edit Notice Category
+	notice_category_edit = function notice_category_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/settings/notice/notice-categories-edit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#save_notice_category").html('Update');
+				cancle_btn_show();
+				cancle_function();
+				$("#category_name").val(data['category_name']);
+				$("#notice_category_edit_id").val(data['id']);
+				$("#details").val(data['details']);
+				(data['status']=="1")?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+			}
+		});
+	}
+
+	//Delete Notice Category
+	notice_category_delete = function notice_category_delete(id){
+		var delete_id = id;
+		swal({
+			title: "Are you sure?",
+			text: "You wants to delete item parmanently!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: url+'/setting/notice/notice-category-delete/'+delete_id,
+					cache: false,
+					success: function(response){
+						var response = JSON.parse(response);
+						if (response['parentmessage']) {
+							swal(response['parentmessage'], {
+								icon: "warning",
+							});
+						}
+						else{
+							swal(response['deleteMessage'], {
+								icon: "success",
+							});
+							notice_category.ajax.reload();
+						}
+					}
+				});
+			} 
+			else {
+				swal("Your Data is safe..!", {
+				icon: "warning",
+				});
+			}
+		});
+	}	
+
+	/*----- Notice End -----*/
+
+
+	/*----- Survey Start -----*/
+
+	//Survey Category Entry And Update
+	$("#save_survey_category").on('click',function(){
+
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		
+		var formData = new FormData($('#save_survey_category_form')[0]);
+
+		if($.trim($('#category_name').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+		}
+		else{
+			
+			$.ajax({
+				url: url+"/settings/survey/survey-category-entry",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+				
+					if(response['result'] == '0'){
+						var errors	= response['errors'];					
+						resultHtml = '<ul>';
+							$.each(errors,function (k,v) {
+							resultHtml += '<li>'+ v + '</li>';
+						});
+						resultHtml += '</ul>';
+						success_or_error_msg('#master_message_div',"danger",resultHtml);
+						clear_form();
+					}
+					else{				
+						if (response['success']=='insert') {
+							success_or_error_msg('#master_message_div',"success","Survey Category Inserted Successful");
+						}else{
+							success_or_error_msg('#master_message_div',"success","Updated Successful");
+						}
+						survey_category.ajax.reload();
+						success_function();
+						
+					}
+					$(window).scrollTop();
+				 }	
+			});
+		}
+	});
+
+	//Survey Categories data table
+	var survey_category = $('#survey_category').DataTable({
+		destroy: true,
+		"processing": true,
+		"serverSide": false,
+		"ajax": url+"/settings/survey/survey-categories-list",
+		"aoColumns": [ 
+			{ mData: 'id'},
+			{ mData: 'category_name' },
+			{ mData: 'details'},
+			{ mData: 'status', className: "text-center"},
+			{ mData: 'actions' , className: "text-center"},
+		],
+	});
+
+	//Edit Survey Category
+	survey_category_edit = function survey_category_edit(id){
+		var edit_id = id;
+		$.ajax({
+			url: url+'/settings/survey/survey-categories-edit/'+edit_id,
+			cache: false,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#save_survey_category").html('Update');
+				cancle_btn_show();
+				cancle_function();
+				$("#category_name").val(data['category_name']);
+				$("#survey_category_edit_id").val(data['id']);
+				$("#details").val(data['details']);
+				(data['status']=="1")?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+			}
+		});
+	}
+
+	//Delete Notice Category
+	survey_category_delete = function survey_category_delete(id){
+		var delete_id = id;
+		swal({
+			title: "Are you sure?",
+			text: "You wants to delete item parmanently!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		}).then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url: url+'/settings/survey/survey-categories-delete/'+delete_id,
+					cache: false,
+					success: function(response){
+						var response = JSON.parse(response);
+						if (response['parentmessage']) {
+							swal(response['parentmessage'], {
+								icon: "warning",
+							});
+						}
+						else{
+							swal(response['deleteMessage'], {
+								icon: "success",
+							});
+							survey_category.ajax.reload();
+						}
+					}
+				});
+			} 
+			else {
+				swal("Your Data is safe..!", {
+				icon: "warning",
+				});
+			}
+		});
+	}
+
+
+	/*----- Survey End -----*/
 
 
 

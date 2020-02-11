@@ -14,6 +14,8 @@ use App\User_group;
 use App\User_group_permission;
 use App\Publication_category;
 use App\Course_category;
+use App\Notice_category;
+use App\Survey_category;
 
 class SettingController extends Controller
 {
@@ -472,6 +474,174 @@ class SettingController extends Controller
 
 
 	/*----- Course Management End -----*/
+
+
+	/*----- Notice Management Start -----*/
+
+	#Getting Notice Category Management Page
+	public function notice_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Notice Category";
+		$data['setting'] = Setting::first();
+		return view('notice.notice_category',$data);
+	}
+
+	#Notice Category Entry & Update
+	public function notice_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->notice_category_edit_id == '') {
+					$response = Notice_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Notice_category::find($request->notice_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	#Notice Categories List
+	public function notice_categories_get(){
+		$notice_categories_list = Notice_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($notice_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='notice_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='notice_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Notice Categories Edit
+	public function notice_category_edit($id){
+		$data = Notice_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Notice Category Delete
+	public function notice_category_delete($id){
+		Notice_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	/*----- Notice Management End -----*/
+
+
+
+	/*----- Survey Category Management Start -----*/
+	#Getting Survey Category Management Page
+	public function survey_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Survey Category";
+		$data['setting'] = Setting::first();
+		return view('survey.survey_category',$data);
+	}
+
+	#Survey Category Entry & Update
+	public function survey_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->survey_category_edit_id == '') {
+					$response = Survey_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Survey_category::find($request->survey_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	#Survey Categories List
+	public function survey_categories_get(){
+		$survey_categories_list = Survey_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($survey_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='survey_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='survey_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Survey Categories Edit
+	public function survey_category_edit($id){
+		$data = Survey_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Survey Category Delete
+	public function survey_category_delete($id){
+		Survey_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	/*----- Survey Category Management End -----*/
 
 
 
