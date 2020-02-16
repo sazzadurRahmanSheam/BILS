@@ -26,26 +26,32 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
     Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));	
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
-	Route::get('/admin/admin-user-management',array('as'=>'Admin Users' , 'uses' =>'AdminController@adminUserManagement'));
+	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'uses' =>'AdminController@adminUserManagement'));
 	Route::get('/admin/ajax/admin-list',array('as'=>'Admin User List' , 'uses' =>'AdminController@ajaxAdminList'));
 	Route::post('/admin/admin-user-entry',array('as'=>'Admin User Entry' , 'uses' =>'AdminController@ajaxAdminEntry'));
 
 	Route::get('/admin/delete/{id}',array('as'=>'Admin Delete' , 'uses' =>'AdminController@adminDestroy'));
 	Route::get('/admin/admin-view/{id}',array('as'=>'Admin View' , 'uses' =>'AdminController@adminUserView'));
 	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit' , 'uses' =>'AdminController@adminUserEdit'));
-	Route::get('/general/setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
+	Route::get('cp/general/general-setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
 	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
 	
-	Route::get('/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
-	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));	
-	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));	
-	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));	
+
+	Route::get('cp/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
+
+	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
+	
+	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));
+	
+	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));
+	
+
 	Route::post('/module/module-entry/',array('as'=>'Module Entry' , 'uses' =>'SettingController@moduleEntry'));
 	Route::get('/module/edit/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleEdit'));
 	Route::get('/module/delete/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleDelete'));
 
 	/*--------------Web Action start-------------*/
-	Route::get('/web/action-management',array('as'=>'Web Action Management' , 'uses' =>'SettingController@webActionManagement'));
+	Route::get('cp/web-action/web-action-management',array('as'=>'Web Action Management' , 'uses' =>'SettingController@webActionManagement'));
 	Route::get('/web-action/get-module-name',array('as'=>'Web Action Management' , 'uses' =>'SettingController@getModuleName'));
 	Route::post('/web-action/web-action-entry',array('as'=>'Web Action Entry' , 'uses' =>'SettingController@webActionEntry'));
 	Route::get('/web-action/action-lists',array('as'=>'Web Action List' , 'uses' =>'SettingController@webActionList'));
@@ -53,7 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
 	/*--------------Web Action End-------------*/
 	
 	/*--------------Admin User Groups start-------------*/
-	Route::get('admin/admin-group-management',array('as'=>'Admin User Groups Management' , 'uses' =>'AdminController@admin_user_groups'));
+	Route::get('settings/admin/admin-group-management',array('as'=>'Admin User Groups Management' , 'uses' =>'AdminController@admin_user_groups'));
 	##Updating
 	Route::post('/admin/admin-group-entry',array('as'=>'Admin Groups Entry' , 'uses' =>'AdminController@admin_groups_entry_or_update'));
 	Route::get('/admin/admin-group-list',array('as'=>'Admin Groups List' , 'uses' =>'AdminController@admin_groups_list'));
@@ -62,17 +68,19 @@ Route::group(['middleware' => ['auth']], function () {
 	/*--------------Groups End-------------*/
 
 	/*--------------App User Start-------------*/
-	Route::get('app-user/app-user-management',array('as'=>'App User Management' , 'uses' =>'AppUserController@index'));
+	Route::get('user/app-user/app-user-management',array('as'=>'App User Management' , 'uses' =>'AppUserController@index'));
 	Route::post('/app-user/app-user-entry',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_entry_update'));
 	Route::get('/app-user/app-user-list',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_list'));
 	Route::get('/app-user/app-user-delete/{id}',array('as'=>'App User Delete' , 'uses' =>'AppUserController@app_user_delete'));
 	Route::get('/app-user/app-user-editedit/{id}',array('as'=>'App User Edit' , 'uses' =>'AppUserController@app_user_edit'));
 	Route::get('/app-user/app-user-view/{id}',array('as'=>'App User View' , 'uses' =>'AppUserController@app_user_view'));
-	Route::get('app-user/app-user-group-management',array('as'=>'App User Group Management' , 'uses' =>'AppUserController@app_user_management'));
+	Route::get('settings/app-user/app-user-group-management',array('as'=>'App User Group Management' , 'uses' =>'AppUserController@app_user_management'));
+	Route::get('/app-user/load-app-user-groups',array('as'=>'App User Group List' , 'uses' =>'AppUserController@app_user_group_list_for_entry'));
 	/*--------------App User End-------------*/
 
 	/*--------------User Group Start-------------*/
 	Route::get('/admin/load-user-groups',array('as'=>'Load User Groups' , 'uses' =>'AdminController@load_user_groups'));
+	#data Table
 	Route::get('/app-user/app-user-group-list',array('as'=>'Load User Groups' , 'uses' =>'AppUserController@load_app_user_groups'));
 	/*--------------User Group End-------------*/
 
@@ -94,6 +102,12 @@ Route::group(['middleware' => ['auth']], function () {
 	/*-------------- Courses Start-------------*/
 	Route::get('cources/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
 	/*-------------- Courses End-------------*/
+
+
+	/*-------------- Publication Start-------------*/
+	Route::get('settings/publication/publication-category',array('as'=>'Publication Category Management' , 'uses' =>'SettingController@publication_category_management'));
+	Route::post('/publication/publication-category-entry',array('as'=>'Publication Category Entry' , 'uses' =>'SettingController@publication_category_entry_update'));
+	/*-------------- Publication End-------------*/
 
 
 	

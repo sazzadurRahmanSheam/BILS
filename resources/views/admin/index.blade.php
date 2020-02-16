@@ -147,14 +147,16 @@
 								</div>
 								</div>
 								<div class="form-group">
+									<input type="hidden" name="id" id="id">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
-								<div class="col-md-3 col-sm-3 col-xs-12">
+								<div class="col-md-4 col-sm-4 col-xs-12">
 									
-									<input type="" name="id" id="id">  
+									
 									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
-									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                        
+									<button type="button" id="cancle_admin_update" class="btn btn-danger hidden">Cancle</button>                        
 								</div>
-								 <div class="col-md-7 col-sm-7 col-xs-12">
+								 <div class="col-md-6 col-sm-6 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>
 								 </div>
 							</div>

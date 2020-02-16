@@ -9,6 +9,7 @@ use DB;
 use \App\System;
 use App\App_user;
 use App\User_group;
+use App\App_user_group_member;
 
 class AppUserController extends Controller
 {
@@ -77,14 +78,58 @@ class AppUserController extends Controller
 					'remarks'=>$request->remarks
 					//'user_profile_image'=>$image_name,	
 				];
-				
+				#Entry
 				if ($request->app_user_edit_id == '') {
 					$response = App_user::create($column_value);
+					$app_user_id = $response->id;
+					$group = $request->input('group');
+					$status = 1;
+					if ($group!="") {
+						foreach ($group as $group ) {
+							$data_for_group_entry = new App_user_group_member();
+							$data_for_group_entry->group_id=$group;
+							$data_for_group_entry->app_user_id=$app_user_id;
+							$data_for_group_entry->status=$status;
+							$data_for_group_entry->save();
+						}
+					}
 				}
+				#Update
 				else if($request->app_user_edit_id != ''){
 					$data = App_user::find($request->app_user_edit_id);
 					$data->update($column_value);
-					// echo $data;
+					$group = $request->input('group');
+					//first don't permission then permission
+					$do_not_permit = DB::table('app_user_group_members')
+									->where('app_user_id',$request->app_user_edit_id)
+									->update(['status'=>'0']);
+
+					if ($group!="") {
+						foreach ($group as $group ) {
+							if (isset($group)) {
+								$status = '1';
+								$is_available_group = App_user_group_member::Select('group_id')
+													->where('group_id',$group)
+													->first();
+													 
+								if ($is_available_group['group_id']==$group) {
+								 	$group_member_details = DB::table('app_user_group_members')
+													->where('app_user_id',$request->app_user_edit_id)
+													->where('group_id',$group)
+													->update(['status'=>$status]);
+								 }
+								 else{
+								 	$data_for_group_entry = new App_user_group_member();
+									$data_for_group_entry->group_id=$group;
+									$data_for_group_entry->app_user_id=$request->app_user_edit_id;
+									$data_for_group_entry->status=$status;
+									$data_for_group_entry->save();
+								 } 
+								
+							}
+						}
+					}
+					
 				}
 				DB::commit();
 				$return['result'] = "1";
@@ -131,7 +176,18 @@ class AppUserController extends Controller
     /*----- App User Edit Start -----*/
     public function app_user_edit($id){
     	$data = App_user::find($id);
-		return json_encode($data);
+
+    	$user_group_member_details = DB::table('user_groups as ug')
+									->leftJoin('app_user_group_members as ugm','ug.id','=','ugm.group_id')
+									->where('ug.type','2')
+									->where('ugm.app_user_id',$id)
+									->select('ug.id as id','ug.group_name as group_name','ugm.app_user_id as app_user_id','ugm.status as status')
+									->get();
+
+		return json_encode(array(
+			'app_user'=>$data,
+			'user_group_member_details'=>$user_group_member_details
+		));
     }
     /*----- App User Edit End -----*/
 
@@ -163,6 +219,18 @@ class AppUserController extends Controller
 		return json_encode(array('data'=>$return_arr));
     }
     /*----- App User Group End -----*/
+
+
+
+    /*----- Get App User Group List Start -----*/
+    public function app_user_group_list_for_entry(){
+    	$user_groups = User_group::Select('id','group_name')
+			->where('status','1')
+			->where('type','2')
+			->get();
+		return json_encode(array('data'=>$user_groups));
+    }
+    /*----- Get App User Group List End -----*/
 
 
    
