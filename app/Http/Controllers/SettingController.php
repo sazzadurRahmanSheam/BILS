@@ -13,6 +13,9 @@ use App\Web_action;
 use App\User_group;
 use App\User_group_permission;
 use App\Publication_category;
+use App\Course_category;
+use App\Notice_category;
+use App\Survey_category;
 
 class SettingController extends Controller
 {
@@ -27,8 +30,8 @@ class SettingController extends Controller
 	public function generalSetting(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "General Setting";
 		$data['setting'] = Setting::first();
-		//return response()->json($data['setting']);
 		return view('setting.general_setting',$data);
 	}
 
@@ -92,6 +95,7 @@ class SettingController extends Controller
 	public function moduleManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "Manage Module";
 		$data['menu'] = Menu::all();
 		return view('setting.manage_module',$data);
 	}
@@ -107,7 +111,6 @@ class SettingController extends Controller
 			$return_arr[] = $menu;
 		}
 		return json_encode(array('data'=>$return_arr));
-       // return view('admin.manage', $data);
 	}
 
 	//getting parent menu
@@ -215,6 +218,7 @@ class SettingController extends Controller
 	public function webActionManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Cpanel";
+		$data['sub_module']= "Web Actions";
 		$data['setting'] = Setting::first();
 		return view('setting.web_action_management',$data);
 	}
@@ -299,8 +303,6 @@ class SettingController extends Controller
        
 	}
 
-	/*." <button onclick='web_action_delete(".$webActionList->id.")' id='delete_" . $webActionList->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>"*/
-
 	//Web Action Edit
 	public function web_action_edit($id){
 		$data = Web_action::Select('id','activity_name','module_id')->where('id',$id)->first();
@@ -314,6 +316,7 @@ class SettingController extends Controller
 	public function publication_category_management(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
+		$data['sub_module']= "Publication Category";
 		$data['setting'] = Setting::first();
 		return view('publication.publication_category',$data);
 	}
@@ -339,9 +342,96 @@ class SettingController extends Controller
 					'details'=>$request->details,	
 					'status'=>$status,	
 				];
+				if ($request->publication_category_edit_id == '') {
+					$response = Publication_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Publication_category::find($request->publication_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+	#Pubilacation Categories List
+	public function publication_categories_get(){
+		$publication_categories_list = Publication_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($publication_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='publication_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='publication_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
 
-				$response = Publication_category::create($column_value);
-				
+	public function publication_category_edit($id){
+		$data = Publication_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	public function publication_category_delete($id){
+		Publication_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	/*----- Publication Management End -----*/
+
+	
+	/*----- Course Management Start -----*/
+
+	#Getting Course Category Management Page
+	public function courses_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Course Category";
+		$data['setting'] = Setting::first();
+		return view('courses.course_category',$data);
+	}
+
+	#Course Category Entry & Update
+	public function course_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->course_category_edit_id == '') {
+					$response = Course_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Course_category::find($request->course_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
 				DB::commit();
 				$return['result'] = "1";
 				return json_encode($return);
@@ -355,7 +445,203 @@ class SettingController extends Controller
 		}
 	}
 
-	/*----- Publication Management End -----*/
+	#Course Categories List
+	public function course_categories_get(){
+		$course_categories_list = Course_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($course_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='course_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Course Categories Edit
+	public function course_category_edit($id){
+		$data = Course_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Course Category Delete
+	public function course_category_delete($id){
+		Course_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+
+	/*----- Course Management End -----*/
+
+
+	/*----- Notice Management Start -----*/
+
+	#Getting Notice Category Management Page
+	public function notice_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Notice Category";
+		$data['setting'] = Setting::first();
+		return view('notice.notice_category',$data);
+	}
+
+	#Notice Category Entry & Update
+	public function notice_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->notice_category_edit_id == '') {
+					$response = Notice_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Notice_category::find($request->notice_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	#Notice Categories List
+	public function notice_categories_get(){
+		$notice_categories_list = Notice_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($notice_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='notice_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='notice_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Notice Categories Edit
+	public function notice_category_edit($id){
+		$data = Notice_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Notice Category Delete
+	public function notice_category_delete($id){
+		Notice_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	/*----- Notice Management End -----*/
+
+
+
+	/*----- Survey Category Management Start -----*/
+	#Getting Survey Category Management Page
+	public function survey_category_management(){
+		$data['page_title'] = $this->page_title;
+		$data['module_name']= "Settings";
+		$data['sub_module']= "Survey Category";
+		$data['setting'] = Setting::first();
+		return view('survey.survey_category',$data);
+	}
+
+	#Survey Category Entry & Update
+	public function survey_category_entry_update(Request $request){
+		$rule = [
+            'category_name' => 'Required|max:100',
+        ];
+
+        $validation = Validator::make($request->all(), $rule);
+        if ($validation->fails()) {
+			$return['result'] = "0";
+			$return['errors'] = $validation->errors();
+			return json_encode($return);
+        }
+		else{
+			try{
+				$status = ($request->is_active=="")?'0':$request->is_active;
+				DB::beginTransaction();       
+				$column_value = [
+					'category_name'=>$request->category_name,
+					'details'=>$request->details,	
+					'status'=>$status,	
+				];
+				if ($request->survey_category_edit_id == '') {
+					$response = Survey_category::create($column_value);
+					$return['success'] = "insert";
+				}
+				else{
+					$data = Survey_category::find($request->survey_category_edit_id);
+					$data->update($column_value);
+					$return['success'] = "update";
+				}
+				DB::commit();
+				$return['result'] = "1";
+				return json_encode($return);
+			}
+			catch (\Exception $e){
+				DB::rollback();
+				$return['result'] = "0";
+				$return['errors'][] ="Faild to save";
+				return json_encode($return);
+			}
+		}
+	}
+
+	#Survey Categories List
+	public function survey_categories_get(){
+		$survey_categories_list = Survey_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$return_arr = array();
+		foreach($survey_categories_list as $row){			
+			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			$row['actions']="<button onclick='survey_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
+							." <button onclick='survey_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$return_arr[] = $row;
+		}
+		return json_encode(array('data'=>$return_arr));
+	}
+
+	#Survey Categories Edit
+	public function survey_category_edit($id){
+		$data = Survey_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		return json_encode($data);
+	}
+
+	#Survey Category Delete
+	public function survey_category_delete($id){
+		Survey_category::find($id)->delete();
+		return json_encode(array(
+			"deleteMessage"=>"Deleted Successful"
+		));
+	}
+
+	/*----- Survey Category Management End -----*/
 
 
 

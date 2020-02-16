@@ -27,12 +27,14 @@ class AdminController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "";
+		$data['sub_module']= "";
         return view('admin.dashbord', $data);
     }
 	
 	public function adminUserManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "User";
+		$data['sub_module']= "Admin Users";
         return view('admin.index', $data);
 	}
 	
@@ -191,6 +193,7 @@ class AdminController extends Controller
 	public function admin_user_groups(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
+		$data['sub_module']= "Admin User Groups";
         return view('admin.admin_groups', $data);
 	}
 	/*Entry Admin User Group And App User Group*/
@@ -335,8 +338,6 @@ class AdminController extends Controller
 
 
     }
-
-
 
 
 

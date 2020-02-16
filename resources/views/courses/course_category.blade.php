@@ -11,26 +11,26 @@
     <div class="row ">
     	<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
             <li class="active">
-                <a id="publication_category_management_tab" data-toggle="tab" href="#publication_category_management">
-                   <b>Publication Category Management</b>
+                <a data-toggle="tab" href="#course_category_management">
+                   <b>Course Category Management</b>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-			<div id="publication_category_management" class="tab-pane in active">
+			<div id="course_category_management" class="tab-pane in active">
 				<div class="col-sm-12">
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<p class="text-info">Publication Category Management</p>
+								<p class="text-info">Course Category Management</p>
 							</div>
 							<div class="panel-body">
 
 							<div class="row no-margin-row">
-								<form id="save_publication_category_form" name="save_publication_category_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+								<form id="save_course_category_form" name="save_course_category_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 									@csrf
 									<div class="row">
-										<input type="hidden" name="publication_category_edit_id" id="publication_category_edit_id">
+										<input type="hidden" name="course_category_edit_id" id="course_category_edit_id">
 										<div class="col-md-12">
 											<input type="hidden" name="edit_id" id="edit_id">
 											<div class="form-group">
@@ -40,7 +40,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="control-label col-md-3 col-sm-3 col-xs-6">Details<span class="required">*</span></label>
+												<label class="control-label col-md-3 col-sm-3 col-xs-6">Details</label>
 												<div class="col-md-9 col-sm-9 col-xs-6">
 													<textarea rows="5" name="details" id="details" class="form-control col-lg-12 col-md-12"></textarea>
 													
@@ -57,9 +57,9 @@
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 										<div class="col-md-5 col-sm-5 col-xs-12">
-											<button type="submit" id="save_publication_category" class="btn btn-success save">Save</button>                    
+											<button type="submit" id="save_course_category" class="btn btn-success save">Save</button>                    
 											<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
-											<button type="button" id="cancle_publication_category" class="btn btn-danger hidden">Cancle</button>                         
+											<button type="button" id="cancle_btn" class="btn btn-danger hidden">Cancle</button>                         
 										</div>
 										<div class="col-md-5 col-sm-5 col-xs-12">
 											<div id="form_submit_error" class="text-center" style="display:none"></div>
@@ -96,7 +96,7 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover" id="publication_category" style="width:100% !important"> 
+									<table class="table table-bordered table-hover" id="course_category" style="width:100% !important"> 
 										<thead>
 											<tr>
 												<th>ID</th>

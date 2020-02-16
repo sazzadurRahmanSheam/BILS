@@ -27,6 +27,7 @@ class SurveysController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "Surveys";
-        return view('surveys.index', $data);
+        $data['sub_module']= "";
+        return view('survey.index', $data);
     }
 }

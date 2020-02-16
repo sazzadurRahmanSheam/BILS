@@ -25,7 +25,7 @@ class MessageController extends Controller
     public function all_messages(){
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "Messages";
-		//return response()->json($data['setting']);
+		$data['sub_module']= "All Messages";
 		return view('messages.all_messages',$data);
     }
 }
