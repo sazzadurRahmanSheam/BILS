@@ -17,7 +17,7 @@ Route::get('auth/forget/password/{user_id}/verify',array('as'=>'Forgot Password 
 Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Submit' , 'uses' =>'SystemAuthController@authSystemNewPasswordPost'));
 
 
-Route::get('survey/management', function (){echo "Stop Here";}/*array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index')*/);
+
 
 Route::group(['middleware' => ['auth']], function () {
     #logout
@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 	/*-------------- Surveys Start-------------*/
-	Route::get('survey/management',array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index'));
+	
 	Route::get('settings/survey/manage-survey-category',array('as'=>'Surveys Category Management' , 'uses' =>'SettingController@survey_category_management'));
 	Route::post('/settings/survey/survey-category-entry',array('as'=>'Surveys Category Entry' , 'uses' =>'SettingController@survey_category_entry_update'));
 	Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List' , 'uses' =>'SettingController@survey_categories_get'));
@@ -105,7 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 	/*-------------- Courses Start-------------*/
-	Route::get('courses/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	
 	Route::get('settings/courses/manage-courses-category',array('as'=>'Courses Category Management' , 'uses' =>'SettingController@courses_category_management'));
 	Route::post('/settings/courses/course-category-entry',array('as'=>'Courses Category Entry' , 'uses' =>'SettingController@course_category_entry_update'));
 	Route::get('/settings/courses/course-categories-list',array('as'=>'Get Courses Category List' , 'uses' =>'SettingController@course_categories_get'));
@@ -132,7 +132,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/setting/notice/notice-category-delete/{id}',array('as'=>'Delete Notice Category' , 'uses' =>'SettingController@notice_category_delete'));
 
 	/*-------------- Notice End-------------*/
-
-
 	
 });
+
+
+Route::group(['middleware' => ['permission']], function () {
+	Route::get('courses/open-course',array('as'=>'Open Course' , 'action_id'=>'25', 'uses' =>'CoursesController@index'));
+	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'26', 'uses' =>'SurveysController@index'));
+});
+

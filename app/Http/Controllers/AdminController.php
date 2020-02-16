@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 //later i will use use App\Traits\HasRoleAndPermission;
 use Illuminate\Http\Request;
+use Auth;
 use Validator;
 use Session;
 use DB;
@@ -13,6 +14,7 @@ use App\User_group_member;
 use App\Menu;
 use App\User_group_permission;
 use App\Web_action;
+use App\Traits\HasPermission;
 
 class AdminController extends Controller
 {
@@ -21,6 +23,11 @@ class AdminController extends Controller
         $this->page_title = $request->route()->getName();
         $description = \Request::route()->getAction();
         $this->page_desc = isset($description['desc']) ? $description['desc'] : $this->page_title;
+		if (Auth::check()){
+			echo "STOP";die;
+		}else{echo "NOT";}
+		
+		//$this->admin_user_id  =  Auth::user()->id;	
     }
 	
 	public function index()
@@ -41,8 +48,16 @@ class AdminController extends Controller
 	public function ajaxAdminList(){
 		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')->orderBy('created_at','desc')->get();
 		$return_arr = array();
-		foreach($adminUser as $user){			
+		foreach($adminUser as $user){
+			
+			$edit_action_id 	   = 4;
+			$delete_action_id 	   = 6;
+			$edit_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$edit_action_id );
+			$delete_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$delete_action_id );
+			echo $edit_permisiion."---".$delete_permisiion;die;
+			
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			
 			$user['actions']="<button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>"
 							." <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>"
 							." <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
