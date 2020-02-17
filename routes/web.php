@@ -18,8 +18,12 @@ Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Su
 
 
 
+
 Route::group(['middleware' => ['auth']], function () {
     #logout
+	
+	//echo "hold on";die;
+	Route::get('/',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
     Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));	
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
 	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'uses' =>'AdminController@adminUserManagement'));
@@ -32,6 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('cp/general/general-setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
 	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
 	
+
 	Route::get('cp/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
 
 	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
@@ -40,8 +45,8 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));
 	
-	Route::post('/module/module-entry/',array('as'=>'Module Entry' , 'uses' =>'SettingController@moduleEntry'));
 
+	Route::post('/module/module-entry/',array('as'=>'Module Entry' , 'uses' =>'SettingController@moduleEntry'));
 	Route::get('/module/edit/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleEdit'));
 	Route::get('/module/delete/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleDelete'));
 
@@ -84,17 +89,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/admin/permission-action-entry-update',array('as'=>'Permission Entry' , 'uses' =>'AdminController@permission_action_entry_update'));
 	/*-------------- Actions For Permission End-------------*/
 
-
-
-
 	/*-------------- Messages Start-------------*/
 	Route::get('messages/all-messages-management',array('as'=>'All Messages Management' , 'uses' =>'MessageController@all_messages'));
 	/*-------------- Messages End-------------*/
 
 
-
 	/*-------------- Surveys Start-------------*/
-	Route::get('survey/management',array('as'=>'Surveys Management' , 'uses' =>'SurveysController@index'));
+	
 	Route::get('settings/survey/manage-survey-category',array('as'=>'Surveys Category Management' , 'uses' =>'SettingController@survey_category_management'));
 	Route::post('/settings/survey/survey-category-entry',array('as'=>'Surveys Category Entry' , 'uses' =>'SettingController@survey_category_entry_update'));
 	Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List' , 'uses' =>'SettingController@survey_categories_get'));
@@ -104,7 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 	/*-------------- Courses Start-------------*/
-	Route::get('courses/open-course',array('as'=>'Open Course' , 'uses' =>'CoursesController@index'));
+	
 	Route::get('settings/courses/manage-courses-category',array('as'=>'Courses Category Management' , 'uses' =>'SettingController@courses_category_management'));
 	Route::post('/settings/courses/course-category-entry',array('as'=>'Courses Category Entry' , 'uses' =>'SettingController@course_category_entry_update'));
 	Route::get('/settings/courses/course-categories-list',array('as'=>'Get Courses Category List' , 'uses' =>'SettingController@course_categories_get'));
@@ -131,7 +132,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/setting/notice/notice-category-delete/{id}',array('as'=>'Delete Notice Category' , 'uses' =>'SettingController@notice_category_delete'));
 
 	/*-------------- Notice End-------------*/
-
-
 	
 });
+
+
+Route::group(['middleware' => ['permission']], function () {
+	Route::get('courses/open-course',array('as'=>'Open Course' , 'action_id'=>'25', 'uses' =>'CoursesController@index'));
+	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'26', 'uses' =>'SurveysController@index'));
+});
+
