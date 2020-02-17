@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Controllers;
@@ -8,11 +9,7 @@ use Session;
 use DB;
 use \App\System;
 use \App\User;
-use App\User_group;
-use App\User_group_member;
 use App\Menu;
-use App\User_group_permission;
-use App\Web_action;
 
 class SurveysController extends Controller
 {

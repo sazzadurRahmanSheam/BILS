@@ -7,9 +7,9 @@ use Validator;
 use Session;
 use DB;
 use \App\System;
-use App\App_user;
-use App\User_group;
-use App\App_user_group_member;
+use App\AppUser;
+use App\UserGroup;
+use App\AppUserGroupMember;
 
 class AppUserController extends Controller
 {
@@ -47,7 +47,7 @@ class AppUserController extends Controller
 			//insert
 			if ($request->app_user_edit_id == ''){
 				#EmailCheck
-	            $email_verification = App_user::where('email',$request->email)->first();
+	            $email_verification = AppUser::where('email',$request->email)->first();
 	            if(isset($email_verification->id)){
 					$return['result'] = "0";
 					$return['errors'][] = $request->email." is already exists";
@@ -56,7 +56,7 @@ class AppUserController extends Controller
 			}
 			//update
 			else{
-				 $email_verification = App_user::where([['email',$request->email],['id', '!=', $request->app_user_edit_id]])->first();
+				 $email_verification = AppUser::where([['email',$request->email],['id', '!=', $request->app_user_edit_id]])->first();
            		if(isset($email_verification->id)){
 					$return['result'] = "0";
 					$return['errors'][] = $request->email." is already exists";
@@ -81,13 +81,13 @@ class AppUserController extends Controller
 				];
 				#Entry
 				if ($request->app_user_edit_id == '') {
-					$response = App_user::create($column_value);
+					$response = AppUser::create($column_value);
 					$app_user_id = $response->id;
 					$group = $request->input('group');
 					$status = 1;
 					if ($group!="") {
 						foreach ($group as $group ) {
-							$data_for_group_entry = new App_user_group_member();
+							$data_for_group_entry = new AppUserGroupMember();
 							$data_for_group_entry->group_id=$group;
 							$data_for_group_entry->app_user_id=$app_user_id;
 							$data_for_group_entry->status=$status;
@@ -109,7 +109,7 @@ class AppUserController extends Controller
 						foreach ($group as $group ) {
 							if (isset($group)) {
 								$status = '1';
-								$is_available_group = App_user_group_member::Select('group_id')
+								$is_available_group = AppUserGroupMember::Select('group_id')
 													->where('group_id',$group)
 													->first();
 													 
@@ -120,7 +120,7 @@ class AppUserController extends Controller
 													->update(['status'=>$status]);
 								 }
 								 else{
-								 	$data_for_group_entry = new App_user_group_member();
+								 	$data_for_group_entry = new AppUserGroupMember();
 									$data_for_group_entry->group_id=$group;
 									$data_for_group_entry->app_user_id=$request->app_user_edit_id;
 									$data_for_group_entry->status=$status;
@@ -149,7 +149,7 @@ class AppUserController extends Controller
 
     /*----- App User List Start -----*/
     public function app_user_list(){
-    	$app_user_details = App_user::Select('user_profile_image', 'id',  'name',  'email', 'status')->get();		
+    	$app_user_details = AppUser::Select('user_profile_image', 'id',  'name',  'email', 'status')->get();		
 		$return_arr = array();
 		foreach($app_user_details as $user){			
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -165,7 +165,7 @@ class AppUserController extends Controller
 
     /*----- App User Delete Start -----*/
     public function app_user_delete($id){
-    	App_user::find($id)->delete();
+    	AppUser::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));
@@ -176,7 +176,7 @@ class AppUserController extends Controller
 
     /*----- App User Edit Start -----*/
     public function app_user_edit($id){
-    	$data = App_user::find($id);
+    	$data = AppUser::find($id);
 
     	$user_group_member_details = DB::table('user_groups as ug')
 									->leftJoin('app_user_group_members as ugm','ug.id','=','ugm.group_id')
@@ -195,7 +195,7 @@ class AppUserController extends Controller
 
     /*----- App User View Start -----*/
     public function app_user_view($id){
-    	$data = App_user::find($id);
+    	$data = AppUser::find($id);
 		return json_encode($data);
     }
     /*----- App User View End -----*/
@@ -209,7 +209,7 @@ class AppUserController extends Controller
         return view('app_user.app_user_groups', $data);
     }
     public function load_app_user_groups(){
-    	$app_user_group_list = User_group::Select('id', 'group_name', 'type','status')->where('type','2')->get();		
+    	$app_user_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','2')->get();		
 		$return_arr = array();
 		foreach($app_user_group_list as $app_user_group_list){
 			$app_user_group_list['type']=($app_user_group_list->type == 1)?"Admin User":"App User";
@@ -226,7 +226,7 @@ class AppUserController extends Controller
 
     /*----- Get App User Group List Start -----*/
     public function app_user_group_list_for_entry(){
-    	$user_groups = User_group::Select('id','group_name')
+    	$user_groups = UserGroup::Select('id','group_name')
 			->where('status','1')
 			->where('type','2')
 			->get();

@@ -9,11 +9,11 @@ use Session;
 use DB;
 use \App\System;
 use \App\User;
-use App\User_group;
-use App\User_group_member;
+use App\UserGroup;
+use App\UserGroupMember;
 use App\Menu;
-use App\User_group_permission;
-use App\Web_action;
+use App\UserGroupPermission;
+use App\WebAction;
 use App\Traits\HasPermission;
 
 class AdminController extends Controller
@@ -49,20 +49,25 @@ class AdminController extends Controller
 	
 	public function ajaxAdminList(){
 		
-		$admin_user_id 		   = Auth::user()->id;
-		$edit_action_id 	   = 4;
-		$delete_action_id 	   = 6;
-		$edit_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$edit_action_id );
-		$delete_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$delete_action_id );
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 4;
+		$delete_action_id 	= 6;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
 		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')->orderBy('created_at','desc')->get();
 		$return_arr = array();
 		foreach($adminUser as $user){		
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
 			
-			$user['actions']="<button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>"
-							." <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+			$user['actions']=" <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
+
+			if($edit_permisiion>0){
+				$user['actions'] .=" <button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$user['actions'] .=" <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+			}
 			$return_arr[] = $user;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -130,7 +135,7 @@ class AdminController extends Controller
 					$status = 1;
 					if ($group!="") {
 						foreach ($group as $group ) {
-							$data_for_group_entry = new User_group_member();
+							$data_for_group_entry = new UserGroupMember();
 							$data_for_group_entry->group_id=$group;
 							$data_for_group_entry->emp_id=$emp_id;
 							$data_for_group_entry->status=$status;
@@ -238,14 +243,14 @@ class AdminController extends Controller
 				];
 				
 				if ($request->edit_id == '') {
-					$response = User_group::create($column_value);
+					$response = UserGroup::create($column_value);
 					//get group id
 					$group_id = $response->id;
 					
 					//get Action id
-					$action_id = Web_action::Select('id')->get();
+					$action_id = WebAction::Select('id')->get();
 					foreach ($action_id as $action_id) {
-						$user_group_permissions = new User_group_permission();
+						$user_group_permissions = new UserGroupPermission();
 						$user_group_permissions->group_id=$group_id;
 						$user_group_permissions->action_id=$action_id['id'];
 						$user_group_permissions->status='0';
@@ -253,7 +258,7 @@ class AdminController extends Controller
 					}
 				}
 				else{
-					$data = User_group::find($request->edit_id);
+					$data = UserGroup::find($request->edit_id);
 					$data->update($column_value);
 				}
 				DB::commit();
@@ -272,7 +277,7 @@ class AdminController extends Controller
 
 	//Admin Group show
 	public function admin_groups_list(){
-		$admin_group_list = User_group::Select('id', 'group_name', 'type','status')->where('type','1')->get();		
+		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->get();		
 		$return_arr = array();
 		foreach($admin_group_list as $admin_group_list){
 			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
@@ -287,13 +292,13 @@ class AdminController extends Controller
 
 	//Admin Group Edit
 	public function admin_group_edit($id){
-		$data = User_group::Select('id','group_name','type','status')->where('id',$id)->first();
+		$data = UserGroup::Select('id','group_name','type','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 
 	//admin group delete
 	public function admin_group_delete($id){
-		User_group::find($id)->delete();
+		UserGroup::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));
@@ -302,7 +307,7 @@ class AdminController extends Controller
 
 
 	 public function load_user_groups(){
-		$user_groups = User_group::Select('id','group_name')
+		$user_groups = UserGroup::Select('id','group_name')
 			->where('status','1')
 			->where('type','1')
 			->get();
@@ -329,7 +334,11 @@ class AdminController extends Controller
 		try{
 			DB::beginTransaction();
 			
-			if($permission_action!=""){	
+			$data_for_permission_action_update = DB::table('User_group_permissions')
+															->where('group_id',$group_id)
+															->update(['status'=>'0']);
+
+			if($permission_action!=""){
 				foreach ($permission_action as $permission_action ) {
 
 					if (isset($permission_action)) {

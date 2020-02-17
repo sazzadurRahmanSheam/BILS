@@ -20,11 +20,11 @@ Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Su
 Route::group(['middleware' => ['auth']], function () {
     #logout
 	
-	//echo "hold on";die;
+
 	Route::get('/',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
     Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));	
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
-	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'uses' =>'AdminController@adminUserManagement'));
+	
 	Route::get('/admin/ajax/admin-list',array('as'=>'Admin User List' , 'uses' =>'AdminController@ajaxAdminList'));
 	Route::post('/admin/admin-user-entry',array('as'=>'Admin User Entry' , 'uses' =>'AdminController@ajaxAdminEntry'));
 
@@ -148,13 +148,25 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/setting/notice/notice-category-delete/{id}',array('as'=>'Delete Notice Category', 'uses' =>'SettingController@notice_category_delete'));
 
 	/*-------------- Notice End-------------*/
+
+	/*-------------- Profile Start-------------*/
+	Route::get('/profile/my-profile',array('as'=>'My Profile Management', 'uses' =>'ProfileController@index'));
+	Route::get('/profile/my-profile-info',array('as'=>'Get My Profile Info', 'uses' =>'ProfileController@profile_info'));
+	Route::post('/profile/my-profile-update',array('as'=>'Update My Profile Info', 'uses' =>'ProfileController@update_profile'));
+	Route::post('/profile/password-update',array('as'=>'Update My Profile Info', 'uses' =>'ProfileController@update_password'));
+	/*-------------- Profile End-------------*/
 	
 });
 
 
 
 Route::group(['middleware' => ['permission']], function () {
-	Route::get('courses/open-course',array('as'=>'Open Course' , 'action_id'=>'25', 'uses' =>'CoursesController@index'));
+	Route::get('courses/open-course',array('as'=>'Open Course' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'26', 'uses' =>'SurveysController@index'));
+
+	/*----- Admin User Start -----*/
+	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'action_id'=>'1', 'uses' =>'AdminController@adminUserManagement'));
+	/*----- Admin User End -----*/
+
 });
 

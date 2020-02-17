@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Survey_category extends Model
+class PublicationCategory extends Model
 {
-    protected $table = 'survey_categories';
+    protected $table = 'publication_categories';
     
     protected $fillable = [
         'category_name','status','details',

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Publication_category extends Model
+class NoticeCategory extends Model
 {
-    protected $table = 'publication_categories';
+    protected $table = 'notice_categories';
     
     protected $fillable = [
         'category_name','status','details',

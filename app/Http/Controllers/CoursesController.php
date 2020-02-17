@@ -8,11 +8,9 @@ use Session;
 use DB;
 use \App\System;
 use \App\User;
-use App\User_group;
-use App\User_group_member;
+use App\UserGroup;
 use App\Menu;
-use App\User_group_permission;
-use App\Web_action;
+
 
 class CoursesController extends Controller
 {
