@@ -159,7 +159,8 @@ $(document).ready(function () {
 				data:formData,
 				async:false,
 				cache:false,
-				contentType:false,processData:false,
+				contentType:false,
+				processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
 				
@@ -925,11 +926,9 @@ $(document).ready(function () {
 		$("#cancle_btn").addClass('hidden');
 		$(".save").html("Save");
 		clear_form();
-
 	}
 	/*----- Comon Function End -----*/
 
-	
 	
 });
 
