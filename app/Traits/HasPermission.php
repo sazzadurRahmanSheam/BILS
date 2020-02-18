@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\User;
-use App\User_group_member;
-use App\User_group_permission;
+use App\UserGroupMember;
+use App\UserGroupPermission;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,7 +25,7 @@ trait HasPermission
     */
 
     public function PermissionHasOrNot($admin_user_id,$action_id){
-		$user_groups_arr = User_group_member::selectRaw("group_concat('".'"'."', group_id,'".'"'."') as groups")->where('emp_id',$admin_user_id)->groupBy('emp_id')->get();
+		$user_groups_arr = UserGroupMember::selectRaw("group_concat('".'"'."', group_id,'".'"'."') as groups")->where('emp_id',$admin_user_id)->groupBy('emp_id')->get();
 		$user_groups = $user_groups_arr[0]['groups'];
 		
 		//this is not working  whereIn dynamic multipe value

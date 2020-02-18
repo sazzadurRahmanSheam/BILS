@@ -17,11 +17,13 @@
                            <b> Surveys List</b>
                         </a>
                     </li>
-                    <li class="">
-                        <a data-toggle="tab" href="#entry_form_div" id="Survey_add_button">
-                           <b> Add Surveys</b>
-                        </a>
-                    </li>
+                    @if($actions['add_permisiion']==1)
+	                    <li class="">
+	                        <a data-toggle="tab" href="#entry_form_div" id="Survey_add_button">
+	                           <b> Add Surveys</b>
+	                        </a>
+	                    </li>
+	                @endif
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->

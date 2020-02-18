@@ -9,16 +9,20 @@ use DB;
 use \App\System;
 use \App\Setting;
 use App\Menu;
-use App\Web_action;
-use App\User_group;
-use App\User_group_permission;
-use App\Publication_category;
-use App\Course_category;
-use App\Notice_category;
-use App\Survey_category;
+use App\WebAction;
+use App\UserGroup;
+use App\UserGroupPermission;
+use App\PublicationCategory;
+use App\CourseCategory;
+use App\NoticeCategory;
+use App\SurveyCategory;
+use Auth;
+use App\Traits\HasPermission;
 
 class SettingController extends Controller
 {
+	use HasPermission;
+
     public function __construct(Request $request)
     {
         $this->page_title = $request->route()->getName();
@@ -32,6 +36,12 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "General Setting";
 		$data['setting'] = Setting::first();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 34;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['update_permisiion']= $add_permisiion;
+
 		return view('setting.general_setting',$data);
 	}
 
@@ -67,15 +77,8 @@ class SettingController extends Controller
 					//'user_profile_image'=>$image_name,	
 				];
 
-				
-				
-				//dd($column_value);
-
-				//$response = Setting::create($column_value);
-				//$data = new Setting;
 				$data = Setting::find($request->id);
 				$data->update($column_value);
-				// dd($data);
 				
 				DB::commit();
 				$return['result'] = "1";
@@ -97,12 +100,17 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "Manage Module";
 		$data['menu'] = Menu::all();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 36;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
 		return view('setting.manage_module',$data);
 	}
 
 	public function ajaxMenuList(){
 		$mesuList = Menu::Select('module_name', 'id',  'menu_title',  'parent_id', 'menu_url','menu_icon_class','status')->where('status','1')->orderBy('created_at','desc')->get();		
-		//dd($adminmenu);
+		
 		$return_arr = array();
 		foreach($mesuList as $menu){			
 			$menu['status']=($menu->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
@@ -220,6 +228,11 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "Web Actions";
 		$data['setting'] = Setting::first();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 30;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
 		return view('setting.web_action_management',$data);
 	}
 
@@ -251,19 +264,19 @@ class SettingController extends Controller
 				];
 
 				if($request->edit_id !=""){
-					$data = Web_action::find($request->edit_id);
+					$data = WebAction::find($request->edit_id);
 					$data->update($column_value);
 
 				}
 				else{
-					$response = Web_action::create($column_value);
+					$response = WebAction::create($column_value);
 					//get action id
 					$action_id = $response->id;
 					//get group id
-					$group_id = User_group::Select('id')->get();
+					$group_id = UserGroup::Select('id')->get();
 					// insert a row in user_group_permissions for each group of the action id
 					foreach ($group_id as $group_id) {
-						$user_group_permissions = new User_group_permission();
+						$user_group_permissions = new UserGroupPermission();
 						$user_group_permissions->group_id=$group_id['id'];
 						$user_group_permissions->action_id=$action_id;
 						$user_group_permissions->status='0';
@@ -288,7 +301,11 @@ class SettingController extends Controller
 
 	//Web Action List
 	public function webActionList(){
-		$webActionList = Web_action::Select('web_actions.id as id','web_actions.activity_name as activity_name','web_actions.status as status','menus.module_name as module_name')
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 31;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+	
+		$webActionList = WebAction::Select('web_actions.id as id','web_actions.activity_name as activity_name','web_actions.status as status','menus.module_name as module_name')
 			->leftJoin('menus', 'web_actions.module_id', '=', 'menus.id')
 			->where('web_actions.status','1')
 			->get();
@@ -296,7 +313,12 @@ class SettingController extends Controller
 		$return_arr = array();
 		foreach($webActionList as $webActionList){			
 			$webActionList['status']=($webActionList->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
-			$webActionList['actions']="<button onclick='web_action_edit(".$webActionList->id.")' id=edit_" . $webActionList->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			if($edit_permisiion>0){
+				$webActionList['actions']="<button title='Edit' onclick='web_action_edit(".$webActionList->id.")' id=edit_" . $webActionList->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			else{
+				$webActionList['actions']="";
+			}
 			$return_arr[] = $webActionList;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -305,7 +327,7 @@ class SettingController extends Controller
 
 	//Web Action Edit
 	public function web_action_edit($id){
-		$data = Web_action::Select('id','activity_name','module_id')->where('id',$id)->first();
+		$data = WebAction::Select('id','activity_name','module_id')->where('id',$id)->first();
 		return json_encode($data);
 	}
 	//Web Action Management End
@@ -343,11 +365,11 @@ class SettingController extends Controller
 					'status'=>$status,	
 				];
 				if ($request->publication_category_edit_id == '') {
-					$response = Publication_category::create($column_value);
+					$response = PublicationCategory::create($column_value);
 					$return['success'] = "insert";
 				}
 				else{
-					$data = Publication_category::find($request->publication_category_edit_id);
+					$data = PublicationCategory::find($request->publication_category_edit_id);
 					$data->update($column_value);
 					$return['success'] = "update";
 				}
@@ -365,7 +387,7 @@ class SettingController extends Controller
 	}
 	#Pubilacation Categories List
 	public function publication_categories_get(){
-		$publication_categories_list = Publication_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$publication_categories_list = PublicationCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($publication_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -377,12 +399,12 @@ class SettingController extends Controller
 	}
 
 	public function publication_category_edit($id){
-		$data = Publication_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		$data = PublicationCategory::Select('id','category_name','details','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 
 	public function publication_category_delete($id){
-		Publication_category::find($id)->delete();
+		PublicationCategory::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));
@@ -424,11 +446,11 @@ class SettingController extends Controller
 					'status'=>$status,	
 				];
 				if ($request->course_category_edit_id == '') {
-					$response = Course_category::create($column_value);
+					$response = CourseCategory::create($column_value);
 					$return['success'] = "insert";
 				}
 				else{
-					$data = Course_category::find($request->course_category_edit_id);
+					$data = CourseCategory::find($request->course_category_edit_id);
 					$data->update($column_value);
 					$return['success'] = "update";
 				}
@@ -447,7 +469,7 @@ class SettingController extends Controller
 
 	#Course Categories List
 	public function course_categories_get(){
-		$course_categories_list = Course_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$course_categories_list = CourseCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($course_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -460,13 +482,13 @@ class SettingController extends Controller
 
 	#Course Categories Edit
 	public function course_category_edit($id){
-		$data = Course_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		$data = CoursCategory::Select('id','category_name','details','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 
 	#Course Category Delete
 	public function course_category_delete($id){
-		Course_category::find($id)->delete();
+		CoursCategory::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));
@@ -509,11 +531,11 @@ class SettingController extends Controller
 					'status'=>$status,	
 				];
 				if ($request->notice_category_edit_id == '') {
-					$response = Notice_category::create($column_value);
+					$response = NoticeCategory::create($column_value);
 					$return['success'] = "insert";
 				}
 				else{
-					$data = Notice_category::find($request->notice_category_edit_id);
+					$data = NoticeCategory::find($request->notice_category_edit_id);
 					$data->update($column_value);
 					$return['success'] = "update";
 				}
@@ -532,7 +554,7 @@ class SettingController extends Controller
 
 	#Notice Categories List
 	public function notice_categories_get(){
-		$notice_categories_list = Notice_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$notice_categories_list = NoticeCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($notice_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -545,13 +567,13 @@ class SettingController extends Controller
 
 	#Notice Categories Edit
 	public function notice_category_edit($id){
-		$data = Notice_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		$data = NoticeCategory::Select('id','category_name','details','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 
 	#Notice Category Delete
 	public function notice_category_delete($id){
-		Notice_category::find($id)->delete();
+		NoticeCategory::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));
@@ -593,11 +615,11 @@ class SettingController extends Controller
 					'status'=>$status,	
 				];
 				if ($request->survey_category_edit_id == '') {
-					$response = Survey_category::create($column_value);
+					$response = SurveyCategory::create($column_value);
 					$return['success'] = "insert";
 				}
 				else{
-					$data = Survey_category::find($request->survey_category_edit_id);
+					$data = SurveyCategory::find($request->survey_category_edit_id);
 					$data->update($column_value);
 					$return['success'] = "update";
 				}
@@ -616,7 +638,7 @@ class SettingController extends Controller
 
 	#Survey Categories List
 	public function survey_categories_get(){
-		$survey_categories_list = Survey_category::Select('id', 'category_name', 'details', 'status')->get();		
+		$survey_categories_list = SurveyCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($survey_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -629,13 +651,13 @@ class SettingController extends Controller
 
 	#Survey Categories Edit
 	public function survey_category_edit($id){
-		$data = Survey_category::Select('id','category_name','details','status')->where('id',$id)->first();
+		$data = SurveyCategory::Select('id','category_name','details','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 
 	#Survey Category Delete
 	public function survey_category_delete($id){
-		Survey_category::find($id)->delete();
+		SurveyCategory::find($id)->delete();
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));

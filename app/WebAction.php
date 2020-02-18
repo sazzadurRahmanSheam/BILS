@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Web_action extends Model
+class WebAction extends Model
 {
     protected $table = 'web_actions';
 

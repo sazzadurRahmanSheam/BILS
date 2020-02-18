@@ -147,7 +147,7 @@
                         <li>
                             @if(\Auth::check())
 
-                                    <a href="{{url('/my/profile')}}">
+                                    <a href="{{url('/profile/my-profile')}}">
                                         <i class="clip-user-2"></i>
                                         &nbsp;My Profile
                                     </a>
@@ -155,14 +155,14 @@
 
                         </li>
                         <li class="divider"></li>
-                        <li>
+                        {{-- <li>
                             @if(\Auth::check())
                                 <a href="{{ url('my/profile?tab=change_password') }}">
                                     <i class="fa fa-lock"></i>
                                     &nbsp;Change Password
                                 </a>
                             @endif
-                        </li>
+                        </li> --}}
                         <li>
                             @if(\Auth::check())
                                 <a href="{{url('auth/logout',isset(\Auth::user()->email) ? \Auth::user()->email : '')}}">
