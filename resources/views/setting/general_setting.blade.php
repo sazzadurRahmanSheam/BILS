@@ -82,9 +82,11 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
-									<div class="col-md-3 col-sm-3 col-xs-12">
-										<button type="submit" id="save_general_setting" class="btn btn-success">Save</button>
-									</div>
+									@if($actions['update_permisiion']==1)
+										<div class="col-md-3 col-sm-3 col-xs-12">
+											<button type="submit" id="save_general_setting" class="btn btn-success">Save</button>
+										</div>
+									@endif
 									 <div class="col-md-7 col-sm-7 col-xs-12">
 										<div id="form_submit_error" class="text-center" style="display:none"></div>
 									 </div>

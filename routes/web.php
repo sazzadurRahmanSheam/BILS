@@ -26,16 +26,13 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
 	
 	Route::get('/admin/ajax/admin-list',array('as'=>'Admin User List' , 'uses' =>'AdminController@ajaxAdminList'));
-	Route::post('/admin/admin-user-entry',array('as'=>'Admin User Entry' , 'uses' =>'AdminController@ajaxAdminEntry'));
-
-	Route::get('/admin/delete/{id}',array('as'=>'Admin Delete' , 'uses' =>'AdminController@adminDestroy'));
+	
 	Route::get('/admin/admin-view/{id}',array('as'=>'Admin View' , 'uses' =>'AdminController@adminUserView'));
-	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit' , 'uses' =>'AdminController@adminUserEdit'));
-	Route::get('cp/general/general-setting',array('as'=>'General Setting' , 'uses' =>'SettingController@generalSetting'));
-	Route::post('/general/setting-update',array('as'=>'General Setting Update' , 'uses' =>'SettingController@generalSettingUpdate'));
+	
+	
 	
 
-	Route::get('cp/module/manage-module',array('as'=>'Manage Module' , 'uses' =>'SettingController@moduleManagement'));
+	
 
 	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
 	
@@ -49,11 +46,11 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/module/delete/{id}',array('as'=>'Module Edit' , 'uses' =>'SettingController@moduleDelete'));
 
 	/*--------------Web Action start-------------*/
-	Route::get('cp/web-action/web-action-management',array('as'=>'Web Action Management' , 'uses' =>'SettingController@webActionManagement'));
+	
 	Route::get('/web-action/get-module-name',array('as'=>'Web Action Management' , 'uses' =>'SettingController@getModuleName'));
-	Route::post('/web-action/web-action-entry',array('as'=>'Web Action Entry' , 'uses' =>'SettingController@webActionEntry'));
+	
 	Route::get('/web-action/action-lists',array('as'=>'Web Action List' , 'uses' =>'SettingController@webActionList'));
-	Route::get('/web-action/edit/{id}',array('as'=>'Web Action Edit' , 'uses' =>'SettingController@web_action_edit'));
+	
 	/*--------------Web Action End-------------*/
 	
 	/*--------------Admin User Groups start-------------*/
@@ -66,11 +63,8 @@ Route::group(['middleware' => ['auth']], function () {
 	/*--------------Groups End-------------*/
 
 	/*--------------App User Start-------------*/
-	Route::get('user/app-user/app-user-management',array('as'=>'App User Management' , 'uses' =>'AppUserController@index'));
-	Route::post('/app-user/app-user-entry',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_entry_update'));
-	Route::get('/app-user/app-user-list',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_list'));
-	Route::get('/app-user/app-user-delete/{id}',array('as'=>'App User Delete' , 'uses' =>'AppUserController@app_user_delete'));
-	Route::get('/app-user/app-user-editedit/{id}',array('as'=>'App User Edit' , 'uses' =>'AppUserController@app_user_edit'));
+	Route::get('/app-user/app-user-list',array('as'=>'App User List' , 'uses' =>'AppUserController@app_user_list'));
+	
 	Route::get('/app-user/app-user-view/{id}',array('as'=>'App User View' , 'uses' =>'AppUserController@app_user_view'));
 	Route::get('settings/app-user/app-user-group-management',array('as'=>'App User Group Management' , 'uses' =>'AppUserController@app_user_management'));
 	Route::get('/app-user/load-app-user-groups',array('as'=>'App User Group List' , 'uses' =>'AppUserController@app_user_group_list_for_entry'));
@@ -101,17 +95,10 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surveys Category', 'uses' =>'SettingController@survey_category_edit'));
 	Route::get('/settings/survey/survey-categories-delete/{id}',array('as'=>'Delete Surveys Category', 'uses' =>'SettingController@survey_category_delete'));
 
-	
-	Route::get('settings/survey/manage-survey-category',array('as'=>'Surveys Category Management' , 'uses' =>'SettingController@survey_category_management'));
-	Route::post('/settings/survey/survey-category-entry',array('as'=>'Surveys Category Entry' , 'uses' =>'SettingController@survey_category_entry_update'));
-	Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List' , 'uses' =>'SettingController@survey_categories_get'));
-	Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surveys Category' , 'uses' =>'SettingController@survey_category_edit'));
-	Route::get('/settings/survey/survey-categories-delete/{id}',array('as'=>'Delete Surveys Category' , 'uses' =>'SettingController@survey_category_delete'));
-
 	/*-------------- Surveys End-------------*/
 
 
-	/*-------------- Courses Start-------------*/
+	/*-------------- Courses Category Start-------------*/
 
 	
 	Route::get('settings/courses/manage-courses-category',array('as'=>'Courses Category Management', 'uses' =>'SettingController@courses_category_management'));
@@ -120,14 +107,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/settings/courses/course-categories-edit/{id}',array('as'=>'Get Courses Category Edit', 'uses' =>'SettingController@course_category_edit'));
 	Route::get('/setting/course/course-category-delete/{id}',array('as'=>'Get Courses Category Delete', 'uses' =>'SettingController@course_category_delete'));
 
-	
-	Route::get('settings/courses/manage-courses-category',array('as'=>'Courses Category Management' , 'uses' =>'SettingController@courses_category_management'));
-	Route::post('/settings/courses/course-category-entry',array('as'=>'Courses Category Entry' , 'uses' =>'SettingController@course_category_entry_update'));
-	Route::get('/settings/courses/course-categories-list',array('as'=>'Get Courses Category List' , 'uses' =>'SettingController@course_categories_get'));
-	Route::get('/settings/courses/course-categories-edit/{id}',array('as'=>'Get Courses Category Edit' , 'uses' =>'SettingController@course_category_edit'));
-	Route::get('/setting/course/course-category-delete/{id}',array('as'=>'Get Courses Category Delete' , 'uses' =>'SettingController@course_category_delete'));
 
-	/*-------------- Courses End-------------*/
+	/*-------------- Courses Category End-------------*/
 
 
 	/*-------------- Publication Start-------------*/
@@ -161,12 +142,43 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 Route::group(['middleware' => ['permission']], function () {
-	Route::get('courses/open-course',array('as'=>'Open Course' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
-	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'26', 'uses' =>'SurveysController@index'));
+	/*----- Course Start -----*/
+	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
+	/*----- Course End -----*/
+
+	/*----- Survey Start -----*/
+	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'27', 'uses' =>'SurveysController@index'));
+	/*----- Survey End -----*/
 
 	/*----- Admin User Start -----*/
 	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'action_id'=>'1', 'uses' =>'AdminController@adminUserManagement'));
+	Route::post('/admin/admin-user-entry',array('as'=>'Admin User Entry', 'action_id'=>'2', 'uses' =>'AdminController@ajaxAdminEntry'));
+	Route::get('/admin/delete/{id}',array('as'=>'Admin Delete', 'action_id'=>'6', 'uses' =>'AdminController@adminDestroy'));
+	Route::get('/admin/edit/{id}',array('as'=>'Admin Edit', 'action_id'=>'4', 'uses' =>'AdminController@adminUserEdit'));
 	/*----- Admin User End -----*/
 
+	/*--------------App User Start-------------*/
+	Route::get('user/app-user/app-user-management',array('as'=>'App User Management', 'action_id'=>'7', 'uses' =>'AppUserController@index'));
+	Route::post('/app-user/app-user-entry',array('as'=>'App User Entry' , 'uses' =>'AppUserController@app_user_entry_update'));
+	Route::get('/app-user/app-user-editedit/{id}',array('as'=>'App User Edit', 'action_id'=>'9', 'uses' =>'AppUserController@app_user_edit'));
+	Route::get('/app-user/app-user-delete/{id}',array('as'=>'App User Delete', 'action_id'=>'10', 'uses' =>'AppUserController@app_user_delete'));
+	/*--------------App User End-------------*/
+
+	/*--------------Web Action start-------------*/
+	Route::get('cp/web-action/web-action-management',array('as'=>'Web Action Management', 'action_id'=>'32', 'uses' =>'SettingController@webActionManagement'));
+	Route::post('/web-action/web-action-entry',array('as'=>'Web Action Entry', 'action_id'=>'30', 'uses' =>'SettingController@webActionEntry'));
+	Route::get('/web-action/edit/{id}',array('as'=>'Web Action Edit', 'action_id'=>'31', 'uses' =>'SettingController@web_action_edit'));
+	/*--------------Web Action End-------------*/
+
+
+	/*--------------General Setting Start-------------*/
+	Route::get('cp/general/general-setting',array('as'=>'General Setting Management', 'action_id'=>'33', 'uses' =>'SettingController@generalSetting'));
+	Route::post('/general/setting-update',array('as'=>'General Setting Update', 'action_id'=>'33', 'uses' =>'SettingController@generalSettingUpdate'));
+	/*--------------General Setting End-------------*/
+
+
+	/*-------------- Manage Module Start-------------*/
+	Route::get('cp/module/manage-module',array('as'=>'Manage Module' , 'action_id'=>'35', 'uses' =>'SettingController@moduleManagement'));
+	/*-------------- Manage Module End-------------*/
 });
 

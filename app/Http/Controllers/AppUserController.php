@@ -10,9 +10,13 @@ use \App\System;
 use App\AppUser;
 use App\UserGroup;
 use App\AppUserGroupMember;
+use Auth;
+use App\Traits\HasPermission;
 
 class AppUserController extends Controller
 {
+	use HasPermission;
+	
 	public function __construct(Request $request)
     {
         $this->page_title = $request->route()->getName();
@@ -24,6 +28,13 @@ class AppUserController extends Controller
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "User";
 		$data['sub_module']= "App Users";
+
+		// action permissions
+		$admin_user_id 	= Auth::user()->id;
+		$add_action_id 	= 8;
+		$add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+		$data['actions']['add_permisiion']= $add_permisiion;
+
         return view('app_user.index', $data);
     }
 
@@ -149,13 +160,24 @@ class AppUserController extends Controller
 
     /*----- App User List Start -----*/
     public function app_user_list(){
+    	$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 9;
+		$delete_action_id 	= 10;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
     	$app_user_details = AppUser::Select('user_profile_image', 'id',  'name',  'email', 'status')->get();		
 		$return_arr = array();
 		foreach($app_user_details as $user){			
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$user['actions']="<button onclick='app_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='app_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>"
-							." <button onclick='delete_app_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+			$user['actions']="<button title='View' onclick='app_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
+
+			if($edit_permisiion>0){
+				$user['actions'] .=" <button title='Edit' onclick='app_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$user['actions'] .=" <button title='Delete' onclick='delete_app_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+			}
+
 			$return_arr[] = $user;
 		}
 		return json_encode(array('data'=>$return_arr));

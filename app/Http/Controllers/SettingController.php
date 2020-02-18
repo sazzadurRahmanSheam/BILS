@@ -16,9 +16,13 @@ use App\PublicationCategory;
 use App\CourseCategory;
 use App\NoticeCategory;
 use App\SurveyCategory;
+use Auth;
+use App\Traits\HasPermission;
 
 class SettingController extends Controller
 {
+	use HasPermission;
+
     public function __construct(Request $request)
     {
         $this->page_title = $request->route()->getName();
@@ -32,6 +36,12 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "General Setting";
 		$data['setting'] = Setting::first();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 34;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['update_permisiion']= $add_permisiion;
+
 		return view('setting.general_setting',$data);
 	}
 
@@ -90,6 +100,11 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "Manage Module";
 		$data['menu'] = Menu::all();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 36;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
 		return view('setting.manage_module',$data);
 	}
 
@@ -213,6 +228,11 @@ class SettingController extends Controller
 		$data['module_name']= "Cpanel";
 		$data['sub_module']= "Web Actions";
 		$data['setting'] = Setting::first();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 30;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
 		return view('setting.web_action_management',$data);
 	}
 
@@ -281,6 +301,10 @@ class SettingController extends Controller
 
 	//Web Action List
 	public function webActionList(){
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 31;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+	
 		$webActionList = WebAction::Select('web_actions.id as id','web_actions.activity_name as activity_name','web_actions.status as status','menus.module_name as module_name')
 			->leftJoin('menus', 'web_actions.module_id', '=', 'menus.id')
 			->where('web_actions.status','1')
@@ -289,7 +313,12 @@ class SettingController extends Controller
 		$return_arr = array();
 		foreach($webActionList as $webActionList){			
 			$webActionList['status']=($webActionList->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
-			$webActionList['actions']="<button onclick='web_action_edit(".$webActionList->id.")' id=edit_" . $webActionList->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			if($edit_permisiion>0){
+				$webActionList['actions']="<button title='Edit' onclick='web_action_edit(".$webActionList->id.")' id=edit_" . $webActionList->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			else{
+				$webActionList['actions']="";
+			}
 			$return_arr[] = $webActionList;
 		}
 		return json_encode(array('data'=>$return_arr));
