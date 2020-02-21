@@ -108,7 +108,7 @@ class AppUserController extends Controller
 				}
 				#Update
 				else if($request->app_user_edit_id != ''){
-					$data = App_user::find($request->app_user_edit_id);
+					$data = AppUser::find($request->app_user_edit_id);
 					$data->update($column_value);
 					$group = $request->input('group');
 					//first don't permission then permission
@@ -228,16 +228,38 @@ class AppUserController extends Controller
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
 		$data['sub_module']= "App User Groups";
+
+		// action permissions
+		$admin_user_id 	= Auth::user()->id;
+		$add_action_id 	= 45;
+		$add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+		$data['actions']['add_permisiion']= $add_permisiion;
+
         return view('app_user.app_user_groups', $data);
     }
     public function load_app_user_groups(){
-    	$app_user_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','2')->get();		
+
+    	$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 46;
+		$delete_action_id 	= 47;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
+    	$app_user_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','2')->get();
+
 		$return_arr = array();
 		foreach($app_user_group_list as $app_user_group_list){
 			$app_user_group_list['type']=($app_user_group_list->type == 1)?"Admin User":"App User";
 			$app_user_group_list['status']=($app_user_group_list->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$app_user_group_list['actions']=" <button title='Edit' onclick='admin_group_edit(".$app_user_group_list->id.")' id=edit_" . $app_user_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>"
-				." <button title='Delete' onclick='admin_group_delete(".$app_user_group_list->id.")' id='delete_" . $app_user_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+			$app_user_group_list['actions'] = "";
+
+			if($edit_permisiion>0){
+				$app_user_group_list['actions'] .="<button title='Edit' onclick='admin_group_edit(".$app_user_group_list->id.")' id=edit_" . $app_user_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$app_user_group_list['actions'] .=" <button title='Delete' onclick='admin_group_delete(".$app_user_group_list->id.")' id='delete_" . $app_user_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+			}
+			
 			$return_arr[] = $app_user_group_list;
 		}
 		return json_encode(array('data'=>$return_arr));

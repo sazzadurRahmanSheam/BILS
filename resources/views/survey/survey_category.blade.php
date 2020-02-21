@@ -56,8 +56,10 @@
 										<div class="form-group">
 											<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 											<div class="col-md-5 col-sm-5 col-xs-12">
-												<button type="submit" id="save_survey_category" class="btn btn-success save">Save</button>                    
-												<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+												@if($actions['add_permisiion']==1)
+													<button type="submit" id="save_survey_category" class="btn btn-success save">Save</button>                    
+													<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
+												@endif                         
 												<button type="button" id="cancle_btn" class="btn btn-danger hidden">Cancle</button>                         
 											</div>
 											<div class="col-md-5 col-sm-5 col-xs-12">

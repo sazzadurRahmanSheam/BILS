@@ -23,6 +23,6 @@ class MessageController extends Controller
     	$data['page_title'] = $this->page_title;
 		$data['module_name']= "Messages";
 		$data['sub_module']= "All Messages";
-		return view('messages.all_messages',$data);
+		return view('message.all_messages',$data);
     }
 }
