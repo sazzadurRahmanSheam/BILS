@@ -56,8 +56,10 @@
 							<div class="form-group">
 							<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<button type="submit" id="save_group" class="btn btn-success save">Save</button>                    
-								<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+								@if($actions['add_permisiion']==1)
+									<button type="submit" id="save_group" class="btn btn-success save">Save</button>                    
+									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
+								@endif                         
 								<button type="button" id="cancle_admin_user_group_button" class="btn btn-danger hidden">Cancle</button>                         
 							</div>
 							 <div class="col-md-7 col-sm-7 col-xs-12">
@@ -136,10 +138,9 @@
 								</div>
 								<div class="form-group">
 								<div class="col-md-5 col-sm-5 col-xs-12 text-center">
-									
-									<input type="hidden" name="group_id" id="group_id">  
+									<input type="hidden" name="group_id" id="group_id">
 									<button type="submit" id="save_permission" class="btn btn-success">Save Permission</button>                    
-									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>

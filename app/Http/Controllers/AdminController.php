@@ -19,6 +19,7 @@ use App\Traits\HasPermission;
 class AdminController extends Controller
 {
 	use HasPermission;
+	
     public function __construct(Request $request)
     {
         $this->page_title = $request->route()->getName();
@@ -55,7 +56,9 @@ class AdminController extends Controller
 		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')->orderBy('created_at','desc')->get();
+		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')
+			->orderBy('created_at','desc')
+			->get();
 		$return_arr = array();
 		foreach($adminUser as $user){		
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
@@ -216,6 +219,12 @@ class AdminController extends Controller
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "Settings";
 		$data['sub_module']= "Admin User Groups";
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 40;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
+
         return view('admin.admin_groups', $data);
 	}
 	/*Entry Admin User Group And App User Group*/
@@ -277,14 +286,32 @@ class AdminController extends Controller
 
 	//Admin Group show
 	public function admin_groups_list(){
+
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 42;
+		$delete_action_id 	= 43;
+		$give_permission_action_id = 41;
+		$edit_permisiion  = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+		$give_permission = $this->PermissionHasOrNot($admin_user_id,$give_permission_action_id);
+
 		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->get();		
 		$return_arr = array();
 		foreach($admin_group_list as $admin_group_list){
 			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
 			$admin_group_list['status']=($admin_group_list->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$admin_group_list['actions']="<button title='Permission' onclick='group_permission(".$admin_group_list->id.")' id=permission_" . $admin_group_list->id . "  class='btn btn-xs btn-warning' ><i class='clip-grid-3'></i></button>"
-				." <button title='Edit' onclick='admin_group_edit(".$admin_group_list->id.")' id=edit_" . $admin_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>"
-				." <button title='Delete' onclick='admin_group_delete(".$admin_group_list->id.")' id='delete_" . $admin_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+
+			$admin_group_list['actions'] = "";
+			if($give_permission>0){
+				$admin_group_list['actions'] .="<button title='Permission' onclick='group_permission(".$admin_group_list->id.")' id=permission_" . $admin_group_list->id . "  class='btn btn-xs btn-warning' ><i class='clip-grid-3'></i></button>";
+			}
+			if($edit_permisiion>0){
+				$admin_group_list['actions'] .=" <button title='Edit' onclick='admin_group_edit(".$admin_group_list->id.")' id=edit_" . $admin_group_list->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$admin_group_list['actions'] .=" <button title='Delete' onclick='admin_group_delete(".$admin_group_list->id.")' id='delete_" . $admin_group_list->id . "' class='btn btn-xs btn-danger'><i class='clip-remove'></i></button>";
+			}
+
 			$return_arr[] = $admin_group_list;
 		}
 		return json_encode(array('data'=>$return_arr));

@@ -13,13 +13,13 @@ body.modal-open,
 .modal-open .navbar-fixed-bottom {
   margin-right: 0;
 }
-/*
+
 .modal {
-  left: 21%;
+  left: 26%;
   bottom: auto;
   right: auto;
   padding: 0;
-  width: 90%;
+  width: 80%;
   margin-left: -250px;
   background-color: #ffffff;
   border: 1px solid #999999;
@@ -29,7 +29,7 @@ body.modal-open,
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
 }
-*/
+
 .modal.container {
   max-width: none;
 }

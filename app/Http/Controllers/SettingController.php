@@ -109,13 +109,25 @@ class SettingController extends Controller
 	}
 
 	public function ajaxMenuList(){
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 37;
+		$delete_action_id 	= 38;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
 		$mesuList = Menu::Select('module_name', 'id',  'menu_title',  'parent_id', 'menu_url','menu_icon_class','status')->where('status','1')->orderBy('created_at','desc')->get();		
 		
 		$return_arr = array();
 		foreach($mesuList as $menu){			
 			$menu['status']=($menu->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-success' disabled>In-active</button>";
-			$menu['actions']="<button onclick='moduleEdit(".$menu->id.")' id=edit_" . $menu->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='moduleDelete(".$menu->id.")' id='delete_" . $menu->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			$menu['actions'] = "";
+
+			if($edit_permisiion>0){
+				$menu['actions'] .="<button onclick='moduleEdit(".$menu->id.")' id=edit_" . $menu->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$menu['actions'] .=" <button onclick='moduleDelete(".$menu->id.")' id='delete_" . $menu->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			}
 			$return_arr[] = $menu;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -340,6 +352,12 @@ class SettingController extends Controller
 		$data['module_name']= "Settings";
 		$data['sub_module']= "Publication Category";
 		$data['setting'] = Setting::first();
+		// action permissions
+        $admin_user_id  = Auth::user()->id;
+        $add_action_id  = 49;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $data['actions']['add_permisiion']= $add_permisiion;
+
 		return view('publication.publication_category',$data);
 	}
 
@@ -387,12 +405,28 @@ class SettingController extends Controller
 	}
 	#Pubilacation Categories List
 	public function publication_categories_get(){
+
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 50;
+		$delete_action_id 	= 51;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
 		$publication_categories_list = PublicationCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($publication_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$row['actions']="<button onclick='publication_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='publication_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+
+			$row['actions']="";
+
+			if($edit_permisiion>0){
+				$row['actions'] .="<button onclick='publication_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$row['actions'] .=" <button onclick='publication_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			}
+
+			
 			$return_arr[] = $row;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -421,6 +455,12 @@ class SettingController extends Controller
 		$data['module_name']= "Settings";
 		$data['sub_module']= "Course Category";
 		$data['setting'] = Setting::first();
+		// action permissions
+		$admin_user_id 		   = Auth::user()->id;
+		$add_action_id 	   	   = 53;
+		$add_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+		$data['actions']['add_permisiion']= $add_permisiion;
+
 		return view('courses.course_category',$data);
 	}
 
@@ -471,10 +511,26 @@ class SettingController extends Controller
 	public function course_categories_get(){
 		$course_categories_list = CourseCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
-		foreach($course_categories_list as $row){			
+		foreach($course_categories_list as $row){
+
+			$admin_user_id 		= Auth::user()->id;
+			$edit_action_id 	= 54;
+			$delete_action_id 	= 55;
+			$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+			$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$row['actions']="<button onclick='course_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+
+			$row['actions']="";
+
+			if($edit_permisiion>0){
+				$row['actions'] .="<button onclick='course_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$row['actions'] .=" <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>>";
+			}
+
+			
 			$return_arr[] = $row;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -506,6 +562,12 @@ class SettingController extends Controller
 		$data['module_name']= "Settings";
 		$data['sub_module']= "Notice Category";
 		$data['setting'] = Setting::first();
+		// action permissions
+		$admin_user_id 		   = Auth::user()->id;
+		$add_action_id 	   	   = 57;
+		$add_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+		$data['actions']['add_permisiion']= $add_permisiion;
+
 		return view('notice.notice_category',$data);
 	}
 
@@ -554,12 +616,28 @@ class SettingController extends Controller
 
 	#Notice Categories List
 	public function notice_categories_get(){
+
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 58;
+		$delete_action_id 	= 59;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
 		$notice_categories_list = NoticeCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($notice_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$row['actions']="<button onclick='notice_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='notice_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+
+			$row['actions']="";
+
+			if($edit_permisiion>0){
+				$row['actions'] .="<button onclick='notice_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$row['actions'] .=" <button onclick='notice_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			}
+
+			
 			$return_arr[] = $row;
 		}
 		return json_encode(array('data'=>$return_arr));
@@ -590,6 +668,13 @@ class SettingController extends Controller
 		$data['module_name']= "Settings";
 		$data['sub_module']= "Survey Category";
 		$data['setting'] = Setting::first();
+
+		// action permissions
+		$admin_user_id 		   = Auth::user()->id;
+		$add_action_id 	   	   = 61;
+		$add_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+		$data['actions']['add_permisiion']= $add_permisiion;
+
 		return view('survey.survey_category',$data);
 	}
 
@@ -638,12 +723,28 @@ class SettingController extends Controller
 
 	#Survey Categories List
 	public function survey_categories_get(){
+
+		$admin_user_id 		= Auth::user()->id;
+		$edit_action_id 	= 62;
+		$delete_action_id 	= 63;
+		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
 		$survey_categories_list = SurveyCategory::Select('id', 'category_name', 'details', 'status')->get();		
 		$return_arr = array();
 		foreach($survey_categories_list as $row){			
 			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			$row['actions']="<button onclick='survey_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>"
-							." <button onclick='survey_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+
+			$row['actions']="";
+
+			if($edit_permisiion>0){
+				$row['actions'] .="<button onclick='survey_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>";
+			}
+			if ($delete_permisiion>0) {
+				$row['actions'] .=" <button onclick='survey_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+			}
+
+			
 			$return_arr[] = $row;
 		}
 		return json_encode(array('data'=>$return_arr));
