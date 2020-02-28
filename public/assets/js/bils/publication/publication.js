@@ -4,8 +4,22 @@ $(document).ready(function () {
 	// for get site url
 	var url = $('.site_url').val();
 
+	//Load Publication Type(Category)
+	$.ajax({
+		url: url+'/publication/load-publication-type',
+		success: function(response){
+			var data = JSON.parse(response);
+			if(!jQuery.isEmptyObject(data)){
+				var html = '';
+				$.each(data, function(i,data){
+					html += '<option>'+data["category_name"]+'</option>';
+				});
+			}
+			$('#publication_type').append(html);	
+		}
+	});
 	
-	//Load App User Group
+	//Load App User Group using notice controller
 	$.ajax({
 		url: url+'/notice/load-app-user-groups',
 		success: function(response){
@@ -21,25 +35,25 @@ $(document).ready(function () {
 			}
 			$('#app_user_group').html(html);
 			
-			$('#notice_form').iCheck({
+			$('#publication_form').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 					radioClass: 'iradio_flat-green'
 			});									
 			
-			$('#notice_form input#check-all').on('ifChecked', function () {
+			$('#publication_form input#check-all').on('ifChecked', function () {
 				
-				$("#notice_form .tableflat").iCheck('check');
+				$("#publication_form .tableflat").iCheck('check');
 			});
-			$('#notice_form input#check-all').on('ifUnchecked', function () {
+			$('#publication_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#notice_form .tableflat").iCheck('uncheck');
+				$("#publication_form .tableflat").iCheck('uncheck');
 			});
 			
 		}
 	});
 
 	//Notice Entry And update
-	$('#save_notice').click(function(event){		
+	$('#save_publication ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -47,16 +61,16 @@ $(document).ready(function () {
 			}
 		});
 		
-		var formData = new FormData($('#notice_form')[0]);
-		if($.trim($('#title').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Notice Title","#title");			
+		var formData = new FormData($('#publication_form')[0]);
+		if($.trim($('#publication_title').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Publication Title","#publication_title");			
 		}
 		else if($.trim($('#details').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Notice Details","#details");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Publication Details","#details");			
 		}
 		else{
 			$.ajax({
-				url: url+"/notice/notice-entry",
+				url: url+"/publication/publication-entry",
 				type:'POST',
 				data:formData,
 				async:false,
@@ -79,12 +93,12 @@ $(document).ready(function () {
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
 						
-						notice_table.ajax.reload();
+						publication_table.ajax.reload();
 						clear_form();
-						$("#notice_entry").html('Add Notice');
+						$("#publication_entry").html('Add Publication');
 						$(".save").html('Save');
-						$("#notice_list").trigger('click');
-						$("#save_notice").html('Save');
+						$("#publication_list").trigger('click');
+						
 					}
 					$(window).scrollTop();
 				 }	
@@ -92,41 +106,43 @@ $(document).ready(function () {
 		}	
 	});
 
-	//Notice Data Table
-	var notice_table = $('#notice_table').DataTable({
+	//Publication Data Table
+	var publication_table = $('#publication_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/notice/notice-list",
+		"ajax": url+"/publication/publication-list",
 		"aoColumns": [
 			{ mData: 'id'},
-			{ mData: 'title' },
-			{ mData: 'details'},
+			{ mData: 'publication_title' },
+			// { mData: 'details'},
+			{ mData: 'publication_type'},
+			{ mData: 'authors'},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
 
-	//Notice View
-	notice_view = function notice_view(id){
-		var notice_id = id;
+	//Publication View
+	publication_view = function publication_view(id){
+		var publication_id = id;
 		$.ajax({
-			url: url+'/notice/notice-view/'+notice_id,
+			url: url+'/publication/publication-view/'+publication_id,
 			success: function(response){
 				var data = JSON.parse(response);
 				$("#admin_user_view").modal();
-				$("#modal_title").html("Notice View");
-				var notice_info = "";
-				notice_info += "<h3>"+data['title']+"</h3><hr>";
-				notice_info += "<p>"+data['details']+"</p>";
-				$("#modal_body").html(notice_info);
-				$("#save_notice").html('Update');
+				$("#modal_title").html("Publication View");
+				var publication_info = "";
+				publication_info += "<h3>"+data['publication_title']+"</h3>";
+				publication_info += "<h5><span class='badge badge-info'>Type: "+data['publication_type']+"</span> <span class='badge badge-warning'> Author: "+data['authors']+"</span></h5><hr>";
+				publication_info += "<p>"+data['details']+"</p>";
+				$("#modal_body").html(publication_info);
 			}
 		});
 	}
 
-	//Notice delete
-	delete_notice = function delete_notice(id){
+	//Publication delete
+	delete_publication = function delete_publication(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -137,14 +153,14 @@ $(document).ready(function () {
 		}).then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: url+'/notice/notice-delete/'+delete_id,
+					url: url+'/publication/publication-delete/'+delete_id,
 					cache: false,
 					success: function(response){
 						var response = JSON.parse(response);
 						swal(response['deleteMessage'], {
 						icon: "success",
 						});
-						notice_table.ajax.reload();
+						publication_table.ajax.reload();
 					}
 				});
 			} 
@@ -156,57 +172,26 @@ $(document).ready(function () {
 		});
 	}
 
-	//Notice Edit
-	edit_notice = function edit_notice(id){
+	//Publication Edit
+	edit_publication = function edit_publication(id){
 		var edit_id = id;
 		$.ajax({
-			url: url+'/notice/notice-edit/'+edit_id,
+			url: url+'/publication/publication-edit/'+edit_id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#notice_entry").trigger('click');
-				$("#notice_entry").html('Notice Update');
-				$("#save_notice").html('Update');
-				$("#notice_edit_id").val(data['id']);
-				$("#title").val(data['title']);
+				$("#publication_entry").trigger('click');
+				$("#publication_entry").html('Publication Update');
+				$("#save_publication").html('Update');
+				$("#publication_edit_id").val(data['id']);
+				$("#publication_title").val(data['publication_title']);
 				$("#details").val(data['details']);
-				$("#notice_date").val(data['notice_date']);
-				$("#expire_date").val(data['expire_date']);
+				$("#authors").val(data['authors']);
+				$("#publication_type").val(data['publication_type']).change();
 				(data['status']=='1')?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
 			}
 		});
 	}
 
-	//autosuggest
-	$.ajaxSetup({
-		headers:{
-			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-		}
-	});
-	$("#app_user_name").autocomplete({
-
-		search: function() {
-		},
-		source: function(request, response) {
-			$.ajax({
-				url: url+'/notice/app-user-name',
-				dataType: "json",
-				type: "post",
-				async:false,
-				data: {
-					term: request.term
-				},
-				success: function(data) {
-					response(data);
-				}
-			});
-		},
-		minLength: 2,
-		select: function(event, ui) { 
-			var id = ui.item.id;
-			$(this).next().val(id);
-			$("#app_user_id").val(id);
-		}
-	});
 
 
 	

@@ -74,6 +74,12 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Publication Start-------------*/
 	Route::get('/setting/publication/publication-categories-list',array('as'=>'Get Publication Category', 'uses' =>'SettingController@publication_categories_get'));
+
+	Route::get('/publication/publication-list',array('as'=>'Publication List', 'uses' =>'PublicationController@publicationList'));
+	Route::get('/publication/load-publication-type',array('as'=>'Load Publication Type', 'uses' =>'PublicationController@publicationTypeList'));
+
+
+	Route::get('/publication/publication-view/{id}',array('as'=>'Publication View', 'uses' =>'PublicationController@publicationView'));
 	/*-------------- Publication End-------------*/
 
 
@@ -198,6 +204,20 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('/notice/notice-edit/{id}',array('as'=>'Notice Edit', 'action_id'=>'66', 'uses' =>'NoticeController@noticeEdit'));
 	Route::get('/notice/notice-delete/{id}',array('as'=>'Notice Delete', 'action_id'=>'67', 'uses' =>'NoticeController@noticeDelete'));
 	/*--------------  Notice Management End  -------------*/
+
+
+	/*--------------  Publication Management Start  -------------*/
+	Route::get('publication/publication-management',array('as'=>'Publication Management', 'action_id'=>'68', 'uses' =>'PublicationController@index'));
+	Route::post('/publication/publication-entry',array('as'=>'Publication Entry', 'action_id'=>'69', 'uses' =>'PublicationController@publicationEntry'));
+	Route::get('/publication/publication-edit/{id}',array('as'=>'Publication Edit', 'action_id'=>'70', 'uses' =>'PublicationController@publicationEdit'));
+	Route::get('/publication/publication-delete/{id}',array('as'=>'Publication Delete', 'action_id'=>'71', 'uses' =>'PublicationController@publicationDelete'));
+	/*--------------  Publication Management End  -------------*/
+
+
+	/*--------------  Sent Message Management Start  -------------*/
+	Route::get('messages/sent-message',array('as'=>'Sent Message Management', 'action_id'=>'72', 'uses' =>'MessageController@sentMessageManage'));
+	Route::post('/message/message-entry',array('as'=>'Message Entry', 'action_id'=>'73', 'uses' =>'MessageController@messageEntry'));
+	/*--------------  Sent Message Management End  -------------*/
 
 });
 

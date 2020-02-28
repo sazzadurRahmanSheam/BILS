@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('style')
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"><link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 @endsection
 @section('content')
 	<!--MESSAGE-->
@@ -16,21 +16,21 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
-                        <a id="notice_list" data-toggle="tab" href="#notice_list_div">
-                           <b> Notice List</b>
+                        <a id="message_list" data-toggle="tab" href="#message_list_div">
+                           <b> Message List</b>
                         </a>
                     </li>
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
-	                        <a data-toggle="tab" href="#entry_form_div" id="notice_entry">
-	                           <b> Add notice</b>
+	                        <a data-toggle="tab" href="#entry_form_div" id="message_entry">
+	                           <b> Add Message</b>
 	                        </a>
 	                    </li>
 	                @endif
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
-                    <div id="notice_list_div" class="tab-pane in active">
+                    <div id="message_list_div" class="tab-pane in active">
 						<div class="row no-margin-row">
                            <!-- List of Categories -->
 							<div class="panel panel-default">
@@ -55,12 +55,14 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover notice_table" id="notice_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover message_table" id="message_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>Notice ID</th>
+												<th>ID</th>
 												<th>Title</th>
-												<th>Details </th>
+												{{-- <th>Details </th> --}}
+												<th>Type </th>
+												<th>Author </th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>
 											</tr>
@@ -78,23 +80,19 @@
                     <!-- PANEL FOR CHANGE PASSWORD -->
                     <div id="entry_form_div" class="tab-pane in">
                         <div class="row no-margin-row">
-							<form id="notice_form" name="notice_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+							<form id="message_form" name="message_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
 								<div class="col-md-12">
-									<input type="hidden" name="notice_edit_id" id="notice_edit_id">
+									<input type="hidden" name="message_edit_id" id="message_edit_id">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Notice Title<span class="required">*</span></label>
-										<div class="col-md-10 col-sm-10 col-xs-6">
-											<input type="text" id="title" name="title" class="form-control"/>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Notice Details<span class="required">*</span></label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Megssage<span class="required">*</span></label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
-											<textarea id="details" name="details" class="form-control col-lg-12"></textarea> 
+											<textarea id="admin_message" name="admin_message" class="form-control col-lg-12"></textarea> 
 										</div>
 									</div>
+									
+
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Attachment</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
@@ -107,16 +105,7 @@
 											<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Notice Date</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="date" id="notice_date" name="notice_date"  class="form-control col-lg-12"/>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Expire Date</label>
-										<div class="col-md-4 col-sm-4 col-xs-4">
-											<input type="date" id="expire_date" name="expire_date" class="form-control col-lg-12"/>
-										</div>						
-									</div>
+
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >App User Name</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
@@ -124,7 +113,6 @@
 										</div>
 										<input type="hidden" name="app_user_id" id="app_user_id">
 									</div>
-
 
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >App User Group</label>
@@ -141,7 +129,7 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12"> 
-									<button type="submit" id="save_notice" class="btn btn-success">Save</button>                    
+									<button type="submit" id="save_message" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
@@ -163,8 +151,9 @@
 
 
 @section('JScript')
-	<script src="{{ asset('assets/js/bils/notice/notice.js')}}"></script>
+	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	
 {{-- <script src=" {{ asset('ckeditor/ckeditor.js') }} "></script>
 	<script>
     	CKEDITOR.replace( 'details' );

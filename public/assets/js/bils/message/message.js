@@ -5,7 +5,7 @@ $(document).ready(function () {
 	var url = $('.site_url').val();
 
 	
-	//Load App User Group
+	//Load App User Group Using Notice Controller
 	$.ajax({
 		url: url+'/notice/load-app-user-groups',
 		success: function(response){
@@ -14,32 +14,32 @@ $(document).ready(function () {
 				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >App User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="app_user_group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox"  name="app_user_group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
 					});
 					html += '</td></tr>';
 				html +='</table>';	
 			}
 			$('#app_user_group').html(html);
 			
-			$('#notice_form').iCheck({
+			$('#message_form').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 					radioClass: 'iradio_flat-green'
 			});									
 			
-			$('#notice_form input#check-all').on('ifChecked', function () {
+			$('#message_form input#check-all').on('ifChecked', function () {
 				
-				$("#notice_form .tableflat").iCheck('check');
+				$("#message_form .tableflat").iCheck('check');
 			});
-			$('#notice_form input#check-all').on('ifUnchecked', function () {
+			$('#message_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#notice_form .tableflat").iCheck('uncheck');
+				$("#message_form .tableflat").iCheck('uncheck');
 			});
 			
 		}
 	});
 
-	//Notice Entry And update
-	$('#save_notice').click(function(event){		
+	//Message Entry And update
+	$('#save_message ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -47,16 +47,17 @@ $(document).ready(function () {
 			}
 		});
 		
-		var formData = new FormData($('#notice_form')[0]);
-		if($.trim($('#title').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Notice Title","#title");			
+		var formData = new FormData($('#message_form')[0]);
+		if($.trim($('#admin_message').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Message","#admin_message");			
 		}
-		else if($.trim($('#details').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Notice Details","#details");			
-		}
+		// if( $('#app_user_group').checked==true ){
+		// 	success_or_error_msg('#form_submit_error','danger',"Please Select App User Name Or app Urser group");			
+		// }
+		
 		else{
 			$.ajax({
-				url: url+"/notice/notice-entry",
+				url: url+"/message/message-entry",
 				type:'POST',
 				data:formData,
 				async:false,
@@ -78,13 +79,13 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						
-						notice_table.ajax.reload();
+						$("#message_form .tableflat").iCheck('uncheck');
+						//messasge_table.ajax.reload();
 						clear_form();
-						$("#notice_entry").html('Add Notice');
-						$(".save").html('Save');
-						$("#notice_list").trigger('click');
-						$("#save_notice").html('Save');
+						// $("#publication_entry").html('Add Publication');
+						// $(".save").html('Save');
+						// $("#publication_list").trigger('click');
+						
 					}
 					$(window).scrollTop();
 				 }	
@@ -92,41 +93,43 @@ $(document).ready(function () {
 		}	
 	});
 
-	//Notice Data Table
-	var notice_table = $('#notice_table').DataTable({
+	//Publication Data Table
+	/*var publication_table = $('#publication_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/notice/notice-list",
+		"ajax": url+"/publication/publication-list",
 		"aoColumns": [
 			{ mData: 'id'},
-			{ mData: 'title' },
-			{ mData: 'details'},
+			{ mData: 'publication_title' },
+			// { mData: 'details'},
+			{ mData: 'publication_type'},
+			{ mData: 'authors'},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
 
-	//Notice View
-	notice_view = function notice_view(id){
-		var notice_id = id;
+	//Publication View
+	publication_view = function publication_view(id){
+		var publication_id = id;
 		$.ajax({
-			url: url+'/notice/notice-view/'+notice_id,
+			url: url+'/publication/publication-view/'+publication_id,
 			success: function(response){
 				var data = JSON.parse(response);
 				$("#admin_user_view").modal();
-				$("#modal_title").html("Notice View");
-				var notice_info = "";
-				notice_info += "<h3>"+data['title']+"</h3><hr>";
-				notice_info += "<p>"+data['details']+"</p>";
-				$("#modal_body").html(notice_info);
-				$("#save_notice").html('Update');
+				$("#modal_title").html("Publication View");
+				var publication_info = "";
+				publication_info += "<h3>"+data['publication_title']+"</h3>";
+				publication_info += "<h5><span class='badge badge-info'>Type: "+data['publication_type']+"</span> <span class='badge badge-warning'> Author: "+data['authors']+"</span></h5><hr>";
+				publication_info += "<p>"+data['details']+"</p>";
+				$("#modal_body").html(publication_info);
 			}
 		});
 	}
 
-	//Notice delete
-	delete_notice = function delete_notice(id){
+	//Publication delete
+	delete_publication = function delete_publication(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -137,14 +140,14 @@ $(document).ready(function () {
 		}).then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: url+'/notice/notice-delete/'+delete_id,
+					url: url+'/publication/publication-delete/'+delete_id,
 					cache: false,
 					success: function(response){
 						var response = JSON.parse(response);
 						swal(response['deleteMessage'], {
 						icon: "success",
 						});
-						notice_table.ajax.reload();
+						publication_table.ajax.reload();
 					}
 				});
 			} 
@@ -156,25 +159,26 @@ $(document).ready(function () {
 		});
 	}
 
-	//Notice Edit
-	edit_notice = function edit_notice(id){
+	//Publication Edit
+	edit_publication = function edit_publication(id){
 		var edit_id = id;
 		$.ajax({
-			url: url+'/notice/notice-edit/'+edit_id,
+			url: url+'/publication/publication-edit/'+edit_id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#notice_entry").trigger('click');
-				$("#notice_entry").html('Notice Update');
-				$("#save_notice").html('Update');
-				$("#notice_edit_id").val(data['id']);
-				$("#title").val(data['title']);
+				$("#publication_entry").trigger('click');
+				$("#publication_entry").html('Publication Update');
+				$("#save_publication").html('Update');
+				$("#publication_edit_id").val(data['id']);
+				$("#publication_title").val(data['publication_title']);
 				$("#details").val(data['details']);
-				$("#notice_date").val(data['notice_date']);
-				$("#expire_date").val(data['expire_date']);
+				$("#authors").val(data['authors']);
+				$("#publication_type").val(data['publication_type']).change();
 				(data['status']=='1')?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
 			}
 		});
-	}
+	}*/
+
 
 	//autosuggest
 	$.ajaxSetup({
@@ -207,6 +211,7 @@ $(document).ready(function () {
 			$("#app_user_id").val(id);
 		}
 	});
+
 
 
 	
