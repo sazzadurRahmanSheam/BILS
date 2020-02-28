@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Notice;
+use App\Notification;
 use App\UserGroup;
 use App\AppUser;
+use App\AppUserGroupMember;
+
 use Auth;
 use Validator;
 use Session;
@@ -45,8 +48,7 @@ class NoticeController extends Controller
     public function noticeEntry(Request $request){ 
 		$rule = [
             'title' => 'Required|max:200',
-            'expire_date' => 'Required',
-            'notice_date' => 'Required',
+            'details' => 'Required',
         ];
 
         $validation = Validator::make($request->all(), $rule);
@@ -56,6 +58,18 @@ class NoticeController extends Controller
 			return json_encode($return);
         }
 		else{
+			/*----- For notification -----*/
+			$app_user_group = $request->input('app_user_group');
+			$app_user_name = $request->app_user_name;
+			$app_user_id = $request->app_user_id;
+			$from_id = Auth::user()->id;
+			$from_user_type = 'Admin';
+			$to_user_type = 'App User';
+			$notification_title = $request->title;
+			$message = $request->details;
+			/*----- For notification -----*/
+			
+			
 				
 			try{
 				DB::beginTransaction();
@@ -72,6 +86,48 @@ class NoticeController extends Controller
 						'created_by'=>$created_by,	
 					];
 					$response = Notice::create($column_value);
+
+					## Insert Into Notification For Single App User
+					if (isset($app_user_id)&&isset($app_user_name)&&$app_user_id!=""&&$app_user_name!="") {
+						
+						$to_id = $app_user_id;
+						
+						
+						$column_value = [
+							'from_id'=>$from_id,
+							'from_user_type'=>$from_user_type,
+							'to_id'=>$to_id,	
+							'to_user_type'=>$to_user_type,	
+							'notification_title'=>$notification_title,	
+							'message'=>$message,	
+						];
+						$response = Notification::create($column_value);
+					}
+					if (isset($app_user_group)&& $app_user_group!="") {
+						foreach ($app_user_group as $row) {
+							$to_user_id = AppUserGroupMember::distinct()
+											->select('app_user_id')
+											->where('group_id',$row)
+											->groupBy('app_user_id')
+											->get();
+
+							foreach ($to_user_id as $k) {
+								
+								$to_id = $k['app_user_id'];
+								$column_value = [
+									'from_id'=>$from_id,
+									'from_user_type'=>$from_user_type,
+									'to_id'=>$to_id,	
+									'to_user_type'=>$to_user_type,	
+									'notification_title'=>$notification_title,	
+									'message'=>$message,	
+								];
+								$response = Notification::create($column_value);
+							}
+						}
+					}
+
+
 				}
 				else{
 					$updated_by = Auth::user()->name;
@@ -116,13 +172,13 @@ class NoticeController extends Controller
 		foreach($notice_list as $data){		
 			$data['status']=($data->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
 			
-			$data['actions']=" <button onclick='notice_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
+			$data['actions']=" <button title='View' onclick='notice_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
 
 			if($edit_permisiion>0){
-				$data['actions'] .=" <button onclick='edit_notice(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
+				$data['actions'] .=" <button title='Edit' onclick='edit_notice(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
 			}
 			if ($delete_permisiion>0) {
-				$data['actions'] .=" <button onclick='delete_notice(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+				$data['actions'] .=" <button title='Delete' onclick='delete_notice(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
 			}
 			$return_arr[] = $data;
 		}
@@ -150,9 +206,21 @@ class NoticeController extends Controller
 	}
 
 	public function appUserNameAutoComplete(){
+		$name = $_REQUEST['term'];
+		
 		$data = AppUser::select('id', 'name')
-				->
-				;
+				->where('name','like','%'.$name.'%')
+				->get();
+		$data_count = $data->count();
+
+		 if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["name"]);
+            }
+        } 
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
 		return json_encode($json);
 	}
 
