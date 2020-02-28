@@ -4,22 +4,8 @@ $(document).ready(function () {
 	// for get site url
 	var url = $('.site_url').val();
 
-	//Load Publication Type(Category)
-	$.ajax({
-		url: url+'/publication/load-publication-type',
-		success: function(response){
-			var data = JSON.parse(response);
-			if(!jQuery.isEmptyObject(data)){
-				var html = '';
-				$.each(data, function(i,data){
-					html += '<option>'+data["category_name"]+'</option>';
-				});
-			}
-			$('#publication_type').append(html);	
-		}
-	});
 	
-	//Load App User Group using notice controller
+	//Load App User Group Using Notice Controller
 	$.ajax({
 		url: url+'/notice/load-app-user-groups',
 		success: function(response){
@@ -28,32 +14,32 @@ $(document).ready(function () {
 				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >App User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="app_user_group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox"  name="app_user_group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
 					});
 					html += '</td></tr>';
 				html +='</table>';	
 			}
 			$('#app_user_group').html(html);
 			
-			$('#publication_form').iCheck({
+			$('#message_form').iCheck({
 					checkboxClass: 'icheckbox_flat-green',
 					radioClass: 'iradio_flat-green'
 			});									
 			
-			$('#publication_form input#check-all').on('ifChecked', function () {
+			$('#message_form input#check-all').on('ifChecked', function () {
 				
-				$("#publication_form .tableflat").iCheck('check');
+				$("#message_form .tableflat").iCheck('check');
 			});
-			$('#publication_form input#check-all').on('ifUnchecked', function () {
+			$('#message_form input#check-all').on('ifUnchecked', function () {
 				
-				$("#publication_form .tableflat").iCheck('uncheck');
+				$("#message_form .tableflat").iCheck('uncheck');
 			});
 			
 		}
 	});
 
-	//Notice Entry And update
-	$('#save_publication ').click(function(event){		
+	//Message Entry And update
+	$('#save_message ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -61,16 +47,17 @@ $(document).ready(function () {
 			}
 		});
 		
-		var formData = new FormData($('#publication_form')[0]);
-		if($.trim($('#publication_title').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Publication Title","#publication_title");			
+		var formData = new FormData($('#message_form')[0]);
+		if($.trim($('#admin_message').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Message","#admin_message");			
 		}
-		else if($.trim($('#details').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Publication Details","#details");			
-		}
+		// if( $('#app_user_group').checked==true ){
+		// 	success_or_error_msg('#form_submit_error','danger',"Please Select App User Name Or app Urser group");			
+		// }
+		
 		else{
 			$.ajax({
-				url: url+"/publication/publication-entry",
+				url: url+"/message/message-entry",
 				type:'POST',
 				data:formData,
 				async:false,
@@ -92,12 +79,12 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						
-						publication_table.ajax.reload();
+						$("#message_form .tableflat").iCheck('uncheck');
+						//messasge_table.ajax.reload();
 						clear_form();
-						$("#publication_entry").html('Add Publication');
-						$(".save").html('Save');
-						$("#publication_list").trigger('click');
+						// $("#publication_entry").html('Add Publication');
+						// $(".save").html('Save');
+						// $("#publication_list").trigger('click');
 						
 					}
 					$(window).scrollTop();
@@ -107,7 +94,7 @@ $(document).ready(function () {
 	});
 
 	//Publication Data Table
-	var publication_table = $('#publication_table').DataTable({
+	/*var publication_table = $('#publication_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
@@ -190,7 +177,40 @@ $(document).ready(function () {
 				(data['status']=='1')?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
 			}
 		});
-	}
+	}*/
+
+
+	//autosuggest
+	$.ajaxSetup({
+		headers:{
+			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$("#app_user_name").autocomplete({
+
+		search: function() {
+		},
+		source: function(request, response) {
+			$.ajax({
+				url: url+'/notice/app-user-name',
+				dataType: "json",
+				type: "post",
+				async:false,
+				data: {
+					term: request.term
+				},
+				success: function(data) {
+					response(data);
+				}
+			});
+		},
+		minLength: 2,
+		select: function(event, ui) { 
+			var id = ui.item.id;
+			$(this).next().val(id);
+			$("#app_user_id").val(id);
+		}
+	});
 
 
 

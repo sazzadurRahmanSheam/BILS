@@ -213,5 +213,11 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('/publication/publication-delete/{id}',array('as'=>'Publication Delete', 'action_id'=>'71', 'uses' =>'PublicationController@publicationDelete'));
 	/*--------------  Publication Management End  -------------*/
 
+
+	/*--------------  Sent Message Management Start  -------------*/
+	Route::get('messages/sent-message',array('as'=>'Sent Message Management', 'action_id'=>'72', 'uses' =>'MessageController@sentMessageManage'));
+	Route::post('/message/message-entry',array('as'=>'Message Entry', 'action_id'=>'73', 'uses' =>'MessageController@messageEntry'));
+	/*--------------  Sent Message Management End  -------------*/
+
 });
 

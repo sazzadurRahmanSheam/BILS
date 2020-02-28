@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('style')
-	
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"><link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 @endsection
 @section('content')
 	<!--MESSAGE-->
@@ -16,21 +16,21 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
-                        <a id="publication_list" data-toggle="tab" href="#publication_list_div">
-                           <b> Publication List</b>
+                        <a id="message_list" data-toggle="tab" href="#message_list_div">
+                           <b> Message List</b>
                         </a>
                     </li>
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
-	                        <a data-toggle="tab" href="#entry_form_div" id="publication_entry">
-	                           <b> Add Publication</b>
+	                        <a data-toggle="tab" href="#entry_form_div" id="message_entry">
+	                           <b> Add Message</b>
 	                        </a>
 	                    </li>
 	                @endif
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
-                    <div id="publication_list_div" class="tab-pane in active">
+                    <div id="message_list_div" class="tab-pane in active">
 						<div class="row no-margin-row">
                            <!-- List of Categories -->
 							<div class="panel panel-default">
@@ -55,7 +55,7 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover publication_table" id="publication_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover message_table" id="message_table" style="width:100% !important"> 
 										<thead>
 											<tr>
 												<th>ID</th>
@@ -80,36 +80,18 @@
                     <!-- PANEL FOR CHANGE PASSWORD -->
                     <div id="entry_form_div" class="tab-pane in">
                         <div class="row no-margin-row">
-							<form id="publication_form" name="publication_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+							<form id="message_form" name="message_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
 								<div class="col-md-12">
-									<input type="hidden" name="publication_edit_id" id="publication_edit_id">
+									<input type="hidden" name="message_edit_id" id="message_edit_id">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Publication Title<span class="required">*</span></label>
-										<div class="col-md-10 col-sm-10 col-xs-6">
-											<input type="text" id="publication_title" name="publication_title" class="form-control"/>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Publication Details<span class="required">*</span></label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Megssage<span class="required">*</span></label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
-											<textarea id="details" name="details" class="form-control col-lg-12"></textarea> 
+											<textarea id="admin_message" name="admin_message" class="form-control col-lg-12"></textarea> 
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Publication Type</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<select name="publication_type" id="publication_type" class="form-control">
-												<option value="" disabled="" selected="">Select Publication Type</option>
-												
-											</select>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Author</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="authors" name="authors" class="form-control col-lg-12"/>
-										</div>
-									</div>
+									
 
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Attachment</label>
@@ -122,6 +104,14 @@
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
 										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >App User Name</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="app_user_name" name="app_user_name" class="form-control col-lg-12"/>
+										</div>
+										<input type="hidden" name="app_user_id" id="app_user_id">
 									</div>
 
 									<div class="form-group">
@@ -139,7 +129,7 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12"> 
-									<button type="submit" id="save_publication" class="btn btn-success save">Save</button>                    
+									<button type="submit" id="save_message" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
@@ -161,7 +151,8 @@
 
 
 @section('JScript')
-	<script src="{{ asset('assets/js/bils/publication/publication.js')}}"></script>
+	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	
 {{-- <script src=" {{ asset('ckeditor/ckeditor.js') }} "></script>
 	<script>
