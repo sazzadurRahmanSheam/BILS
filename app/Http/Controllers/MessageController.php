@@ -95,7 +95,7 @@ class MessageController extends Controller
                                     'admin_id'=>$admin_id,
                                     'app_user_id'=>$app_user_id,
                                     'message_id'=>$message_id,
-                       
+                                    'status'=>$is_active,
                                 ];
                                 $response = MessageMaster::create($column_value);
                             }
@@ -111,6 +111,7 @@ class MessageController extends Controller
                             'admin_id'=>$admin_id,
                             'app_user_id'=>$request->app_user_id,
                             'message_id'=>$message_id,
+                            'status'=>$is_active,
                        
                         ];
                         $response = MessageMaster::create($column_value);
@@ -135,6 +136,50 @@ class MessageController extends Controller
             }
         }           
     }
+
+
+    //Message List
+    public function messageList(){
+
+        $admin_user_id      = Auth::user()->id;
+        $edit_action_id     = 74;
+        $delete_action_id   = 75;
+        $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+        $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
+        $message_list = MessageMaster::Select('id', 'message_id', 'admin_id', 'admin_message', 'app_user_id', 'is_seen', 'status')
+                        ->orderBy('id','desc')
+                        ->get();
+        $return_arr = array();
+        foreach($message_list as $data){ 
+            $data['is_seen']=($data->is_seen == 1)?"<button class='btn btn-xs btn-success' disabled>Seen</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-seen</button>";       
+            
+            if ($data->status==0) {
+                $data['status'] = "<button class='btn btn-xs btn-warning' disabled>In-active</button>";
+            }
+            else if($data->status==1){
+                 $data['status'] = "<button class='btn btn-xs btn-success' disabled>Active</button>";
+            }
+            else if($data->status==2){
+                 $data['status'] = "<button class='btn btn-xs btn-danger' disabled>Deleted</button>";
+            }
+            
+            $data['actions']=" <button title='View' onclick='publication_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+
+            if($edit_permisiion>0){
+                $data['actions'] .=" <button title='Edit' onclick='edit_publication(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+            }
+            if ($delete_permisiion>0) {
+                $data['actions'] .=" <button title='Delete' onclick='delete_publication(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+            }
+            $return_arr[] = $data;
+        }
+        return json_encode(array('data'=>$return_arr));
+    }
+
+
+
+
 
 
 

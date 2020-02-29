@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Messages Start-------------*/
 	Route::get('messages/all-messages-management',array('as'=>'All Messages Management', 'uses' =>'MessageController@all_messages'));
+	Route::get('/message/sent-message-list',array('as'=>'Sent Message List', 'uses' =>'MessageController@messageList'));
 	/*-------------- Messages End-------------*/
 
 
