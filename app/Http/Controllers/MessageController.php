@@ -66,7 +66,6 @@ class MessageController extends Controller
                  $admin_id = Auth::user()->id;
                 
 
-                
                 if ($request->message_edit_id == '') {
 
                     $message_id = MessageMaster::select('message_id')->orderBy('id','desc')->first();
@@ -81,40 +80,29 @@ class MessageController extends Controller
                     $app_user_group = $request->input('app_user_group');
 
                     if (isset($app_user_group)&& $app_user_group!="") {
-                        $g_id = "";
-                        foreach ($app_user_group as $row) {
-                            if ($g_id=="") {
-                                $g_id = $row;
-                            }
-                            else{
-                                $g_id = $g_id.",".$row;
-                            }
-                            // $app_user_id = AppUserGroupMember::select('app_user_id')
-                            //                 ->where('group_id',$row)
-                            //                 ->distinct('app_user_id')
-                            //                 ->get();
-                                            
-                            // foreach ($app_user_id as $k) {
-                            //     $app_user_id = $k['app_user_id'];
-                            //     $column_value = [
-                            //         'admin_message'=>$request->admin_message,
-                            //         'admin_id'=>$admin_id,
-                            //         'app_user_id'=>$app_user_id,
-                            //         'message_id'=>$message_id,
                        
-                            //     ];
-                            //     $response = MessageMaster::create($column_value);
-                            // }
-                        }
-                        //echo $g_id;
-                        //var_dump($g_id);
-                        $myArray = explode(',', $g_id);
-                        //print_r ($myArray);
-                        $app_user_id = AppUserGroupMember::select('app_user_id')
-                                            ->whereIn('group_id',$myArray)
+                        foreach ($app_user_group as $row) {
+                            
+                            $app_user_id = AppUserGroupMember::select('app_user_id')
+                                            ->where('group_id',$row)
                                             ->distinct('app_user_id')
                                             ->get();
-                                            // print_r($app_user_id);
+                                            
+                            foreach ($app_user_id as $k) {
+                                $app_user_id = $k['app_user_id'];
+                                $column_value = [
+                                    'admin_message'=>$request->admin_message,
+                                    'admin_id'=>$admin_id,
+                                    'app_user_id'=>$app_user_id,
+                                    'message_id'=>$message_id,
+                       
+                                ];
+                                $response = MessageMaster::create($column_value);
+                            }
+                        }
+                        
+                        
+                                            
                     }
 
                     else{
