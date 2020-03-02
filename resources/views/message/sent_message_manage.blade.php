@@ -59,10 +59,11 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>Title</th>
-												{{-- <th>Details </th> --}}
-												<th>Type </th>
-												<th>Author </th>
+												<th>Mess Id</th>
+												<th>Admin ID </th>
+												<th>Admin Mess </th>
+												<th>App User ID </th>
+												<th>Seen Status </th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>
 											</tr>

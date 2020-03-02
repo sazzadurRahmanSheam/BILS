@@ -59,6 +59,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Messages Start-------------*/
 	Route::get('messages/all-messages-management',array('as'=>'All Messages Management', 'uses' =>'MessageController@all_messages'));
+	Route::get('/message/sent-message-list',array('as'=>'Sent Message List', 'uses' =>'MessageController@messageList'));
+	Route::get('/message/message-view/{id}',array('as'=>'Sent Message View', 'uses' =>'MessageController@messageView'));
 	/*-------------- Messages End-------------*/
 
 
@@ -217,6 +219,7 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	/*--------------  Sent Message Management Start  -------------*/
 	Route::get('messages/sent-message',array('as'=>'Sent Message Management', 'action_id'=>'72', 'uses' =>'MessageController@sentMessageManage'));
 	Route::post('/message/message-entry',array('as'=>'Message Entry', 'action_id'=>'73', 'uses' =>'MessageController@messageEntry'));
+	Route::get('/message/message-delete/{id}',array('as'=>'Message Delete', 'action_id'=>'75', 'uses' =>'MessageController@messageDelete'));
 	/*--------------  Sent Message Management End  -------------*/
 
 });
