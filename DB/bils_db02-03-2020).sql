@@ -209,6 +209,21 @@ INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`,
 	(39, 'Messages', 'Sent Message', 'messages/sent-message', 29, NULL, NULL, 1, '2020-02-29 06:44:15', '2020-02-29 06:44:15');
 /*!40000 ALTER TABLE `menus` ENABLE KEYS */;
 
+-- Dumping structure for table bils_new_db.message_categories
+CREATE TABLE IF NOT EXISTS `message_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(100) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0 COMMENT '0: In-active, 1: Active',
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_new_db.message_categories: ~0 rows (approximately)
+/*!40000 ALTER TABLE `message_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message_categories` ENABLE KEYS */;
+
 -- Dumping structure for table bils_new_db.message_masters
 CREATE TABLE IF NOT EXISTS `message_masters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -474,7 +489,6 @@ CREATE TABLE IF NOT EXISTS `survey_participants` (
 CREATE TABLE IF NOT EXISTS `survey_participant_answers` (
   `survey_participan_id` int(11) NOT NULL AUTO_INCREMENT,
   `survey_question_id` int(11) NOT NULL,
-  `answer` text NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`survey_participan_id`)
@@ -483,6 +497,21 @@ CREATE TABLE IF NOT EXISTS `survey_participant_answers` (
 -- Dumping data for table bils_new_db.survey_participant_answers: ~0 rows (approximately)
 /*!40000 ALTER TABLE `survey_participant_answers` DISABLE KEYS */;
 /*!40000 ALTER TABLE `survey_participant_answers` ENABLE KEYS */;
+
+-- Dumping structure for table bils_new_db.survey_participant_answer_options
+CREATE TABLE IF NOT EXISTS `survey_participant_answer_options` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_participant_answer_id` int(11) DEFAULT NULL,
+  `option_id` int(11) DEFAULT 0,
+  `answer` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_new_db.survey_participant_answer_options: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_participant_answer_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_participant_answer_options` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.survey_questions
 CREATE TABLE IF NOT EXISTS `survey_questions` (
@@ -498,6 +527,20 @@ CREATE TABLE IF NOT EXISTS `survey_questions` (
 -- Dumping data for table bils_new_db.survey_questions: ~0 rows (approximately)
 /*!40000 ALTER TABLE `survey_questions` DISABLE KEYS */;
 /*!40000 ALTER TABLE `survey_questions` ENABLE KEYS */;
+
+-- Dumping structure for table bils_new_db.survey_question_answer_options
+CREATE TABLE IF NOT EXISTS `survey_question_answer_options` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `survey_question_id` int(11) NOT NULL DEFAULT 0,
+  `option` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table bils_new_db.survey_question_answer_options: ~0 rows (approximately)
+/*!40000 ALTER TABLE `survey_question_answer_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `survey_question_answer_options` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.users
 CREATE TABLE IF NOT EXISTS `users` (
