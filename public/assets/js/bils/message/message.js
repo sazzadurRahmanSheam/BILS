@@ -94,24 +94,25 @@ $(document).ready(function () {
 	});
 
 	//Publication Data Table
-	/*var publication_table = $('#publication_table').DataTable({
+	var message_table = $('#message_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/publication/publication-list",
+		"ajax": url+"/message/sent-message-list",
 		"aoColumns": [
 			{ mData: 'id'},
-			{ mData: 'publication_title' },
-			// { mData: 'details'},
-			{ mData: 'publication_type'},
-			{ mData: 'authors'},
+			{ mData: 'message_id' },
+			{ mData: 'admin_id'},
+			{ mData: 'admin_message'},
+			{ mData: 'app_user_id'},
+			{ mData: 'is_seen', className: "text-center"},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
 
 	//Publication View
-	publication_view = function publication_view(id){
+	/*publication_view = function publication_view(id){
 		var publication_id = id;
 		$.ajax({
 			url: url+'/publication/publication-view/'+publication_id,
