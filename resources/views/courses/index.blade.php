@@ -86,58 +86,68 @@
 								<div class="row">
 								<div class="col-md-12">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Name<span class="required">*</span></label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="" name="" class="form-control col-lg-12"/>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Course Type<span class="required">*</span></label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<select name="" id="" class="form-control col-lg-12">
-												<option value="" disabled selected>Select Survey Type</option>
-												<option value="">Type 1</option>
-												<option value="">Type 2</option>
-												<option value="">Type 3</option>
-												<option value="">Type 4</option>
-											</select>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Title<span class="required">*</span></label>
+										<div class="col-md-10 col-sm-10 col-xs-10">
+											<input type="text" id="course_title" name="course_title" class="form-control col-lg-12"/>
 										</div>
 									</div>
-									
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Start Date<span class="required">*</span></label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="date" id="" name=""  class="form-control col-lg-12"/>
-										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >End Date<span class="required">*</span></label>
-										<div class="col-md-4 col-sm-4 col-xs-4">
-											<input type="date" id="" name="" class="form-control col-lg-12"/>
-										</div>						
-									</div>  
-									
-										
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course People</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<select name="" id="" class="form-control col-lg-12">
-												<option value="" disabled selected>Select Course People</option>
-												<option value="">All</option>
-												<option value="">Group</option>
-												<option value="">--</option>
-											</select>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Active</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
-										</div>
-									</div>
-									<br/>
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Description</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
-											<textarea rows="4" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea> 
+											<textarea rows="4" cols="100" id="details" name="details" class="form-control col-lg-12"></textarea> 
 										</div>
 									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Duration (H)</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="duration" name="duration"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Type</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<select name="" id="" class="form-control col-lg-12" >
+												<option selected="" disabled="" value="">Select Course Type</option>
+												<option>Type 1</option>
+												<option>Type 2</option>
+												<option>Type 3</option>
+											</select>
+										</div>			
+									</div>
+
+
+									 <div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Appx. Start Date</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="date" id="appx_start_time" name="appx_start_time"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Appx. End Date</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="date" id="appx_end_time" name="appx_end_time" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Act. Start Date</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="date" id="act_start_time" name="act_start_time"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Act. End Date</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="date" id="act_end_time" name="act_end_time" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
+									
+										
+									
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="checkbox" id="pub_status" name="pub_status" checked="checked" class="form-control col-lg-12"/>
+										</div>
+									</div>
+									<br/>
+									
 									
 									
 									<div class="ln_solid"></div>
@@ -170,7 +180,7 @@
 
 @section('JScript')
 
-
+	<script src="{{ asset('assets/js/bils/course/course.js')}}"></script>
 
 @endsection
 

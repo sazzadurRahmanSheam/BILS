@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 	
 	//Load App User Group Using Notice Controller
-	$.ajax({
+	/*$.ajax({
 		url: url+'/notice/load-app-user-groups',
 		success: function(response){
 			var data = JSON.parse(response);
@@ -159,7 +159,7 @@ $(document).ready(function () {
 	}
 
 	//Publication Edit
-	/*edit_publication = function edit_publication(id){
+	edit_publication = function edit_publication(id){
 		var edit_id = id;
 		$.ajax({
 			url: url+'/publication/publication-edit/'+edit_id,
@@ -179,37 +179,6 @@ $(document).ready(function () {
 	}*/
 
 
-	//autosuggest
-	$.ajaxSetup({
-		headers:{
-			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-		}
-	});
-	$("#app_user_name").autocomplete({
-
-		search: function() {
-		},
-		source: function(request, response) {
-			$.ajax({
-				url: url+'/notice/app-user-name',
-				dataType: "json",
-				type: "post",
-				async:false,
-				data: {
-					term: request.term
-				},
-				success: function(data) {
-					response(data);
-				}
-			});
-		},
-		minLength: 2,
-		select: function(event, ui) { 
-			var id = ui.item.id;
-			$(this).next().val(id);
-			$("#app_user_id").val(id);
-		}
-	});
 
 
 
@@ -238,8 +207,7 @@ $(document).ready(function () {
 		
 	
 
-
-
+	
 
 
 

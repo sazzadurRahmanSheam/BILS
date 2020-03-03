@@ -164,18 +164,36 @@ class MessageController extends Controller
                  $data['status'] = "<button class='btn btn-xs btn-danger' disabled>Deleted</button>";
             }
             
-            $data['actions']=" <button title='View' onclick='publication_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+            $data['actions']=" <button title='View' onclick='message_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
             if($edit_permisiion>0){
-                $data['actions'] .=" <button title='Edit' onclick='edit_publication(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+                $data['actions'] .=" <button title='Edit' onclick='edit_message(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
             if ($delete_permisiion>0) {
-                $data['actions'] .=" <button title='Delete' onclick='delete_publication(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+                $data['actions'] .=" <button title='Delete' onclick='delete_message(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
             }
             $return_arr[] = $data;
         }
         return json_encode(array('data'=>$return_arr));
     }
+
+
+    //Message view
+    public function messageView($id){
+        $data = MessageMaster::find($id);
+        return json_encode($data);
+    }
+
+
+    //Message Delete
+    public function messageDelete($id){
+        MessageMaster::find($id)->delete();
+        return json_encode(array(
+            "deleteMessage"=>"Deleted Successful"
+        ));
+    }
+
+
 
 
 
