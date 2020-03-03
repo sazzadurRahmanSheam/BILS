@@ -78,7 +78,7 @@ $(document).ready(function () {
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
 						$("#message_form .tableflat").iCheck('check');
-						//message_table.ajax.reload();
+						course_table.ajax.reload();
 						clear_form();
 						$("#courses_add_button").html('Add Publication');
 						$(".save").html('Save');
@@ -92,25 +92,23 @@ $(document).ready(function () {
 	});
 
 	//Publication Data Table
-	/*var message_table = $('#message_table').DataTable({
+	var course_table = $('#course_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/message/sent-message-list",
+		"ajax": url+"/course/course-list",
 		"aoColumns": [
+			
 			{ mData: 'id'},
-			{ mData: 'message_id' },
-			{ mData: 'admin_id'},
-			{ mData: 'admin_message'},
-			{ mData: 'app_user_id'},
-			{ mData: 'is_seen', className: "text-center"},
-			{ mData: 'status', className: "text-center"},
+			{ mData: 'course_title' },
+			{ mData: 'duration'},
+			{ mData: 'pub_status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
 
 	//Message View
-	message_view = function message_view(id){
+	/*message_view = function message_view(id){
 		var id = id;
 		$.ajax({
 			url: url+'/message/message-view/'+id,

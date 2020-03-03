@@ -92,17 +92,18 @@ class CoursesController extends Controller
                         'pub_status'=>$pub_status,
                     ];
                     $response = CourseMaster::create($column_value);
-                    
+
                     if($pub_status=='1'){
                         $course_id = $response->id;
                         $user_id = AppUser::select('id')->get();
                         foreach($user_id as $perticipant_id){
-                            // $column_value = [
-                            //     'course_id'=>$course_id,
-                            //     'perticipant_id'=>$perticipant_id,
-                            //     'is_interested'=>'0',
-                            // ];
-                            // $res = CoursePerticipant::create($column_value);
+                            //echo $perticipant_id['id'];
+                            $column_value1 = [
+                                'course_id'=>$course_id,
+                                'perticipant_id'=>$perticipant_id['id'],
+                                'is_interested'=>0,
+                            ];
+                            $res = CoursePerticipant::create($column_value1);
                         }
                     }
                     
@@ -163,6 +164,38 @@ class CoursesController extends Controller
             }
         }
     }
+
+    //Course List
+    public function getCourseList(){
+
+        $admin_user_id      = Auth::user()->id;
+        $edit_action_id     = 76;
+        $delete_action_id   = 77;
+        $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+        $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
+        $message_list = CourseMaster::Select('id', 'course_title', 'duration', 'pub_status')
+                        ->orderBy('id','desc')
+                        ->get();
+        $return_arr = array();
+        foreach($message_list as $data){ 
+            $data['pub_status']=($data->pub_status == 1)?"<button class='btn btn-xs btn-success' disabled>Published</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-published</button>";       
+            
+            
+            
+            $data['actions']=" <button title='View' onclick='message_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+
+            if($edit_permisiion>0){
+                $data['actions'] .=" <button title='Edit' onclick='edit_message(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+            }
+            if ($delete_permisiion>0) {
+                $data['actions'] .=" <button title='Delete' onclick='delete_message(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+            }
+            $return_arr[] = $data;
+        }
+        return json_encode(array('data'=>$return_arr));
+    }
+
 
 
 

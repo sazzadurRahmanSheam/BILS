@@ -52,13 +52,14 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover course_table" id="course_table" style="width:100% !important"> 
 										<thead>
 											<tr>
+												
 												<th>ID</th>
 												<th>Course Title</th>
 												<th>Duration </th>
-												<th class="hidden-xs">Status</th>
+												<th class="hidden-xs">Publish Status</th>
 												<th>Actions</th>
 											</tr>
 										</thead>

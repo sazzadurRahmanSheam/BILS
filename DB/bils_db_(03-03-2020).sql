@@ -111,21 +111,18 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_masters: ~4 rows (approximately)
+-- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
 INSERT INTO `course_masters` (`id`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'Test Course Title', 11, '2020-03-03', '2020-03-10', '2020-03-10', '2020-03-17', 1, NULL, 'admin', 'sdfsdf', NULL, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-03 12:27:37', '2020-03-03 12:27:37'),
-	(2, 'test 2', 1, NULL, NULL, NULL, NULL, 1, NULL, 'admin', 'sadasd', NULL, NULL, NULL, NULL, NULL, 1, 'Momit', '', '2020-03-03 12:35:20', '2020-03-03 12:35:20'),
-	(4, 'r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'r', NULL, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-03 13:27:48', '2020-03-03 13:27:48'),
-	(7, 'asdas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'sd', NULL, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-03 13:44:27', '2020-03-03 13:44:27'),
-	(9, 'asdas', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'Momit', '', '2020-03-03 13:50:27', '2020-03-03 13:50:27');
+	(1, 'Test Course Title', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'asda', NULL, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-03 14:21:39', '2020-03-03 14:21:39'),
+	(2, 'qqq', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'Momit', '', '2020-03-03 14:34:07', '2020-03-03 14:34:07');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
 CREATE TABLE IF NOT EXISTS `course_perticipants` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) DEFAULT NULL,
   `perticipant_id` int(11) DEFAULT NULL,
   `is_interested` tinyint(1) DEFAULT NULL COMMENT '0: Not seen, 1: Interested, 2:NOt interested, 3:registered, 4:not-registered',
@@ -134,10 +131,14 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_perticipants: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.course_perticipants: ~3 rows (approximately)
 /*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
+INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 2, 6, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08'),
+	(2, 2, 7, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08'),
+	(3, 2, 5, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08');
 /*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.failed_jobs

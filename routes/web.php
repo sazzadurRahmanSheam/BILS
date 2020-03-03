@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 	##Getting Course Category For Add Courses
 	Route::get('/course/get-course-categories',array('as'=>'Get Course Categories', 'uses' =>'CoursesController@getCategories'));
+	Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
 
 
 
