@@ -52,23 +52,19 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<div class="text-center">
-										<h2 class="text-info">Courses Grid Summary</h2>
-									</div>
-									<!--<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>Photo</th>
-												<th>User ID</th>
-												<th>Name</th>
-												<th>Email </th>
+												<th>ID</th>
+												<th>Course Title</th>
+												<th>Duration </th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
 										<tbody>
 										</tbody>
-									</table> -->
+									</table> 
 								</div>
 							</div>
 							<!-- END Categoreis -->
@@ -84,6 +80,7 @@
 							<form id="courses_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 								@csrf
 								<div class="row">
+									<input type="hidden" name="course_edit_id" id="course_edit_id">
 								<div class="col-md-12">
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Title<span class="required">*</span></label>
@@ -105,11 +102,8 @@
 										</div>
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Type</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<select name="" id="" class="form-control col-lg-12" >
+											<select name="course_type" id="course_type" class="form-control col-lg-12" >
 												<option selected="" disabled="" value="">Select Course Type</option>
-												<option>Type 1</option>
-												<option>Type 2</option>
-												<option>Type 3</option>
 											</select>
 										</div>			
 									</div>
@@ -150,14 +144,14 @@
 									
 									
 									
-									<div class="ln_solid"></div>
+									
 								</div>
 								
 								</div>
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12"> 
-									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
+									<button type="submit" id="save_course" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
