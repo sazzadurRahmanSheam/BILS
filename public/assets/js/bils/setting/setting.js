@@ -1,6 +1,6 @@
 // All the Setting related js functions will be here
-$(document).ready(function () {	
-	
+$(document).ready(function () {
+
 	// for get site url
 	var url = $('.site_url').val();
 
@@ -8,38 +8,38 @@ $(document).ready(function () {
 	$('.form').iCheck({
 		checkboxClass: 'icheckbox_flat-green',
 		radioClass: 'iradio_flat-green'
-	});	
-	
+	});
+
 	$('.flat_radio').iCheck({
 		//checkboxClass: 'icheckbox_flat-green'
 		radioClass: 'iradio_flat-green'
 	});
-		
+
 
 	// Update General Setting
-	$('#save_general_setting').click(function(event){		
+	$('#save_general_setting').click(function(event){
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
+
 		var formData = new FormData($('#general_setting')[0]);
 		if($.trim($('#company_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Company Name","#company_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Company Name","#company_name");
 		}
 		else if($.trim($('#short_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Short Name","#short_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Short Name","#short_name");
 		}
 		else if($.trim($('#site_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Site Name","#site_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Site Name","#site_name");
 		}
 		else if($.trim($('#admin_email').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Insert Admin Email","#admin_email");			
+			success_or_error_msg('#form_submit_error','danger',"Insert Admin Email","#admin_email");
 		}
 		else if($.trim($('#admin_mobile').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Insert Admin Mobile","#admin_mobile");			
+			success_or_error_msg('#form_submit_error','danger',"Insert Admin Mobile","#admin_mobile");
 		}
 		else{
 			$.ajax({
@@ -51,9 +51,9 @@ $(document).ready(function () {
 				contentType:false,processData:false,
 				success: function(data){
 		 			var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -63,7 +63,7 @@ $(document).ready(function () {
 						//load_data("");
 						clear_form();
 					}
-					else{				
+					else{
 						success_or_error_msg('#master_message_div',"success","Updated Successful");
 						$("#admin_user_list_button").trigger('click');
 						location.reload(true);
@@ -71,9 +71,9 @@ $(document).ready(function () {
 
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
-		}	
+		}
 	});
 
 
@@ -85,7 +85,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/module/menu-list",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'module_name' },
 			{ mData: 'menu_title'},
@@ -141,18 +141,18 @@ $(document).ready(function () {
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
+
+
 		var formData = new FormData($('#web_action_form')[0]);
 
 		if($.trim($('#module_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Module Name","#module_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Module Name","#module_name");
 		}
 		else if($.trim($('#menu_title').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Menu Title","#menu_title");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Menu Title","#menu_title");
 		}
 		else{
-			
+
 			$.ajax({
 				url: url+"/module/module-entry",
 				type:'POST',
@@ -163,21 +163,21 @@ $(document).ready(function () {
 				processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
 						});
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
-						
+
 						clear_form();
 					}
-					else{				
+					else{
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						
+
 						menu_datatable.ajax.reload();
 						clear_form();
 						$("#clear_button").show();
@@ -185,7 +185,7 @@ $(document).ready(function () {
 
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 
@@ -220,8 +220,8 @@ $(document).ready(function () {
 		});
 	}
 
-	
-	//Delete Module	
+
+	//Delete Module
 	moduleDelete = function moduleDelete(id){
 		var delete_id = id;
 
@@ -251,10 +251,10 @@ $(document).ready(function () {
 							});
 							menu_datatable.ajax.reload();
 						}
-						
+
 					}
 				});
-			} 
+			}
 			else {
 				swal("Your Data is safe..!", {
 				icon: "warning",
@@ -285,20 +285,20 @@ $(document).ready(function () {
 
 
 	//Entry and Update Web Action
-	$('#save_web_action').click(function(event){		
+	$('#save_web_action').click(function(event){
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
+
 		var formData = new FormData($('#web_action_form')[0]);
 		if($.trim($('#module_name_for_web_action').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Select Module Name","#module_name_for_web_action");			
+			success_or_error_msg('#form_submit_error','danger',"Please Select Module Name","#module_name_for_web_action");
 		}
 		else if($.trim($('#activity_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Action Name","#activity_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Action Name","#activity_name");
 		}
 		else{
 			$.ajax({
@@ -311,9 +311,9 @@ $(document).ready(function () {
 				processData:false,
 				success: function(data){
 		 			var response = JSON.parse(data);
-					
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -323,7 +323,7 @@ $(document).ready(function () {
 						//load_data("");
 						clear_form();
 					}
-					else{				
+					else{
 						success_or_error_msg('#master_message_div',"success","Successful");
 						clear_form();
 						web_actions_table.ajax.reload();
@@ -331,7 +331,7 @@ $(document).ready(function () {
 						$("#save_web_action").html("Save");
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 	});
@@ -342,7 +342,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/web-action/action-lists",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'activity_name' },
 			{ mData: 'module_name' },
@@ -381,15 +381,15 @@ $(document).ready(function () {
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
+
+
 		var formData = new FormData($('#save_publication_category_form')[0]);
 
 		if($.trim($('#category_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");
 		}
 		else{
-			
+
 			$.ajax({
 				url: url+"/settings/publication/publication-category-entry",
 				type:'POST',
@@ -399,9 +399,9 @@ $(document).ready(function () {
 				contentType:false,processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -410,7 +410,7 @@ $(document).ready(function () {
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						clear_form();
 					}
-					else{				
+					else{
 						if (response['success']=='insert') {
 							success_or_error_msg('#master_message_div',"success","Publication Category Inserted Successful");
 						}else{
@@ -422,7 +422,7 @@ $(document).ready(function () {
 						$("#cancle_publication_category").addClass('hidden');
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 	});
@@ -433,7 +433,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/setting/publication/publication-categories-list",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'category_name' },
 			{ mData: 'details'},
@@ -495,7 +495,7 @@ $(document).ready(function () {
 						}
 					}
 				});
-			} 
+			}
 			else {
 				swal("Your Data is safe..!", {
 				icon: "warning",
@@ -521,15 +521,15 @@ $(document).ready(function () {
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
+
+
 		var formData = new FormData($('#save_course_category_form')[0]);
 
 		if($.trim($('#category_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");
 		}
 		else{
-			
+
 			$.ajax({
 				url: url+"/settings/courses/course-category-entry",
 				type:'POST',
@@ -539,9 +539,9 @@ $(document).ready(function () {
 				contentType:false,processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -550,7 +550,7 @@ $(document).ready(function () {
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						clear_form();
 					}
-					else{				
+					else{
 						if (response['success']=='insert') {
 							success_or_error_msg('#master_message_div',"success","Course Category Inserted Successful");
 						}else{
@@ -558,10 +558,10 @@ $(document).ready(function () {
 						}
 						course_category.ajax.reload();
 						success_function();
-						
+
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 	});
@@ -572,7 +572,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/settings/courses/course-categories-list",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'category_name' },
 			{ mData: 'details'},
@@ -629,7 +629,7 @@ $(document).ready(function () {
 						}
 					}
 				});
-			} 
+			}
 			else {
 				swal("Your Data is safe..!", {
 				icon: "warning",
@@ -651,15 +651,15 @@ $(document).ready(function () {
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
+
+
 		var formData = new FormData($('#save_notice_category_form')[0]);
 
 		if($.trim($('#category_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");
 		}
 		else{
-			
+
 			$.ajax({
 				url: url+"/settings/notice/notice-category-entry",
 				type:'POST',
@@ -669,9 +669,9 @@ $(document).ready(function () {
 				contentType:false,processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -680,7 +680,7 @@ $(document).ready(function () {
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						clear_form();
 					}
-					else{				
+					else{
 						if (response['success']=='insert') {
 							success_or_error_msg('#master_message_div',"success","Notice Category Inserted Successful");
 						}else{
@@ -688,10 +688,10 @@ $(document).ready(function () {
 						}
 						notice_category.ajax.reload();
 						success_function();
-						
+
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 	});
@@ -702,7 +702,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/settings/notice/notice-categories-list",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'category_name' },
 			{ mData: 'details'},
@@ -759,14 +759,14 @@ $(document).ready(function () {
 						}
 					}
 				});
-			} 
+			}
 			else {
 				swal("Your Data is safe..!", {
 				icon: "warning",
 				});
 			}
 		});
-	}	
+	}
 
 	/*----- Notice End -----*/
 
@@ -782,15 +782,15 @@ $(document).ready(function () {
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 			}
 		});
-		
-		
+
+
 		var formData = new FormData($('#save_survey_category_form')[0]);
 
 		if($.trim($('#category_name').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");			
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");
 		}
 		else{
-			
+
 			$.ajax({
 				url: url+"/settings/survey/survey-category-entry",
 				type:'POST',
@@ -800,9 +800,9 @@ $(document).ready(function () {
 				contentType:false,processData:false,
 				success: function(data){
 					var response = JSON.parse(data);
-				
+
 					if(response['result'] == '0'){
-						var errors	= response['errors'];					
+						var errors	= response['errors'];
 						resultHtml = '<ul>';
 							$.each(errors,function (k,v) {
 							resultHtml += '<li>'+ v + '</li>';
@@ -811,7 +811,7 @@ $(document).ready(function () {
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						clear_form();
 					}
-					else{				
+					else{
 						if (response['success']=='insert') {
 							success_or_error_msg('#master_message_div',"success","Survey Category Inserted Successful");
 						}else{
@@ -819,10 +819,10 @@ $(document).ready(function () {
 						}
 						survey_category.ajax.reload();
 						success_function();
-						
+
 					}
 					$(window).scrollTop();
-				 }	
+				 }
 			});
 		}
 	});
@@ -833,7 +833,7 @@ $(document).ready(function () {
 		"processing": true,
 		"serverSide": false,
 		"ajax": url+"/settings/survey/survey-categories-list",
-		"aoColumns": [ 
+		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'category_name' },
 			{ mData: 'details'},
@@ -861,7 +861,7 @@ $(document).ready(function () {
 		});
 	}
 
-	//Delete Notice Category
+	//Delete Survey Category
 	survey_category_delete = function survey_category_delete(id){
 		var delete_id = id;
 		swal({
@@ -890,7 +890,7 @@ $(document).ready(function () {
 						}
 					}
 				});
-			} 
+			}
 			else {
 				swal("Your Data is safe..!", {
 				icon: "warning",
@@ -903,6 +903,136 @@ $(document).ready(function () {
 	/*----- Survey End -----*/
 
 
+    /*----- Message Start -----*/
+
+    //Message Category Entry And Update
+    $("#save_message_category").on('click',function(){
+
+        event.preventDefault();
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+
+        var formData = new FormData($('#save_message_category_form')[0]);
+
+        if($.trim($('#category_name').val()) == ""){
+            success_or_error_msg('#form_submit_error','danger',"Please Insert Category Name","#category_name");
+        }
+        else{
+
+            $.ajax({
+                url: url+"/settings/message/message-category-entry",
+                type:'POST',
+                data:formData,
+                async:false,
+                cache:false,
+                contentType:false,processData:false,
+                success: function(data){
+                    var response = JSON.parse(data);
+
+                    if(response['result'] == '0'){
+                        var errors	= response['errors'];
+                        resultHtml = '<ul>';
+                        $.each(errors,function (k,v) {
+                            resultHtml += '<li>'+ v + '</li>';
+                        });
+                        resultHtml += '</ul>';
+                        success_or_error_msg('#master_message_div',"danger",resultHtml);
+                        clear_form();
+                    }
+                    else{
+                        if (response['success']=='insert') {
+                            success_or_error_msg('#master_message_div',"success","Message Category Inserted Successful");
+                        }else{
+                            success_or_error_msg('#master_message_div',"success","Updated Successful");
+                        }
+                        message_category.ajax.reload();
+                        success_function();
+
+                    }
+                    $(window).scrollTop();
+                }
+            });
+        }
+    });
+
+    //Message Categories data table
+    var message_category = $('#message_category').DataTable({
+        destroy: true,
+        "processing": true,
+        "serverSide": false,
+        "ajax": url+"/settings/message/message-categories-list",
+        "aoColumns": [
+            { mData: 'id'},
+            { mData: 'category_name' },
+            { mData: 'details'},
+            { mData: 'status', className: "text-center"},
+            { mData: 'actions' , className: "text-center"},
+        ],
+    });
+
+    //Edit Message Category
+    message_category_edit = function message_category_edit(id){
+        var edit_id = id;
+        $.ajax({
+            url: url+'/settings/message/message-categories-edit/'+edit_id,
+            cache: false,
+            success: function(response){
+                var data = JSON.parse(response);
+                $("#save_message_category").html('Update');
+                cancle_btn_show();
+                cancle_function();
+                $("#category_name").val(data['category_name']);
+                $("#message_category_edit_id").val(data['id']);
+                $("#details").val(data['details']);
+                (data['status']=="1")?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+            }
+        });
+    }
+
+    //Delete Message Category
+    message_category_delete = function message_category_delete(id){
+        var delete_id = id;
+        swal({
+            title: "Are you sure?",
+            text: "You wants to delete item parmanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: url+'/settings/message/message-categories-delete/'+delete_id,
+                    cache: false,
+                    success: function(response){
+                        var response = JSON.parse(response);
+                        if (response['parentmessage']) {
+                            swal(response['parentmessage'], {
+                                icon: "warning",
+                            });
+                        }
+                        else{
+                            swal(response['deleteMessage'], {
+                                icon: "success",
+                            });
+                            message_category.ajax.reload();
+                        }
+                    }
+                });
+            }
+            else {
+                swal("Your Data is safe..!", {
+                    icon: "warning",
+                });
+            }
+        });
+    }
+
+
+    /*----- Survey End -----*/
 
 
 
@@ -910,7 +1040,8 @@ $(document).ready(function () {
 
 
 
-	
+
+
 	/*----- Comon Function Start -----*/
 	cancle_btn_show = function cancle_btn_show(){
 		$("#cancle_btn").removeClass('hidden');
@@ -929,7 +1060,6 @@ $(document).ready(function () {
 	}
 	/*----- Comon Function End -----*/
 
-	
+
 });
 
-	 
