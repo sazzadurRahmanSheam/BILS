@@ -17,25 +17,25 @@ Route::post('auth/forget/password/{user_id}/verify',array('as'=>'New Password Su
 
 Route::group(['middleware' => ['auth']], function () {
     #logout
-	
+
 
 	Route::get('/',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
-    Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));	
+    Route::get('auth/logout/{email}',array('as'=>'Logout' , 'uses' =>'SystemAuthController@authLogout'));
 	Route::get('/dashboard',array('as'=>'Dashboard' , 'uses' =>'AdminController@index'));
 	Route::get('/admin/ajax/admin-list',array('as'=>'Admin User List' , 'uses' =>'AdminController@ajaxAdminList'));
 	Route::get('/admin/admin-view/{id}',array('as'=>'Admin View' , 'uses' =>'AdminController@adminUserView'));
 	Route::get('/module/menu-list',array('as'=>'Menu List' , 'uses' =>'SettingController@ajaxMenuList'));
 	Route::get('/module/get-parent-menu',array('as'=>'Parent Menu List' , 'uses' =>'SettingController@getParentMenu'));
 	Route::get('/module/get-module-id/{module_name}',array('as'=>'Menu ID' , 'uses' =>'SettingController@getMenuID'));
-	
 
-	
+
+
 
 	/*--------------Web Action start-------------*/
 	Route::get('/web-action/get-module-name',array('as'=>'Web Action Management' , 'uses' =>'SettingController@getModuleName'));
 	Route::get('/web-action/action-lists',array('as'=>'Web Action List' , 'uses' =>'SettingController@webActionList'));
 	/*--------------Web Action End-------------*/
-	
+
 	/*--------------Admin User Groups start-------------*/
 	Route::get('/admin/admin-group-list',array('as'=>'Admin Groups List' , 'uses' =>'AdminController@admin_groups_list'));
 	/*--------------Groups End-------------*/
@@ -54,19 +54,25 @@ Route::group(['middleware' => ['auth']], function () {
 
 	/*-------------- Actions For Permission Start-------------*/
 	Route::get('/admin/load-actions-for-group-permission/{id}',array('as'=>'Load Actions', 'uses' =>'AdminController@load_actions_for_group_permission'));
-	
+
 	/*-------------- Actions For Permission End-------------*/
 
-	/*-------------- Messages Start-------------*/
+    /*-------------- Surveys Start-------------*/
+    Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List', 'uses' =>'SettingController@survey_categories_get'));
+    /*-------------- Surveys End-------------*/
+
+
+    /*-------------- Messages Start-------------*/
 	Route::get('messages/all-messages-management',array('as'=>'All Messages Management', 'uses' =>'MessageController@all_messages'));
 	Route::get('/message/sent-message-list',array('as'=>'Sent Message List', 'uses' =>'MessageController@messageList'));
 	Route::get('/message/message-view/{id}',array('as'=>'Sent Message View', 'uses' =>'MessageController@messageView'));
-	/*-------------- Messages End-------------*/
+
+    Route::get('/settings/message/message-categories-list',array('as'=>'Get Message Category List', 'uses' =>'SettingController@message_categories_get'));
+
+    /*-------------- Messages End-------------*/
 
 
-	/*-------------- Surveys Start-------------*/
-	Route::get('/settings/survey/survey-categories-list',array('as'=>'Get Surveys Category List', 'uses' =>'SettingController@survey_categories_get'));
-	/*-------------- Surveys End-------------*/
+
 
 
 	/*-------------- Courses Category Start-------------*/
@@ -92,7 +98,7 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/notice/notice-list',array('as'=>'Notice List', 'uses' =>'NoticeController@noticeList'));
 	Route::get('/notice/notice-view/{id}',array('as'=>'Notice View', 'uses' =>'NoticeController@noticeView'));
 	Route::post('/notice/app-user-name',array('as'=>'App User Name Auto-complete', 'uses' =>'NoticeController@appUserNameAutoComplete'));
-	
+
 	/*-------------- Notice End-------------*/
 
 	/*-------------- Profile Start-------------*/
@@ -105,7 +111,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 
-	
+
 });
 
 
@@ -198,6 +204,14 @@ Route::get('/settings/notice/notice-categories-edit/{id}',array('as'=>'Edit Noti
 Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surveys Category', 'action_id'=>'62', 'uses' =>'SettingController@survey_category_edit'));
 	Route::get('/settings/survey/survey-categories-delete/{id}',array('as'=>'Delete Surveys Category', 'action_id'=>'63', 'uses' =>'SettingController@survey_category_delete'));
 	/*-------------- Survey Category End-------------*/
+
+
+    /*-------------- Message Category Start-------------*/
+    Route::get('settings/message/message-category',array('as'=>'Message Category Management', 'action_id'=>'78', 'uses' =>'SettingController@message_category_management'));
+    Route::post('/settings/message/message-category-entry',array('as'=>'Message Category Entry', 'action_id'=>'79', 'uses' =>'SettingController@message_category_entry_update'));
+    Route::get('/settings/message/message-category-edit/{id}',array('as'=>'Edit Message Category', 'action_id'=>'80', 'uses' =>'SettingController@message_category_edit'));
+    Route::get('/settings/message/message-category-delete/{id}',array('as'=>'Delete Message Category', 'action_id'=>'81', 'uses' =>'SettingController@message_category_delete'));
+    /*-------------- Message Category End-------------*/
 
 
 	/*-------------- Notice Management Start -------------*/

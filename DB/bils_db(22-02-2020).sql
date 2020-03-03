@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `message_masters` (
   `app_user_message` text NOT NULL,
   `is_seen` tinyint(1) NOT NULL COMMENT '0: Not-seen, 1: Seen',
   `message_category` int(11) NOT NULL,
-  `message_date_time` varchar(50) NOT NULL DEFAULT current_timestamp(),
+  `message_date_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `attachment` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL COMMENT '1: Active, 2: Deleted',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
