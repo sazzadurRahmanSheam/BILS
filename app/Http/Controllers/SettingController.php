@@ -778,7 +778,7 @@ class SettingController extends Controller
 
         // action permissions
         $admin_user_id 		   = Auth::user()->id;
-        $add_action_id 	   	   = 79;
+        $add_action_id 	   	   = 83;
         $add_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
         $data['actions']['add_permisiion']= $add_permisiion;
 
@@ -834,8 +834,8 @@ class SettingController extends Controller
         //echo 'ok'; die();
 
         $admin_user_id 		= Auth::user()->id;
-        $edit_action_id 	= 80;
-        $delete_action_id 	= 81;
+        $edit_action_id 	= 84;
+        $delete_action_id 	= 85;
         $edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
         $delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 

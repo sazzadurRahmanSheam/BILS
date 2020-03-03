@@ -978,7 +978,7 @@ $(document).ready(function () {
     message_category_edit = function message_category_edit(id){
         var edit_id = id;
         $.ajax({
-            url: url+'/settings/message/message-categories-edit/'+edit_id,
+            url: url+'/settings/message/message-category-edit/'+edit_id,
             cache: false,
             success: function(response){
                 var data = JSON.parse(response);
@@ -1005,7 +1005,7 @@ $(document).ready(function () {
         }).then((willDelete) => {
             if (willDelete) {
                 $.ajax({
-                    url: url+'/settings/message/message-categories-delete/'+delete_id,
+                    url: url+'/settings/message/message-category-delete/'+delete_id,
                     cache: false,
                     success: function(response){
                         var response = JSON.parse(response);

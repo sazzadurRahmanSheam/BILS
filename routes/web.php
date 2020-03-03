@@ -108,6 +108,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/profile/password-update',array('as'=>'Update My Profile Info', 'uses' =>'ProfileController@update_password'));
 	/*-------------- Profile End-------------*/
 
+	##Getting Course Category For Add Courses
+	Route::get('/course/get-course-categories',array('as'=>'Get Course Categories', 'uses' =>'CoursesController@getCategories'));
+
 
 
 
@@ -121,6 +124,7 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['permission']], function () {
 	/*----- Course Start -----*/
 	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
+	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
 	/*----- Course End -----*/
 
 	/*----- Survey Start -----*/
@@ -207,10 +211,10 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 
 
     /*-------------- Message Category Start-------------*/
-    Route::get('settings/message/message-category',array('as'=>'Message Category Management', 'action_id'=>'78', 'uses' =>'SettingController@message_category_management'));
-    Route::post('/settings/message/message-category-entry',array('as'=>'Message Category Entry', 'action_id'=>'79', 'uses' =>'SettingController@message_category_entry_update'));
-    Route::get('/settings/message/message-category-edit/{id}',array('as'=>'Edit Message Category', 'action_id'=>'80', 'uses' =>'SettingController@message_category_edit'));
-    Route::get('/settings/message/message-category-delete/{id}',array('as'=>'Delete Message Category', 'action_id'=>'81', 'uses' =>'SettingController@message_category_delete'));
+    Route::get('settings/message/message-category',array('as'=>'Message Category Management', 'action_id'=>'82', 'uses' =>'SettingController@message_category_management'));
+    Route::post('/settings/message/message-category-entry',array('as'=>'Message Category Entry', 'action_id'=>'83', 'uses' =>'SettingController@message_category_entry_update'));
+    Route::get('/settings/message/message-category-edit/{id}',array('as'=>'Edit Message Category', 'action_id'=>'84', 'uses' =>'SettingController@message_category_edit'));
+    Route::get('/settings/message/message-category-delete/{id}',array('as'=>'Delete Message Category', 'action_id'=>'85', 'uses' =>'SettingController@message_category_delete'));
     /*-------------- Message Category End-------------*/
 
 
