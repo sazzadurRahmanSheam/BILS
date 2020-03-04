@@ -154,6 +154,20 @@
 										</div>						
 									</div>
 
+									<div style="display:none;" id="edit_course_status" class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Status</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<select name="course_status" id="course_status"  class="form-control col-lg-12">
+												<option disabled="" selected="" value="">Change Course Status</option>
+												<option value="1">Initiate</option>
+												<option value="2">Approved</option>
+												<option value="3">Rejected</option>
+												<option value="4">Started</option>
+												<option value="5">Completed</option>
+											</select>
+										</div>					
+									</div>
+
 									
 										
 									

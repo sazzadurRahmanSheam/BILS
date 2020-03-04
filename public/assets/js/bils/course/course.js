@@ -107,24 +107,41 @@ $(document).ready(function () {
 		],
 	});
 
-	//Message View
-	/*message_view = function message_view(id){
+	//Course View
+	course_view = function course_view(id){
 		var id = id;
 		$.ajax({
-			url: url+'/message/message-view/'+id,
+			url: url+'/course/course-view/'+id,
 			success: function(response){
 				var data = JSON.parse(response);
 				$("#admin_user_view").modal();
-				$("#modal_title").html("Message View");
-				var message_info = "";
+				$("#modal_title").html("Course Details View");
+				var course_info = "";
+				course_info += "<h2>"+data['course_title']+"</h2>";
+				course_info += "<p>"+data['details']+"</p>";
+				course_info += "<div class='col-md-6'><h4>Duration: "+data['duration']+" Hours</h4>";
+				course_info += "<h4>Approximate Start Time: "+data['appx_start_time']+"</h4>";
+				course_info += "<h4>Approximate End Time: "+data['appx_end_time']+"</h4>";
+				course_info += "<h4>Actual Start Time: "+data['act_start_time']+"</h4>";
+				course_info += "<h4>Actual End Time: "+data['act_end_time']+"</h4>";
+				course_info += "<h4>Course Type: "+data['course_type']+"</h4>";
+				course_info += "<h4>Created By: "+data['created_by']+"</h4>";
+				course_info += "<h4>Updated By: "+data['updated_by']+"</h4></div>";
+				course_info += "<div class='col-md-6'><h4>Course Teacher: "+data['course_teacher']+"</h4>";
+				course_info += "<h4>Course Responsible Person: "+data['course_responsible_person']+"</h4>";
+				course_info += "<h4>Course Status: "+data['course_status']+"</h4>";
+				course_info += "<h4>Payment Fee: "+data['payment_fee']+"</h4>";
+				course_info += "<h4>Payment Method: "+data['payment_method']+"</h4>";
+				course_info += "<h4>Discount Message: "+data['discount_message']+"</h4>";
+				course_info += "<h4>Publish Status: "+data['pub_status']+"</h4></div>";
 			
-				$("#modal_body").html(message_info);
+				$("#modal_body").html(course_info);
 			}
 		});
 	}
 
 	//Message Delete
-	delete_message = function delete_message(id){
+	/*delete_message = function delete_message(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -152,27 +169,39 @@ $(document).ready(function () {
 				});
 			}
 		});
-	}
+	}*/
 
 	//Publication Edit
-	edit_publication = function edit_publication(id){
+	edit_course = function edit_course(id){
 		var edit_id = id;
 		$.ajax({
-			url: url+'/publication/publication-edit/'+edit_id,
+			url: url+'/course/course-edit/'+edit_id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#publication_entry").trigger('click');
-				$("#publication_entry").html('Publication Update');
-				$("#save_publication").html('Update');
-				$("#publication_edit_id").val(data['id']);
-				$("#publication_title").val(data['publication_title']);
+				$("#courses_add_button").trigger('click');
+				$("#courses_add_button").html('Course Update');
+				$(".save").html('Update');
+				
+				$("#course_edit_id").val(data['id']);
+				$("#course_title").val(data['course_title']);
 				$("#details").val(data['details']);
-				$("#authors").val(data['authors']);
-				$("#publication_type").val(data['publication_type']).change();
-				(data['status']=='1')?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+				$("#duration").val(data['duration']);
+				$("#course_type").val(data['course_type']).change();
+				$("#appx_start_time").val(data['appx_start_time']);
+				$("#appx_end_time").val(data['appx_end_time']);
+				$("#act_start_time").val(data['act_start_time']);
+				$("#act_end_time").val(data['act_end_time']);
+				$("#payment_fee").val(data['payment_fee']);
+				$("#payment_method").val(data['payment_method']);
+				$("#course_teacher").val(data['course_teacher']);
+				$("#discount_message").val(data['discount_message']);
+				(data['pub_status']=='0')?$("#pub_status").iCheck('uncheck'):$("#pub_status").iCheck('check');
+				$("#edit_course_status").css('display','block');
+				$("#course_status").val(data['course_status']).change();
+
 			}
 		});
-	}*/
+	}
 
 	// Get Course Category
 	$.ajax({

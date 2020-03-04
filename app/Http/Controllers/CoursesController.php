@@ -160,6 +160,11 @@ class CoursesController extends Controller
                         'act_end_time'=>$request->act_end_time,   
                         'updated_by'=>$updated_by,
                         'pub_status'=>$pub_status,
+                        'course_status'=>$request->course_status,
+                        'payment_fee'=>$request->payment_fee,
+                        'payment_method'=>$request->payment_method,
+                        'course_teacher'=>$request->course_teacher,
+                        'discount_message'=>$request->discount_message,
                     ];
 
                     $data = CourseMaster::find($request->course_edit_id);
@@ -209,10 +214,10 @@ class CoursesController extends Controller
                 $data['course_status'] = "<button class='btn btn-xs btn-success' disabled>Completed</button>";
             }
             
-            $data['actions']=" <button title='View' onclick='message_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+            $data['actions']=" <button title='View' onclick='course_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
             if($edit_permisiion>0){
-                $data['actions'] .=" <button title='Edit' onclick='edit_message(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+                $data['actions'] .=" <button title='Edit' onclick='edit_course(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
             if ($delete_permisiion>0) {
                 $data['actions'] .=" <button title='Delete' onclick='delete_message(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
@@ -220,6 +225,18 @@ class CoursesController extends Controller
             $return_arr[] = $data;
         }
         return json_encode(array('data'=>$return_arr));
+    }
+
+    //Course view
+    public function courseView($id){
+        $data = CourseMaster::find($id);
+        return json_encode($data);
+    }
+
+    //Course edit data
+    public function courseEdit($id){
+        $data = CourseMaster::find($id);
+        return json_encode($data);
     }
 
 

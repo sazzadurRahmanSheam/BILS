@@ -110,8 +110,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 	##Getting Course Category For Add Courses
 	Route::get('/course/get-course-categories',array('as'=>'Get Course Categories', 'uses' =>'CoursesController@getCategories'));
+
 	Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
 
+	##Course View
+	Route::get('/course/course-view/{id}',array('as'=>'Course View', 'uses' =>'CoursesController@courseView'));
 
 
 
@@ -126,6 +129,7 @@ Route::group(['middleware' => ['permission']], function () {
 	/*----- Course Start -----*/
 	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
+	Route::get('/course/course-edit/{id}',array('as'=>'Course Edit' , 'action_id'=>'76', 'uses' =>'CoursesController@courseEdit'));
 	/*----- Course End -----*/
 
 	/*----- Survey Start -----*/
