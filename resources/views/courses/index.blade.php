@@ -55,11 +55,11 @@
 									<table class="table table-bordered table-hover course_table" id="course_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												
 												<th>ID</th>
 												<th>Course Title</th>
 												<th>Duration </th>
 												<th class="hidden-xs">Publish Status</th>
+												<th class="hidden-xs">Course Status</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -132,13 +132,35 @@
 										</div>						
 									</div>
 
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Payment Fee</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="payment_fee" name="payment_fee"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Payment Method</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="text" id="payment_method" name="payment_method" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Teacher</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="course_teacher" name="course_teacher"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Discount Message</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="text" id="discount_message" name="discount_message" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
 									
 										
 									
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="checkbox" id="pub_status" name="pub_status" checked="checked" class="form-control col-lg-12"/>
+											<input type="checkbox" id="pub_status" name="pub_status" class="form-control col-lg-12"/>
 										</div>
 									</div>
 									<br/>

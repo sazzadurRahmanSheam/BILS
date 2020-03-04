@@ -16,6 +16,7 @@ use App\CourseMaster;
 use App\CourseCategory;
 use App\AppUser;
 use App\CoursePerticipant;
+use App\Notification;
 
 class CoursesController extends Controller
 {
@@ -59,15 +60,11 @@ class CoursesController extends Controller
             return json_encode($return);
         }
         else{
+
             /*----- For notification -----*/
-            // $app_user_group = $request->input('app_user_group');
-            // $app_user_name = $request->app_user_name;
-            // $app_user_id = $request->app_user_id;
-            // $from_id = Auth::user()->id;
-            // $from_user_type = 'Admin';
-            // $to_user_type = 'App User';
-            // $notification_title = $request->title;
-            // $message = $request->details;
+            $from_id = Auth::user()->id;
+            $from_user_type = 'Admin';
+            $to_user_type = 'App User';
             /*----- For notification -----*/
             
             
@@ -90,6 +87,11 @@ class CoursesController extends Controller
                         'act_end_time'=>$request->act_end_time,   
                         'created_by'=>$created_by,
                         'pub_status'=>$pub_status,
+                        'course_status'=>1,
+                        'payment_fee'=>$request->payment_fee,
+                        'payment_method'=>$request->payment_method,
+                        'course_teacher'=>$request->course_teacher,
+                        'discount_message'=>$request->discount_message,
                     ];
                     $response = CourseMaster::create($column_value);
 
@@ -97,39 +99,50 @@ class CoursesController extends Controller
                         $course_id = $response->id;
                         $user_id = AppUser::select('id')->get();
                         foreach($user_id as $perticipant_id){
-                            //echo $perticipant_id['id'];
-                            $column_value1 = [
+                            $column_value = [
                                 'course_id'=>$course_id,
                                 'perticipant_id'=>$perticipant_id['id'],
                                 'is_interested'=>0,
                             ];
-                            $res = CoursePerticipant::create($column_value1);
+                            $res = CoursePerticipant::create($column_value);
+
+                            ##Notification Entry
+                            $column_value1 = [
+                                'from_id'=>$from_id,
+                                'from_user_type'=>$from_user_type,
+                                'from_user_type'=>$from_user_type,
+                                'to_id'=>$perticipant_id['id'],
+                                'to_user_type'=>$to_user_type,
+                                'notification_title'=>'BILS Initiate '.$request->course_title.' Course',
+                                'view_url'=>'course/'.$course_id,
+                            ];
+                            $res1 = Notification::create($column_value1);
                         }
                     }
                     
-                    // if (isset($app_user_group)&& $app_user_group!="") {
-                    //     foreach ($app_user_group as $row) {
-                    //         $to_user_id = AppUserGroupMember::distinct()
-                    //                         ->select('app_user_id')
-                    //                         ->where('group_id',$row)
-                    //                         ->groupBy('app_user_id')
-                    //                         ->get();
+                    /*if (isset($app_user_group)&& $app_user_group!="") {
+                        foreach ($app_user_group as $row) {
+                            $to_user_id = AppUserGroupMember::distinct()
+                                            ->select('app_user_id')
+                                            ->where('group_id',$row)
+                                            ->groupBy('app_user_id')
+                                            ->get();
 
-                    //         foreach ($to_user_id as $k) {
+                            foreach ($to_user_id as $k) {
                                 
-                    //             $to_id = $k['app_user_id'];
-                    //             $column_value = [
-                    //                 'from_id'=>$from_id,
-                    //                 'from_user_type'=>$from_user_type,
-                    //                 'to_id'=>$to_id,    
-                    //                 'to_user_type'=>$to_user_type,  
-                    //                 'notification_title'=>$notification_title,  
-                    //                 'message'=>$message,    
-                    //             ];
-                    //             $response = Notification::create($column_value);
-                    //         }
-                    //     }
-                    // }
+                                $to_id = $k['app_user_id'];
+                                $column_value = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$to_id,    
+                                    'to_user_type'=>$to_user_type,  
+                                    'notification_title'=>$notification_title,  
+                                    'message'=>$message,    
+                                ];
+                                $response = Notification::create($column_value);
+                            }
+                        }
+                    }*/
 
 
                 }
@@ -174,14 +187,27 @@ class CoursesController extends Controller
         $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
         $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-        $message_list = CourseMaster::Select('id', 'course_title', 'duration', 'pub_status')
+        $message_list = CourseMaster::Select('id', 'course_title', 'duration', 'pub_status','course_status')
                         ->orderBy('id','desc')
                         ->get();
         $return_arr = array();
         foreach($message_list as $data){ 
             $data['pub_status']=($data->pub_status == 1)?"<button class='btn btn-xs btn-success' disabled>Published</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-published</button>";       
-            
-            
+            if($data->course_status==1){
+                $data['course_status'] = "<button class='btn btn-xs btn-warning' disabled>Initiate</button>";
+            }
+            else if($data->course_status==2){
+                $data['course_status'] = "<button class='btn btn-xs btn-success' disabled>Approved</button>";
+            }
+            else if($data->course_status==3){
+                $data['course_status'] = "<button class='btn btn-xs btn-danger' disabled>Rejected</button>";
+            }
+            else if($data->course_status==4){
+                $data['course_status'] = "<button class='btn btn-xs btn-info' disabled>Started</button>";
+            }
+            else if($data->course_status==5){
+                $data['course_status'] = "<button class='btn btn-xs btn-success' disabled>Completed</button>";
+            }
             
             $data['actions']=" <button title='View' onclick='message_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 

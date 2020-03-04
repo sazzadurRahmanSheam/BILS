@@ -98,11 +98,11 @@ $(document).ready(function () {
 		"serverSide": false,
 		"ajax": url+"/course/course-list",
 		"aoColumns": [
-			
 			{ mData: 'id'},
 			{ mData: 'course_title' },
 			{ mData: 'duration'},
 			{ mData: 'pub_status', className: "text-center"},
+			{ mData: 'course_status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
