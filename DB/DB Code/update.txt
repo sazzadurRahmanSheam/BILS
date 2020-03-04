@@ -1,0 +1,10 @@
+Date: 03-03-2020
+
+ALTER TABLE `course_masters`
+	CHANGE COLUMN `course_status` `course_status` TINYINT(1) NULL DEFAULT NULL COMMENT '1: Initiate, 2: Approved, 3: Rejected, 4: Started, 5: Completed' AFTER `details`;
+ALTER TABLE `course_perticipants`
+	CHANGE COLUMN `is_interested` `is_interested` TINYINT(1) NOT NULL COMMENT '0: Not seen, 1: Interested, 2:NOt interested' AFTER `perticipant_id`;
+
+ALTER TABLE `course_perticipants`
+	CHANGE COLUMN `is_interested` `is_interested` TINYINT(1) NOT NULL COMMENT '0: Not seen, 1: Interested, 2:NOt interested, 3:registered, 4:not-registered' AFTER `perticipant_id`;
+

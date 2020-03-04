@@ -19,14 +19,14 @@ use App\Traits\HasPermission;
 class AdminController extends Controller
 {
 	use HasPermission;
-	
+
     public function __construct(Request $request)
     {
         $this->page_title = $request->route()->getName();
         $description = \Request::route()->getAction();
         $this->page_desc = isset($description['desc']) ? $description['desc'] : $this->page_title;
     }
-	
+
 	public function index()
     {
         $data['page_title'] = $this->page_title;
@@ -34,22 +34,22 @@ class AdminController extends Controller
 		$data['sub_module']= "";
         return view('admin.dashbord', $data);
     }
-	
+
 	public function adminUserManagement(){
 		$data['page_title'] = $this->page_title;
 		$data['module_name']= "User";
-		$data['sub_module']= "Admin Users";	
+		$data['sub_module']= "Admin Users";
 		// action permissions
 		$admin_user_id 		   = Auth::user()->id;
 		$add_action_id 	   	   = 2;
 		$add_permisiion 	   = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
-		$data['actions']['add_permisiion']= $add_permisiion;	
+		$data['actions']['add_permisiion']= $add_permisiion;
 
         return view('admin.index', $data);
 	}
-	
+
 	public function ajaxAdminList(){
-		
+
 		$admin_user_id 		= Auth::user()->id;
 		$edit_action_id 	= 4;
 		$delete_action_id 	= 6;
@@ -60,9 +60,9 @@ class AdminController extends Controller
 			->orderBy('created_at','desc')
 			->get();
 		$return_arr = array();
-		foreach($adminUser as $user){		
+		foreach($adminUser as $user){
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-			
+
 			$user['actions']=" <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
 
 			if($edit_permisiion>0){
@@ -74,10 +74,10 @@ class AdminController extends Controller
 			$return_arr[] = $user;
 		}
 		return json_encode(array('data'=>$return_arr));
-	}	
-	
+	}
+
 	// emp_name nid_no contact_no email address password is_active remarks emp_image_upload
-	
+
 	public function ajaxAdminEntry(Request $request){
 		$rule = [
             'emp_name' => 'Required|max:220',
@@ -112,12 +112,12 @@ class AdminController extends Controller
 					$return['errors'][] = $request->email." is already exists";
 					return json_encode($return);
 				}
-			}		
-			
+			}
+
 			try{
 				DB::beginTransaction();
 				$is_active = ($request->is_active=="")?"2":"1";
-				
+
 				$password = ($request->password =="")?md5('1234'):md5($request->password);
 				$column_value = [
 					'name'=>$request->emp_name,
@@ -128,9 +128,9 @@ class AdminController extends Controller
 					'password'=>$password,
 					'status'=>$is_active,
 					'remarks'=>$request->remarks
-					//'user_profile_image'=>$image_name,	
+					//'user_profile_image'=>$image_name,
 				];
-				
+
 				if ($request->id == '') {
 					$response = User::create($column_value);
 					$emp_id = $response->id;
@@ -174,10 +174,10 @@ class AdminController extends Controller
 			catch (\Exception $e){
 				DB::rollback();
 				$return['result'] = "0";
-				$return['errors'][] ="Faild to save";
+				$return['errors'][] ="Failed to save";
 				return json_encode($return);
 			}
-		}			
+		}
 	}
 
 
@@ -228,7 +228,7 @@ class AdminController extends Controller
         return view('admin.admin_groups', $data);
 	}
 	/*Entry Admin User Group And App User Group*/
-	public function admin_groups_entry_or_update(Request $request){ 
+	public function admin_groups_entry_or_update(Request $request){
 
 		$rule = [
             'group_name' => 'Required|max:50',
@@ -240,22 +240,22 @@ class AdminController extends Controller
 			$return['errors'] = $validation->errors();
 			return json_encode($return);
         }
-		else{		
+		else{
 			try{
 				DB::beginTransaction();
 				$status = ($request->is_active =="")?'0':'1';
-				
+
 				$column_value = [
 					'group_name'=>$request->group_name,
 					'type'=>$request->type,
-					'status'=>$status,	
+					'status'=>$status,
 				];
-				
+
 				if ($request->edit_id == '') {
 					$response = UserGroup::create($column_value);
 					//get group id
 					$group_id = $response->id;
-					
+
 					//get Action id
 					$action_id = WebAction::Select('id')->get();
 					foreach ($action_id as $action_id) {
@@ -295,7 +295,7 @@ class AdminController extends Controller
 		$delete_permisiion = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 		$give_permission = $this->PermissionHasOrNot($admin_user_id,$give_permission_action_id);
 
-		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->get();		
+		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->get();
 		$return_arr = array();
 		foreach($admin_group_list as $admin_group_list){
 			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
@@ -357,10 +357,10 @@ class AdminController extends Controller
     public function permission_action_entry_update(Request $request){
 		$permission_action = $request->input('permission_action');
 		$group_id = $request->group_id;
-		
+
 		try{
 			DB::beginTransaction();
-			
+
 			$data_for_permission_action_update = DB::table('User_group_permissions')
 															->where('group_id',$group_id)
 															->update(['status'=>'0']);
@@ -377,7 +377,7 @@ class AdminController extends Controller
 					}
 				}
 			}
-			
+
 			DB::commit();
 			$return['result'] = "1";
 			return json_encode($return);

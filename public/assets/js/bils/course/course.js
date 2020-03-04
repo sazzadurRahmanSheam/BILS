@@ -36,10 +36,10 @@ $(document).ready(function () {
 			});
 			
 		}
-	});
+	});*/
 
 	//Message Entry And update
-	$('#save_message ').click(function(event){		
+	$('#save_course ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -47,17 +47,15 @@ $(document).ready(function () {
 			}
 		});
 		
-		var formData = new FormData($('#message_form')[0]);
-		if($.trim($('#admin_message').val()) == ""){
-			success_or_error_msg('#form_submit_error','danger',"Please Insert Message","#admin_message");			
+		var formData = new FormData($('#courses_form')[0]);
+		if($.trim($('#course_title').val()) == ""){
+			success_or_error_msg('#form_submit_error','danger',"Please Insert Course Title","#course_title");			
 		}
-		// if( $('#app_user_group').checked==true ){
-		// 	success_or_error_msg('#form_submit_error','danger',"Please Select App User Name Or app Urser group");			
-		// }
+		
 		
 		else{
 			$.ajax({
-				url: url+"/message/message-entry",
+				url: url+"/course/course-entry",
 				type:'POST',
 				data:formData,
 				async:false,
@@ -79,40 +77,38 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						$("#message_form .tableflat").iCheck('uncheck');
-						message_table.ajax.reload();
+						$("#message_form .tableflat").iCheck('check');
+						course_table.ajax.reload();
 						clear_form();
-						// $("#publication_entry").html('Add Publication');
-						// $(".save").html('Save');
-						// $("#publication_list").trigger('click');
+						$("#courses_add_button").html('Add Publication');
+						$(".save").html('Save');
+						$("#courses_list_button").trigger('click');
 						
 					}
 					$(window).scrollTop();
 				 }	
 			});
-		}	
+		}
 	});
 
 	//Publication Data Table
-	var message_table = $('#message_table').DataTable({
+	var course_table = $('#course_table').DataTable({
 		destroy: true,
 		"processing": true,
 		"serverSide": false,
-		"ajax": url+"/message/sent-message-list",
+		"ajax": url+"/course/course-list",
 		"aoColumns": [
 			{ mData: 'id'},
-			{ mData: 'message_id' },
-			{ mData: 'admin_id'},
-			{ mData: 'admin_message'},
-			{ mData: 'app_user_id'},
-			{ mData: 'is_seen', className: "text-center"},
-			{ mData: 'status', className: "text-center"},
+			{ mData: 'course_title' },
+			{ mData: 'duration'},
+			{ mData: 'pub_status', className: "text-center"},
+			{ mData: 'course_status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
 	});
 
 	//Message View
-	message_view = function message_view(id){
+	/*message_view = function message_view(id){
 		var id = id;
 		$.ajax({
 			url: url+'/message/message-view/'+id,
@@ -177,6 +173,19 @@ $(document).ready(function () {
 			}
 		});
 	}*/
+
+	// Get Course Category
+	$.ajax({
+			url: url+'/course/get-course-categories',
+			success: function(response){
+				var data = JSON.parse(response);
+				var option = "";
+				$.each(data,function (k,row) {
+					option += '<option value="'+row['id']+'">'+row['category_name']+'</option>';
+				});
+				$("#course_type").append(option);
+			}
+		});
 
 
 
