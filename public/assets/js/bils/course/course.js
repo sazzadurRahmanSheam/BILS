@@ -80,7 +80,7 @@ $(document).ready(function () {
 						$("#message_form .tableflat").iCheck('check');
 						course_table.ajax.reload();
 						clear_form();
-						$("#courses_add_button").html('Add Publication');
+						$("#courses_add_button").html('Open Course');
 						$(".save").html('Save');
 						$("#courses_list_button").trigger('click');
 						
@@ -114,34 +114,59 @@ $(document).ready(function () {
 			url: url+'/course/course-view/'+id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#admin_user_view").modal();
-				$("#modal_title").html("Course Details View");
-				var course_info = "";
-				course_info += "<h2>"+data['course_title']+"</h2>";
-				course_info += "<p>"+data['details']+"</p>";
-				course_info += "<div class='col-md-6'><h4>Duration: "+data['duration']+" Hours</h4>";
-				course_info += "<h4>Approximate Start Time: "+data['appx_start_time']+"</h4>";
-				course_info += "<h4>Approximate End Time: "+data['appx_end_time']+"</h4>";
-				course_info += "<h4>Actual Start Time: "+data['act_start_time']+"</h4>";
-				course_info += "<h4>Actual End Time: "+data['act_end_time']+"</h4>";
-				course_info += "<h4>Course Type: "+data['course_type']+"</h4>";
-				course_info += "<h4>Created By: "+data['created_by']+"</h4>";
-				course_info += "<h4>Updated By: "+data['updated_by']+"</h4></div>";
-				course_info += "<div class='col-md-6'><h4>Course Teacher: "+data['course_teacher']+"</h4>";
-				course_info += "<h4>Course Responsible Person: "+data['course_responsible_person']+"</h4>";
-				course_info += "<h4>Course Status: "+data['course_status']+"</h4>";
-				course_info += "<h4>Payment Fee: "+data['payment_fee']+"</h4>";
-				course_info += "<h4>Payment Method: "+data['payment_method']+"</h4>";
-				course_info += "<h4>Discount Message: "+data['discount_message']+"</h4>";
-				course_info += "<h4>Publish Status: "+data['pub_status']+"</h4></div>";
+				$("#course_view_li").css('display','block');
+				$("#course_view_button").trigger('click');
+				$("#c_title").html("<h2>Title: "+data['course_title']+"</h2>");
+				var left_sub = "";
+				left_sub += "<p><b>Duration: </b>"+data['duration']+" Hours</p>";
+				left_sub += "<b>Approximate Start Time: </b>"+data['appx_start_time'];
+				left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];
+				left_sub += "<br><b>Course Type: </b>"+data['course_type'];
+				left_sub += "<br><b>Created By: </b>"+data['created_by'];
+				$("#left_sub").html(left_sub);
+
+
+				var right_sub = "";
+				right_sub +=(data['pub_status']=='0')?"<button class='btn btn-xs btn-danger'>Not-published</button>":"<button class='btn btn-xs btn-success'>Published</button>";
+				if (data['course_status']=='1') {
+					right_sub +=" <button class='btn btn-xs btn-warning'>Initiated</button>"
+				}else if (data['course_status']=='2') {
+					right_sub +=" <button class='btn btn-xs btn-success'>Approved</button>"
+				}else if (data['course_status']=='3') {
+					right_sub +=" <button class='btn btn-xs btn-danger'>Rejected</button>"
+				}else if (data['course_status']=='4') {
+					right_sub +=" <button class='btn btn-xs btn-info'>Started</button>"
+				}else if (data['course_status']=='5') {
+					right_sub +=" <button class='btn btn-xs btn-success'>Completed</button>"
+				}
+				right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];
+				right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];
+				right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];
+				right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
+
+				$("#right_sub").html(right_sub);
+				
+				// course_info += "<p>"+data['details']+"</p>";
+				
+				
+				
 			
-				$("#modal_body").html(course_info);
+				
+				
+				
+				// course_info += "<h4>Course Responsible Person: "+data['course_responsible_person']+"</h4>";
+				
+				// course_info += "<h4>Payment Fee: "+data['payment_fee']+"</h4>";
+				// course_info += "<h4>Payment Method: "+data['payment_method']+"</h4>";
+				// course_info += "<h4>Discount Message: "+data['discount_message']+"</h4>";
+				
+				// $("#modal_body").html(course_info);
 			}
 		});
 	}
 
 	//Message Delete
-	/*delete_message = function delete_message(id){
+	delete_course = function delete_course(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -152,14 +177,14 @@ $(document).ready(function () {
 		}).then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: url+'/message/message-delete/'+delete_id,
+					url: url+'/course/course-delete/'+delete_id,
 					cache: false,
 					success: function(response){
 						var response = JSON.parse(response);
 						swal(response['deleteMessage'], {
 						icon: "success",
 						});
-						message_table.ajax.reload();
+						course_table.ajax.reload();
 					}
 				});
 			} 
@@ -169,7 +194,7 @@ $(document).ready(function () {
 				});
 			}
 		});
-	}*/
+	}
 
 	//Publication Edit
 	edit_course = function edit_course(id){

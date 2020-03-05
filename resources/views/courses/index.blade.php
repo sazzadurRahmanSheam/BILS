@@ -20,10 +20,15 @@
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
-	                           <b> Add Courses</b>
+	                           <b> Open Courses</b>
 	                        </a>
 	                    </li>
 	                @endif
+	                <li style="display: none;" id="course_view_li">
+                        <a data-toggle="tab" href="#course_view" id="course_view_button">
+                           <b>Courses View</b>
+                        </a>
+	                </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
@@ -178,9 +183,7 @@
 										</div>
 									</div>
 									<br/>
-									
-									
-									
+								
 									
 								</div>
 								
@@ -199,6 +202,24 @@
                         </div>
                     </div>
                     <!-- END PANEL FOR CHANGE PASSWORD -->
+
+                    <div id="course_view" class="tab-pane in">
+                        <div class="row no-margin-row">
+
+							<div class="text-center col-md-12">
+								<h2 class="text-info">Course Details</h2><hr>
+							</div>
+							<div class="col-md-12">
+								<div id="c_title" class="col-md-12"></div>
+								<div class="col-md-12">
+									<div id="left_sub" class="col-md-6"></div>
+									<div id="right_sub" class="col-md-6"></div>
+								</div>
+							</div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

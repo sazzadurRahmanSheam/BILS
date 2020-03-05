@@ -167,8 +167,141 @@ class CoursesController extends Controller
                         'discount_message'=>$request->discount_message,
                     ];
 
+                   
+
+                    $data_check = CourseMaster::find($request->course_edit_id);
+
+                    if($data_check['pub_status']!='1'){
+                        ##Publish Notification
+                        if($pub_status=='1'){
+                            $course_id = $request->course_edit_id;
+                            $user_id = AppUser::select('id')->get();
+                            foreach($user_id as $perticipant_id){
+                                $column_value2 = [
+                                    'course_id'=>$course_id,
+                                    'perticipant_id'=>$perticipant_id['id'],
+                                    'is_interested'=>0,
+                                ];
+                                $res = CoursePerticipant::create($column_value2);
+
+                                ##Notification Entry
+                                $column_value1 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$perticipant_id['id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Initiate '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$course_id,
+                                ];
+                                $res1 = Notification::create($column_value1);
+                            }
+                        }
+                     }
+
+
+                    
                     $data = CourseMaster::find($request->course_edit_id);
                     $data->update($column_value);
+
+
+
+
+                    if($data_check['course_status']!='2'){
+
+                        if ($request->course_status=='2') {     ##Approve Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Approved '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='3'){
+
+                        if ($request->course_status=='3') {     ##Rejected Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Rejected '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='4'){
+
+                        if ($request->course_status=='4') {     ##Started Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Started '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='5'){
+
+                        if ($request->course_status=='5') {     ##Completed Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Completed '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+
+
+
                 }
                 DB::commit();
                 $return['result'] = "1";
@@ -220,7 +353,7 @@ class CoursesController extends Controller
                 $data['actions'] .=" <button title='Edit' onclick='edit_course(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
             if ($delete_permisiion>0) {
-                $data['actions'] .=" <button title='Delete' onclick='delete_message(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+                $data['actions'] .=" <button title='Delete' onclick='delete_course(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
             }
             $return_arr[] = $data;
         }
@@ -239,6 +372,16 @@ class CoursesController extends Controller
         return json_encode($data);
     }
 
+
+     //Course Delete
+    public function courseDelete($id){
+        Notification::where('view_url','=','course/'.$id)->delete();
+        CoursePerticipant::where('course_id',$id)->delete();
+        CourseMaster::find($id)->delete();
+        return json_encode(array(
+            "deleteMessage"=>"Deleted Successful"
+        ));
+    }
 
 
 

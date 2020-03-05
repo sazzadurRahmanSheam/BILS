@@ -130,6 +130,7 @@ Route::group(['middleware' => ['permission']], function () {
 	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
 	Route::get('/course/course-edit/{id}',array('as'=>'Course Edit' , 'action_id'=>'76', 'uses' =>'CoursesController@courseEdit'));
+	Route::get('/course/course-delete/{id}',array('as'=>'Course Delete' , 'action_id'=>'77', 'uses' =>'CoursesController@courseDelete'));
 	/*----- Course End -----*/
 
 	/*----- Survey Start -----*/
