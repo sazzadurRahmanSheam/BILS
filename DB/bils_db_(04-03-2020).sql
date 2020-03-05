@@ -97,12 +97,12 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `act_start_time` date DEFAULT NULL,
   `act_end_time` date DEFAULT NULL,
   `course_type` int(11) DEFAULT 0 COMMENT 'from course categories table',
-  `course_teacher` int(11) DEFAULT NULL COMMENT 'form teacher table',
+  `course_teacher` varchar(50) DEFAULT NULL COMMENT 'form teacher table',
   `course_responsible_person` varchar(15) DEFAULT 'admin',
   `details` text DEFAULT NULL,
   `course_status` tinyint(1) DEFAULT NULL COMMENT '1: Initiate, 2: Approved, 3: Rejected, 4: Started, 5: Completed',
   `payment_fee` double DEFAULT NULL,
-  `payment_method` tinyint(1) DEFAULT NULL COMMENT 'from paymet_methods table',
+  `payment_method` varchar(50) DEFAULT NULL COMMENT 'from paymet_methods table',
   `discount_message` text DEFAULT NULL,
   `attachment` varchar(50) DEFAULT NULL,
   `pub_status` tinyint(1) DEFAULT NULL COMMENT '0: Not-published, 1: Published',
@@ -111,13 +111,14 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
+-- Dumping data for table bils_new_db.course_masters: ~3 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
 INSERT INTO `course_masters` (`id`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'Test Course Title', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'asda', NULL, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-03 14:21:39', '2020-03-03 14:21:39'),
-	(2, 'qqq', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'Momit', '', '2020-03-03 14:34:07', '2020-03-03 14:34:07');
+	(1, 'Labour Study', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'teachig about labour', 2, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-04 07:24:01', '2020-03-04 14:26:30'),
+	(2, 'Test Course Title', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'Test Description', 1, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-04 07:26:36', '2020-03-04 07:26:36'),
+	(3, 'Rickshaw Pooler', 10, '2020-03-05', '2020-04-04', NULL, NULL, 3, 'Abul Hasan', 'admin', 'This is for Rickshaw Pooler. where they learn about their right.', 1, 300, 'Bkash', 'No discount available', NULL, 0, 'Momit', 'Momit', '2020-03-04 08:02:40', '2020-03-04 19:55:40');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -136,9 +137,9 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
 -- Dumping data for table bils_new_db.course_perticipants: ~3 rows (approximately)
 /*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
 INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 2, 6, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08'),
-	(2, 2, 7, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08'),
-	(3, 2, 5, 0, NULL, NULL, '2020-03-03 14:34:08', '2020-03-03 14:34:08');
+	(1, 1, 6, 1, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 20:08:20'),
+	(2, 1, 7, 0, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
+	(3, 1, 5, 0, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 14:06:15');
 /*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.failed_jobs
@@ -326,26 +327,21 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `to_user_type` varchar(50) DEFAULT '' COMMENT 'Admin Or App User',
   `date_time` timestamp NOT NULL DEFAULT current_timestamp(),
   `notification_title` varchar(255) DEFAULT '',
-  `message` text NOT NULL,
+  `message` text DEFAULT NULL,
+  `view_url` varchar(100) DEFAULT NULL COMMENT 'moduleName/id',
   `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0: Un-seen, 1: Seen',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='m';
 
--- Dumping data for table bils_new_db.notifications: ~10 rows (approximately)
+-- Dumping data for table bils_new_db.notifications: ~3 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` (`id`, `from_id`, `from_user_type`, `to_id`, `to_user_type`, `date_time`, `notification_title`, `message`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'Admin', 5, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(2, 1, 'Admin', 5, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(3, 1, 'Admin', 5, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(4, 1, 'Admin', 7, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(5, 1, 'Admin', 5, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(6, 1, 'Admin', 6, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(7, 1, 'Admin', 7, 'App User', '2020-02-22 15:12:14', 'First Notice Title', 'First test Notice Details', 0, '2020-02-22 09:12:14', '2020-02-22 09:12:14'),
-	(8, 1, 'Admin', 5, 'App User', '2020-02-22 17:15:58', 'aaa', 'aaa', 0, '2020-02-22 11:15:58', '2020-02-22 11:15:58'),
-	(9, 1, 'Admin', 6, 'App User', '2020-02-22 17:15:58', 'aaa', 'aaa', 0, '2020-02-22 11:15:58', '2020-02-22 11:15:58'),
-	(10, 1, 'Admin', 7, 'App User', '2020-02-22 17:15:58', 'aaa', 'aaa', 0, '2020-02-22 11:15:58', '2020-02-22 11:15:58');
+INSERT INTO `notifications` (`id`, `from_id`, `from_user_type`, `to_id`, `to_user_type`, `date_time`, `notification_title`, `message`, `view_url`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 1, 'Admin', 6, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
+	(2, 1, 'Admin', 7, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
+	(3, 1, 'Admin', 5, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
+	(11, 1, 'Admin', 6, 'App User', '2020-03-04 20:26:30', 'BILS Approved Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:26:30', '2020-03-04 14:26:30');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.password_resets
@@ -578,7 +574,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table bils_new_db.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
-	(1, 'Momit', '123456', '01711', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'Very Good', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-03 08:31:39'),
+	(1, 'Momit', '123456', '01711', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'Very Good', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-04 05:42:00'),
 	(13, 'Momit Hasan', '78967899', '53463435', 'momit@technolife.ee', NULL, 1, NULL, NULL, NULL, NULL, 1, '', NULL, '2020-02-02 08:44:30', '2020-02-17 13:35:42'),
 	(31, 'SiaM', '123', '01747083028', 'siam@gmail.com', NULL, 1, NULL, NULL, NULL, NULL, 2, '', NULL, '2020-02-09 13:25:51', '2020-02-17 13:35:46');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

@@ -20,10 +20,15 @@
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
-	                           <b> Add Courses</b>
+	                           <b> Open Courses</b>
 	                        </a>
 	                    </li>
 	                @endif
+	                <li style="display: none;" id="course_view_li">
+                        <a data-toggle="tab" href="#course_view" id="course_view_button">
+                           <b>Courses View</b>
+                        </a>
+	                </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
@@ -52,13 +57,14 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
+									<table class="table table-bordered table-hover course_table" id="course_table" style="width:100% !important"> 
 										<thead>
 											<tr>
 												<th>ID</th>
 												<th>Course Title</th>
 												<th>Duration </th>
-												<th class="hidden-xs">Status</th>
+												<th class="hidden-xs">Publish Status</th>
+												<th class="hidden-xs">Course Status</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -131,19 +137,53 @@
 										</div>						
 									</div>
 
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Payment Fee</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="payment_fee" name="payment_fee"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Payment Method</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="text" id="payment_method" name="payment_method" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Teacher</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="text" id="course_teacher" name="course_teacher"  class="form-control col-lg-12"/>
+										</div>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Discount Message</label>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<input type="text" id="discount_message" name="discount_message" class="form-control col-lg-12"/>
+										</div>						
+									</div>
+
+									<div style="display:none;" id="edit_course_status" class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Status</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<select name="course_status" id="course_status"  class="form-control col-lg-12">
+												<option disabled="" selected="" value="">Change Course Status</option>
+												<option value="1">Initiate</option>
+												<option value="2">Approved</option>
+												<option value="3">Rejected</option>
+												<option value="4">Started</option>
+												<option value="5">Completed</option>
+											</select>
+										</div>					
+									</div>
+
 									
 										
 									
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="checkbox" id="pub_status" name="pub_status" checked="checked" class="form-control col-lg-12"/>
+											<input type="checkbox" id="pub_status" name="pub_status" class="form-control col-lg-12"/>
 										</div>
 									</div>
 									<br/>
-									
-									
-									
+								
 									
 								</div>
 								
@@ -162,6 +202,24 @@
                         </div>
                     </div>
                     <!-- END PANEL FOR CHANGE PASSWORD -->
+
+                    <div id="course_view" class="tab-pane in">
+                        <div class="row no-margin-row">
+
+							<div class="text-center col-md-12">
+								<h2 class="text-info">Course Details</h2><hr>
+							</div>
+							<div class="col-md-12">
+								<div id="c_title" class="col-md-12"></div>
+								<div class="col-md-12">
+									<div id="left_sub" class="col-md-6"></div>
+									<div id="right_sub" class="col-md-6"></div>
+								</div>
+							</div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
