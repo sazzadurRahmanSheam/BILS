@@ -179,14 +179,16 @@ $(document).ready(function () {
 							
 							//Interested Table Start
 							html +='<div id="interested_div" class="tab-pane in active">';
-							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th class="selected_col">Action</th></tr></thead>';
 							$.each(perticipantsList, function(i,row){
 								html += '<tr>';
 								html += '<td>'+row["name"]+'</td>';
 								html += '<td>'+row["email"]+'</td>';
 								html += '<td>'+row["mobile"]+'</td>';
+								html += '<td><input type="checkbox" name=""></td>';
 								html += '</tr>';
 							});
+							html +='<tr><td class="text-center" colspan="3"><button id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
 							html +='</table>';
 							html +='</div>';
 							//Interested Table End
@@ -307,6 +309,11 @@ $(document).ready(function () {
 				$("#course_type").append(option);
 			}
 		});
+
+	$("#select_participant_btn").click(function(){
+		$(".selected_col").removeClass('hidden');
+		$(".selected_col").addClass('show');
+	});
 
 
 
