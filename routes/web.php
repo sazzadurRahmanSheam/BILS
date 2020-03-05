@@ -115,6 +115,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	##Course View
 	Route::get('/course/course-view/{id}',array('as'=>'Course View', 'uses' =>'CoursesController@courseView'));
+	
+	Route::get('/course/course-participant-list/{id}',array('as'=>'Perticipants List', 'uses' =>'CoursesController@interestedPerticipantsList'));
 
 
 

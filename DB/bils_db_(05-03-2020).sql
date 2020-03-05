@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.app_users: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.app_users: ~8 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
 	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-02-11 12:47:09'),
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `app_user_group_members` (
   CONSTRAINT `FK_app_user_group_members_user_groups` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.app_user_group_members: ~6 rows (approximately)
+-- Dumping data for table bils_new_db.app_user_group_members: ~23 rows (approximately)
 /*!40000 ALTER TABLE `app_user_group_members` DISABLE KEYS */;
 INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 5, 30, 1, '2020-02-10 09:12:29', '2020-02-18 20:29:21'),
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `course_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_categories: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.course_categories: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_categories` DISABLE KEYS */;
 INSERT INTO `course_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Math', 'Basic Math Will Here', 1, '2020-02-11 06:19:33', '2020-02-11 07:10:45'),
@@ -138,8 +138,8 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
 -- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
 INSERT INTO `course_masters` (`id`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(4, 'Labour Study', 5, NULL, NULL, NULL, NULL, 3, 'Abul Hasan', 'admin', 'aaaaaa aasasf safasf sdfvasfvas.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 06:06:36', '2020-03-05 08:32:06'),
-	(5, 'Web Design', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'this is about web design.', 1, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-05 07:41:23', '2020-03-05 07:41:23');
+	(4, 'Labour Study', 5, '2020-03-04', '2020-03-26', NULL, NULL, 3, 'Abul Hasan', 'admin', 'This is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 06:06:36', '2020-03-05 13:55:52'),
+	(5, 'Web Design', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'this is about web design.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 07:41:23', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -155,17 +155,25 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_perticipants: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.course_perticipants: ~8 rows (approximately)
 /*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
 INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `created_at`, `updated_at`) VALUES
 	(4, 4, 6, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
 	(5, 4, 7, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(6, 4, 10, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(7, 4, 11, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(8, 4, 9, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(9, 4, 12, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(6, 4, 10, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:27'),
+	(7, 4, 11, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:23'),
+	(8, 4, 9, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:17'),
+	(9, 4, 12, 3, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 18:44:39'),
 	(10, 4, 5, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(11, 4, 8, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39');
+	(11, 4, 8, 1, 1, NULL, '2020-03-05 06:47:39', '2020-03-05 19:54:09'),
+	(12, 5, 6, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(13, 5, 7, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(14, 5, 10, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(15, 5, 11, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(16, 5, 9, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(17, 5, 12, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(18, 5, 5, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(19, 5, 8, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.failed_jobs
@@ -215,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.menus: ~26 rows (approximately)
+-- Dumping data for table bils_new_db.menus: ~25 rows (approximately)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`, `serial_no`, `menu_icon_class`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'User', 'Users', '', 0, 1, 'clip-user-plus', 1, '0000-00-00 00:00:00', '2020-02-04 11:46:09'),
@@ -256,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `message_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_categories: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.message_categories: ~1 rows (approximately)
 /*!40000 ALTER TABLE `message_categories` DISABLE KEYS */;
 INSERT INTO `message_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'All', 'All User can sent message', 1, '2020-03-03 11:35:54', '2020-03-03 11:42:05');
@@ -320,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `notices` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.notices: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.notices: ~1 rows (approximately)
 /*!40000 ALTER TABLE `notices` DISABLE KEYS */;
 INSERT INTO `notices` (`id`, `title`, `details`, `notice_date`, `attachment`, `expire_date`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 	(1, 'First Notice Title', 'First test Notice Details', NULL, '', NULL, 1, 'Momit', 'Momit', '2020-02-22 09:12:14', '2020-02-22 09:13:56');
@@ -361,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='m';
 
--- Dumping data for table bils_new_db.notifications: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.notifications: ~8 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` (`id`, `from_id`, `from_user_type`, `to_id`, `to_user_type`, `date_time`, `notification_title`, `message`, `view_url`, `status`, `created_at`, `updated_at`) VALUES
 	(12, 1, 'Admin', 6, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
@@ -371,7 +379,15 @@ INSERT INTO `notifications` (`id`, `from_id`, `from_user_type`, `to_id`, `to_use
 	(16, 1, 'Admin', 9, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
 	(17, 1, 'Admin', 12, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
 	(18, 1, 'Admin', 5, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
-	(19, 1, 'Admin', 8, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39');
+	(19, 1, 'Admin', 8, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(20, 1, 'Admin', 6, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(21, 1, 'Admin', 7, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(22, 1, 'Admin', 10, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(23, 1, 'Admin', 11, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(24, 1, 'Admin', 9, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(25, 1, 'Admin', 12, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(26, 1, 'Admin', 5, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(27, 1, 'Admin', 8, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.password_resets
@@ -444,7 +460,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.settings: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.settings: ~1 rows (approximately)
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` (`id`, `company_name`, `short_name`, `site_name`, `admin_email`, `admin_mobile`, `site_url`, `admin_url`, `logo`, `address`, `created_at`, `updated_at`) VALUES
 	(1, 'Bangladesh Institute of Labour Studies', 'BILS', 'BILS APPLICATION', 'admin@bils.com', '01980340482', NULL, '/admin', NULL, 'Dhaka', NULL, '2020-02-03 17:14:58');
@@ -620,7 +636,7 @@ CREATE TABLE IF NOT EXISTS `user_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.user_groups: ~7 rows (approximately)
+-- Dumping data for table bils_new_db.user_groups: ~9 rows (approximately)
 /*!40000 ALTER TABLE `user_groups` DISABLE KEYS */;
 INSERT INTO `user_groups` (`id`, `group_name`, `type`, `status`, `created_at`, `updated_at`) VALUES
 	(25, 'Sub Admin', 1, 0, '2020-02-07 10:23:56', '2020-02-18 06:53:21'),
@@ -673,7 +689,7 @@ CREATE TABLE IF NOT EXISTS `user_group_permissions` (
   CONSTRAINT `FK_user_group_permission_web_actions` FOREIGN KEY (`action_id`) REFERENCES `web_actions` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=633 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.user_group_permissions: ~435 rows (approximately)
+-- Dumping data for table bils_new_db.user_group_permissions: ~594 rows (approximately)
 /*!40000 ALTER TABLE `user_group_permissions` DISABLE KEYS */;
 INSERT INTO `user_group_permissions` (`id`, `group_id`, `action_id`, `status`, `created_at`, `updated_at`) VALUES
 	(8, 25, 1, 0, '2020-02-07 10:23:56', '2020-02-18 15:00:27'),
@@ -1286,7 +1302,7 @@ CREATE TABLE IF NOT EXISTS `web_actions` (
   CONSTRAINT `FK_web_actions_menus` FOREIGN KEY (`module_id`) REFERENCES `menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.web_actions: ~65 rows (approximately)
+-- Dumping data for table bils_new_db.web_actions: ~66 rows (approximately)
 /*!40000 ALTER TABLE `web_actions` DISABLE KEYS */;
 INSERT INTO `web_actions` (`id`, `activity_name`, `module_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin Users', 1, 1, '0000-00-00 00:00:00', '2020-02-05 14:13:21'),

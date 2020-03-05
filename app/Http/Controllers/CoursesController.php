@@ -384,6 +384,67 @@ class CoursesController extends Controller
     }
 
 
+    public function interestedPerticipantsList($c_id){
+        $perticipantsList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->whereIn('cp.is_interested', ['1','3'])
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+
+        $registeredList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_interested', '3')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+
+        $selectedList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_selected', '1')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+
+
+
+
+        $perticipantTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->whereIn('cp.is_interested', ['1','3'])
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+        $registerTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_interested', '3')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+        $selectedTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_selected', '1')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+
+
+                          
+        return json_encode(array(
+            "perticipantsList"=>$perticipantsList,
+            "registeredList"=>$registeredList,
+            "selectedList"=>$selectedList,
+
+            "perticipantTotal"=>$perticipantTotal,
+            "registerTotal"=>$registerTotal,
+            "selectedTotal"=>$selectedTotal
+        ));
+
+    }
+
 
 
 

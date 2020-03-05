@@ -123,44 +123,111 @@ $(document).ready(function () {
 				left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];
 				left_sub += "<br><b>Course Type: </b>"+data['course_type'];
 				left_sub += "<br><b>Created By: </b>"+data['created_by'];
+				left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];
+				left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];
 				$("#left_sub").html(left_sub);
 
 
 				var right_sub = "";
-				right_sub +=(data['pub_status']=='0')?"<button class='btn btn-xs btn-danger'>Not-published</button>":"<button class='btn btn-xs btn-success'>Published</button>";
+				right_sub +=(data['pub_status']=='0')?"<button class='btn btn-sm btn-danger'>Not-published</button>":"<button class='btn btn-sm btn-success'>Published</button>";
 				if (data['course_status']=='1') {
-					right_sub +=" <button class='btn btn-xs btn-warning'>Initiated</button>"
+					right_sub +=" <button class='btn btn-sm btn-warning'>Initiated</button>"
 				}else if (data['course_status']=='2') {
-					right_sub +=" <button class='btn btn-xs btn-success'>Approved</button>"
+					right_sub +=" <button class='btn btn-sm btn-success'>Approved</button>"
 				}else if (data['course_status']=='3') {
-					right_sub +=" <button class='btn btn-xs btn-danger'>Rejected</button>"
+					right_sub +=" <button class='btn btn-sm btn-danger'>Rejected</button>"
 				}else if (data['course_status']=='4') {
-					right_sub +=" <button class='btn btn-xs btn-info'>Started</button>"
+					right_sub +=" <button class='btn btn-sm btn-info'>Started</button>"
 				}else if (data['course_status']=='5') {
-					right_sub +=" <button class='btn btn-xs btn-success'>Completed</button>"
+					right_sub +=" <button class='btn btn-sm btn-success'>Completed</button>"
 				}
 				right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];
 				right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];
 				right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];
 				right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
+				right_sub +="<br/><b>Payment Method: </b>"+data['payment_method'];
+				right_sub +="<br/><b>Course Responsible Person: </b>"+data['course_responsible_person'];
 
 				$("#right_sub").html(right_sub);
+
+				var description = "";
+				description +="<hr><p>Details</p>"+data['details'];
+				$("#description").html(description);
+
+				//Getting perticipant list
+				$.ajax({
+					url: url+"/course/course-participant-list/"+id,
+					success: function(res){
+						var perticipants = JSON.parse(res);
+						var perticipantsList = perticipants['perticipantsList'];
+						var registeredList = perticipants['registeredList'];
+						var selectedList = perticipants['selectedList'];
+
+						var perticipantTotal = perticipants['perticipantTotal'];
+						var registerTotal = perticipants['registerTotal'];
+						var selectedTotal = perticipants['selectedTotal'];
+
+						if(!jQuery.isEmptyObject(perticipants)){
+							var html='';
+							html +='<br><div class="tabbable">';
+							html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
+							html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List  ('+perticipantTotal+')</b></a></li>';
+							html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List  ('+registerTotal+')</b></a></li>';
+							html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List  ('+selectedTotal+')</b></a></li>';
+							html +='</ul>';
+							html +='<div class="tab-content">';
+							
+							//Interested Table Start
+							html +='<div id="interested_div" class="tab-pane in active">';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							$.each(perticipantsList, function(i,row){
+								html += '<tr>';
+								html += '<td>'+row["name"]+'</td>';
+								html += '<td>'+row["email"]+'</td>';
+								html += '<td>'+row["mobile"]+'</td>';
+								html += '</tr>';
+							});
+							html +='</table>';
+							html +='</div>';
+							//Interested Table End
+
+							//Registered Table Start
+							html +='<div id="registered_div" class="tab-pane">';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							$.each(registeredList, function(i,register_row){
+								html += '<tr>';
+								html += '<td>'+register_row["name"]+'</td>';
+								html += '<td>'+register_row["email"]+'</td>';
+								html += '<td>'+register_row["mobile"]+'</td>';
+								html += '</tr>';
+							});
+							html +='</table>';
+							html +='</div>';
+							//Registered Table End
+
+							//Selected Table Start
+							html +='<div id="selected_div" class="tab-pane">';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							$.each(selectedList, function(i,selected_row){
+								html += '<tr>';
+								html += '<td>'+selected_row["name"]+'</td>';
+								html += '<td>'+selected_row["email"]+'</td>';
+								html += '<td>'+selected_row["mobile"]+'</td>';
+								html += '</tr>';
+							});
+							html +='</table>';
+							html +='</div>';
+							//Selected Table End
+
+
+							html +='</div>';
+
+							html +='</div>';	
+						}
+						$('#participant_table').html(html);
+					}
+				});
 				
-				// course_info += "<p>"+data['details']+"</p>";
-				
-				
-				
-			
-				
-				
-				
-				// course_info += "<h4>Course Responsible Person: "+data['course_responsible_person']+"</h4>";
-				
-				// course_info += "<h4>Payment Fee: "+data['payment_fee']+"</h4>";
-				// course_info += "<h4>Payment Method: "+data['payment_method']+"</h4>";
-				// course_info += "<h4>Discount Message: "+data['discount_message']+"</h4>";
-				
-				// $("#modal_body").html(course_info);
 			}
 		});
 	}
