@@ -347,7 +347,6 @@ $(document).ready(function () {
 				cache:false,
 				contentType:false,processData:false,
 				success: function(data){
-					
 					perticipant_manage();
 					$("#p_mess").html(data);
 				}	
