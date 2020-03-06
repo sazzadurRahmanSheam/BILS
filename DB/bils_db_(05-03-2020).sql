@@ -33,14 +33,19 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.app_users: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.app_users: ~8 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
 	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-02-11 12:47:09'),
 	(6, 'abul', '123', '123', 'abul@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-02-21 19:41:45'),
-	(7, 'babul', '1234', '123', 'babul@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-03-03 14:35:30');
+	(7, 'babul', '1234', '123', 'babul@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-02-10 09:12:29', '2020-03-03 14:35:30'),
+	(8, 'Siam', '123', '123', 'siam@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-05 06:42:11', '2020-03-05 06:42:11'),
+	(9, 'Mizanur', '123', '123', 'mizanur@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(10, 'Chaki', '123', '123', 'chaki@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-05 06:44:27', '2020-03-05 06:44:27'),
+	(11, 'Jahed', '123', '123', 'jahed@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-05 06:44:56', '2020-03-05 06:44:56'),
+	(12, 'Momit', '123', '123', 'momit@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-05 06:45:39', '2020-03-05 06:45:39');
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.app_user_group_members
@@ -56,9 +61,9 @@ CREATE TABLE IF NOT EXISTS `app_user_group_members` (
   KEY `FK_app_user_group_members_app_users` (`app_user_id`),
   CONSTRAINT `FK_app_user_group_members_app_users` FOREIGN KEY (`app_user_id`) REFERENCES `app_users` (`id`),
   CONSTRAINT `FK_app_user_group_members_user_groups` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.app_user_group_members: ~6 rows (approximately)
+-- Dumping data for table bils_new_db.app_user_group_members: ~23 rows (approximately)
 /*!40000 ALTER TABLE `app_user_group_members` DISABLE KEYS */;
 INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 5, 30, 1, '2020-02-10 09:12:29', '2020-02-18 20:29:21'),
@@ -66,7 +71,24 @@ INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`,
 	(4, 6, 31, 1, '2020-02-22 12:52:15', NULL),
 	(5, 5, 31, 1, '2020-02-22 12:52:49', NULL),
 	(6, 7, 31, 1, '2020-02-22 12:56:46', NULL),
-	(7, 7, 30, 1, '2020-02-22 12:57:09', NULL);
+	(7, 7, 30, 1, '2020-02-22 12:57:09', NULL),
+	(8, 8, 33, 1, '2020-03-05 06:42:11', '2020-03-05 06:42:11'),
+	(9, 9, 27, 1, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(10, 9, 30, 1, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(11, 9, 31, 1, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(12, 9, 32, 1, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(13, 9, 33, 1, '2020-03-05 06:43:09', '2020-03-05 06:43:09'),
+	(14, 10, 32, 1, '2020-03-05 06:44:27', '2020-03-05 06:44:27'),
+	(15, 11, 27, 1, '2020-03-05 06:44:57', '2020-03-05 06:44:57'),
+	(16, 11, 30, 1, '2020-03-05 06:44:57', '2020-03-05 06:44:57'),
+	(17, 11, 31, 1, '2020-03-05 06:44:57', '2020-03-05 06:44:57'),
+	(18, 11, 32, 1, '2020-03-05 06:44:58', '2020-03-05 06:44:58'),
+	(19, 11, 33, 1, '2020-03-05 06:44:58', '2020-03-05 06:44:58'),
+	(20, 12, 27, 1, '2020-03-05 06:45:39', '2020-03-05 06:45:39'),
+	(21, 12, 30, 1, '2020-03-05 06:45:39', '2020-03-05 06:45:39'),
+	(22, 12, 31, 1, '2020-03-05 06:45:39', '2020-03-05 06:45:39'),
+	(23, 12, 32, 1, '2020-03-05 06:45:39', '2020-03-05 06:45:39'),
+	(24, 12, 33, 1, '2020-03-05 06:45:39', '2020-03-05 06:45:39');
 /*!40000 ALTER TABLE `app_user_group_members` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_categories
@@ -80,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `course_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_categories: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.course_categories: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_categories` DISABLE KEYS */;
 INSERT INTO `course_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Math', 'Basic Math Will Here', 1, '2020-02-11 06:19:33', '2020-02-11 07:10:45'),
@@ -111,14 +133,13 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_masters: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
 INSERT INTO `course_masters` (`id`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'Labour Study', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'teachig about labour', 2, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-04 07:24:01', '2020-03-04 14:26:30'),
-	(2, 'Test Course Title', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'Test Description', 1, NULL, NULL, NULL, NULL, 0, 'Momit', '', '2020-03-04 07:26:36', '2020-03-04 07:26:36'),
-	(3, 'Rickshaw Pooler', 10, '2020-03-05', '2020-04-04', NULL, NULL, 3, 'Abul Hasan', 'admin', 'This is for Rickshaw Pooler. where they learn about their right.', 1, 300, 'Bkash', 'No discount available', NULL, 0, 'Momit', 'Momit', '2020-03-04 08:02:40', '2020-03-04 19:55:40');
+	(4, 'Labour Study', 5, '2020-03-04', '2020-03-26', NULL, NULL, 3, 'Abul Hasan', 'admin', 'This is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 06:06:36', '2020-03-05 13:55:52'),
+	(5, 'Web Design', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'this is about web design.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 07:41:23', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -132,14 +153,27 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.course_perticipants: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.course_perticipants: ~8 rows (approximately)
 /*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
 INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 1, 6, 1, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 20:08:20'),
-	(2, 1, 7, 0, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
-	(3, 1, 5, 0, NULL, NULL, '2020-03-04 14:06:15', '2020-03-04 14:06:15');
+	(4, 4, 6, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(5, 4, 7, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(6, 4, 10, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:27'),
+	(7, 4, 11, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:23'),
+	(8, 4, 9, 1, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 16:06:17'),
+	(9, 4, 12, 3, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 18:44:39'),
+	(10, 4, 5, 0, NULL, NULL, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(11, 4, 8, 1, 1, NULL, '2020-03-05 06:47:39', '2020-03-05 19:54:09'),
+	(12, 5, 6, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(13, 5, 7, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(14, 5, 10, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(15, 5, 11, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(16, 5, 9, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(17, 5, 12, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(18, 5, 5, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(19, 5, 8, 0, NULL, NULL, '2020-03-05 10:23:40', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.failed_jobs
@@ -189,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `menus` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.menus: ~26 rows (approximately)
+-- Dumping data for table bils_new_db.menus: ~25 rows (approximately)
 /*!40000 ALTER TABLE `menus` DISABLE KEYS */;
 INSERT INTO `menus` (`id`, `module_name`, `menu_title`, `menu_url`, `parent_id`, `serial_no`, `menu_icon_class`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'User', 'Users', '', 0, 1, 'clip-user-plus', 1, '0000-00-00 00:00:00', '2020-02-04 11:46:09'),
@@ -230,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `message_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_categories: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.message_categories: ~1 rows (approximately)
 /*!40000 ALTER TABLE `message_categories` DISABLE KEYS */;
 INSERT INTO `message_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'All', 'All User can sent message', 1, '2020-03-03 11:35:54', '2020-03-03 11:42:05');
@@ -294,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `notices` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.notices: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.notices: ~1 rows (approximately)
 /*!40000 ALTER TABLE `notices` DISABLE KEYS */;
 INSERT INTO `notices` (`id`, `title`, `details`, `notice_date`, `attachment`, `expire_date`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 	(1, 'First Notice Title', 'First test Notice Details', NULL, '', NULL, 1, 'Momit', 'Momit', '2020-02-22 09:12:14', '2020-02-22 09:13:56');
@@ -333,15 +367,27 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COMMENT='m';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='m';
 
--- Dumping data for table bils_new_db.notifications: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.notifications: ~8 rows (approximately)
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` (`id`, `from_id`, `from_user_type`, `to_id`, `to_user_type`, `date_time`, `notification_title`, `message`, `view_url`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 1, 'Admin', 6, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
-	(2, 1, 'Admin', 7, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
-	(3, 1, 'Admin', 5, 'App User', '2020-03-04 20:06:15', 'BILS Initiate Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:06:15', '2020-03-04 14:06:15'),
-	(11, 1, 'Admin', 6, 'App User', '2020-03-04 20:26:30', 'BILS Approved Labour Study Course', NULL, 'course/1', 0, '2020-03-04 14:26:30', '2020-03-04 14:26:30');
+	(12, 1, 'Admin', 6, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(13, 1, 'Admin', 7, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(14, 1, 'Admin', 10, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(15, 1, 'Admin', 11, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(16, 1, 'Admin', 9, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(17, 1, 'Admin', 12, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(18, 1, 'Admin', 5, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(19, 1, 'Admin', 8, 'App User', '2020-03-05 12:47:39', 'BILS Initiate Labour Study Course', NULL, 'course/4', 0, '2020-03-05 06:47:39', '2020-03-05 06:47:39'),
+	(20, 1, 'Admin', 6, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(21, 1, 'Admin', 7, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(22, 1, 'Admin', 10, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(23, 1, 'Admin', 11, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(24, 1, 'Admin', 9, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(25, 1, 'Admin', 12, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(26, 1, 'Admin', 5, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40'),
+	(27, 1, 'Admin', 8, 'App User', '2020-03-05 16:23:40', 'BILS Initiate Web Design Course', NULL, 'course/5', 0, '2020-03-05 10:23:40', '2020-03-05 10:23:40');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.password_resets
@@ -414,7 +460,7 @@ CREATE TABLE IF NOT EXISTS `settings` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.settings: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.settings: ~1 rows (approximately)
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` (`id`, `company_name`, `short_name`, `site_name`, `admin_email`, `admin_mobile`, `site_url`, `admin_url`, `logo`, `address`, `created_at`, `updated_at`) VALUES
 	(1, 'Bangladesh Institute of Labour Studies', 'BILS', 'BILS APPLICATION', 'admin@bils.com', '01980340482', NULL, '/admin', NULL, 'Dhaka', NULL, '2020-02-03 17:14:58');
@@ -574,7 +620,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table bils_new_db.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
-	(1, 'Momit', '123456', '01711', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'Very Good', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-04 05:42:00'),
+	(1, 'Momit', '123456', '01711', 'momit@bils.com', 'mohammadpur', 1, '', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'Very Good', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-05 06:04:56'),
 	(13, 'Momit Hasan', '78967899', '53463435', 'momit@technolife.ee', NULL, 1, NULL, NULL, NULL, NULL, 1, '', NULL, '2020-02-02 08:44:30', '2020-02-17 13:35:42'),
 	(31, 'SiaM', '123', '01747083028', 'siam@gmail.com', NULL, 1, NULL, NULL, NULL, NULL, 2, '', NULL, '2020-02-09 13:25:51', '2020-02-17 13:35:46');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -588,9 +634,9 @@ CREATE TABLE IF NOT EXISTS `user_groups` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.user_groups: ~7 rows (approximately)
+-- Dumping data for table bils_new_db.user_groups: ~9 rows (approximately)
 /*!40000 ALTER TABLE `user_groups` DISABLE KEYS */;
 INSERT INTO `user_groups` (`id`, `group_name`, `type`, `status`, `created_at`, `updated_at`) VALUES
 	(25, 'Sub Admin', 1, 0, '2020-02-07 10:23:56', '2020-02-18 06:53:21'),
@@ -599,7 +645,9 @@ INSERT INTO `user_groups` (`id`, `group_name`, `type`, `status`, `created_at`, `
 	(28, 'Sub Admin 1', 1, 0, '2020-02-09 09:57:24', '2020-02-09 09:57:24'),
 	(29, 'Sub Admin 2', 1, 0, '2020-02-09 10:48:54', '2020-02-09 10:51:34'),
 	(30, 'App View', 2, 1, '2020-02-09 11:37:38', '2020-02-09 11:59:25'),
-	(31, 'General', 2, 1, '2020-02-18 14:01:17', '2020-02-18 14:01:17');
+	(31, 'General', 2, 1, '2020-02-18 14:01:17', '2020-02-18 14:01:17'),
+	(32, 'Senior', 2, 1, '2020-03-05 06:40:22', '2020-03-05 06:40:22'),
+	(33, 'Joniour', 2, 1, '2020-03-05 06:40:39', '2020-03-05 06:40:39');
 /*!40000 ALTER TABLE `user_groups` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.user_group_members
@@ -639,9 +687,9 @@ CREATE TABLE IF NOT EXISTS `user_group_permissions` (
   KEY `FK_user_group_permission_web_actions` (`action_id`),
   CONSTRAINT `FK_user_group_permission_user_group` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`),
   CONSTRAINT `FK_user_group_permission_web_actions` FOREIGN KEY (`action_id`) REFERENCES `web_actions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=633 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.user_group_permissions: ~435 rows (approximately)
+-- Dumping data for table bils_new_db.user_group_permissions: ~594 rows (approximately)
 /*!40000 ALTER TABLE `user_group_permissions` DISABLE KEYS */;
 INSERT INTO `user_group_permissions` (`id`, `group_id`, `action_id`, `status`, `created_at`, `updated_at`) VALUES
 	(8, 25, 1, 0, '2020-02-07 10:23:56', '2020-02-18 15:00:27'),
@@ -1105,7 +1153,139 @@ INSERT INTO `user_group_permissions` (`id`, `group_id`, `action_id`, `status`, `
 	(497, 28, 85, 0, '2020-03-03 11:25:29', '2020-03-03 11:25:29'),
 	(498, 29, 85, 0, '2020-03-03 11:25:29', '2020-03-03 11:25:29'),
 	(499, 30, 85, 0, '2020-03-03 11:25:29', '2020-03-03 11:25:29'),
-	(500, 31, 85, 0, '2020-03-03 11:25:29', '2020-03-03 11:25:29');
+	(500, 31, 85, 0, '2020-03-03 11:25:29', '2020-03-03 11:25:29'),
+	(501, 32, 1, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(502, 32, 2, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(503, 32, 4, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(504, 32, 6, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(505, 32, 7, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(506, 32, 8, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(507, 32, 9, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(508, 32, 10, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(509, 32, 27, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(510, 32, 28, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(511, 32, 24, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(512, 32, 25, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(513, 32, 26, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(514, 32, 76, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(515, 32, 77, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(516, 32, 29, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(517, 32, 30, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(518, 32, 31, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(519, 32, 32, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(520, 32, 33, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(521, 32, 34, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(522, 32, 35, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(523, 32, 36, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(524, 32, 37, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(525, 32, 38, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(526, 32, 39, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(527, 32, 40, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(528, 32, 41, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(529, 32, 42, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(530, 32, 43, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(531, 32, 44, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(532, 32, 45, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(533, 32, 46, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(534, 32, 47, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(535, 32, 48, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(536, 32, 49, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(537, 32, 50, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(538, 32, 51, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(539, 32, 52, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(540, 32, 53, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(541, 32, 54, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(542, 32, 55, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(543, 32, 56, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(544, 32, 57, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(545, 32, 58, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(546, 32, 59, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(547, 32, 60, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(548, 32, 61, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(549, 32, 62, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(550, 32, 63, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(551, 32, 82, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(552, 32, 83, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(553, 32, 84, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(554, 32, 85, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(555, 32, 72, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(556, 32, 73, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(557, 32, 74, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(558, 32, 75, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(559, 32, 64, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(560, 32, 65, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(561, 32, 66, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(562, 32, 67, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(563, 32, 68, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(564, 32, 69, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(565, 32, 70, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(566, 32, 71, 0, '2020-03-05 06:40:23', '2020-03-05 06:40:23'),
+	(567, 33, 1, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(568, 33, 2, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(569, 33, 4, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(570, 33, 6, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(571, 33, 7, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(572, 33, 8, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(573, 33, 9, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(574, 33, 10, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(575, 33, 27, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(576, 33, 28, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(577, 33, 24, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(578, 33, 25, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(579, 33, 26, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(580, 33, 76, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(581, 33, 77, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(582, 33, 29, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(583, 33, 30, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(584, 33, 31, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(585, 33, 32, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(586, 33, 33, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(587, 33, 34, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(588, 33, 35, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(589, 33, 36, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(590, 33, 37, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(591, 33, 38, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(592, 33, 39, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(593, 33, 40, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(594, 33, 41, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(595, 33, 42, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(596, 33, 43, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(597, 33, 44, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(598, 33, 45, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(599, 33, 46, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(600, 33, 47, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(601, 33, 48, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(602, 33, 49, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(603, 33, 50, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(604, 33, 51, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(605, 33, 52, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(606, 33, 53, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(607, 33, 54, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(608, 33, 55, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(609, 33, 56, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(610, 33, 57, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(611, 33, 58, 0, '2020-03-05 06:40:39', '2020-03-05 06:40:39'),
+	(612, 33, 59, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(613, 33, 60, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(614, 33, 61, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(615, 33, 62, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(616, 33, 63, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(617, 33, 82, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(618, 33, 83, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(619, 33, 84, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(620, 33, 85, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(621, 33, 72, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(622, 33, 73, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(623, 33, 74, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(624, 33, 75, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(625, 33, 64, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(626, 33, 65, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(627, 33, 66, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(628, 33, 67, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(629, 33, 68, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(630, 33, 69, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(631, 33, 70, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40'),
+	(632, 33, 71, 0, '2020-03-05 06:40:40', '2020-03-05 06:40:40');
 /*!40000 ALTER TABLE `user_group_permissions` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.web_actions
@@ -1122,7 +1302,7 @@ CREATE TABLE IF NOT EXISTS `web_actions` (
   CONSTRAINT `FK_web_actions_menus` FOREIGN KEY (`module_id`) REFERENCES `menus` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.web_actions: ~65 rows (approximately)
+-- Dumping data for table bils_new_db.web_actions: ~66 rows (approximately)
 /*!40000 ALTER TABLE `web_actions` DISABLE KEYS */;
 INSERT INTO `web_actions` (`id`, `activity_name`, `module_id`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin Users', 1, 1, '0000-00-00 00:00:00', '2020-02-05 14:13:21'),

@@ -20,10 +20,15 @@
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
-	                           <b> Add Courses</b>
+	                           <b> Open Courses</b>
 	                        </a>
 	                    </li>
 	                @endif
+	                <li style="display: none;" id="course_view_li">
+                        <a data-toggle="tab" href="#course_view" id="course_view_button">
+                           <b>Courses View</b>
+                        </a>
+	                </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
@@ -154,6 +159,20 @@
 										</div>						
 									</div>
 
+									<div style="display:none;" id="edit_course_status" class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Status</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<select name="course_status" id="course_status"  class="form-control col-lg-12">
+												<option disabled="" selected="" value="">Change Course Status</option>
+												<option value="1">Initiate</option>
+												<option value="2">Approved</option>
+												<option value="3">Rejected</option>
+												<option value="4">Started</option>
+												<option value="5">Completed</option>
+											</select>
+										</div>					
+									</div>
+
 									
 										
 									
@@ -164,9 +183,7 @@
 										</div>
 									</div>
 									<br/>
-									
-									
-									
+								
 									
 								</div>
 								
@@ -185,6 +202,30 @@
                         </div>
                     </div>
                     <!-- END PANEL FOR CHANGE PASSWORD -->
+
+                    <div id="course_view" class="tab-pane in">
+                        <div class="row no-margin-row">
+							<div class="col-md-12">
+								<div id="c_title" class="col-md-12"></div>
+								<div class="col-md-12" style="padding-left: 0px;">
+									<div id="left_sub" class="col-md-6"></div>
+									<div id="right_sub" class="col-md-6"></div>
+								</div>
+								<div class="col-md-12" id="description">
+									
+								</div>
+							</div>
+
+							<div class="col-md-12"><br>
+								<span id="p_mess"></span>
+								<div id="participant_table">
+									
+								</div>
+							</div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

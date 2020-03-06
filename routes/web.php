@@ -110,7 +110,17 @@ Route::group(['middleware' => ['auth']], function () {
 
 	##Getting Course Category For Add Courses
 	Route::get('/course/get-course-categories',array('as'=>'Get Course Categories', 'uses' =>'CoursesController@getCategories'));
+
 	Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
+
+	##Course View
+	Route::get('/course/course-view/{id}',array('as'=>'Course View', 'uses' =>'CoursesController@courseView'));
+	
+	Route::get('/course/course-participant-list/{id}',array('as'=>'Perticipants List', 'uses' =>'CoursesController@interestedPerticipantsList'));
+
+	##Save Selected Person
+	Route::post('/course/save-select-person',array('as'=>'Save Selected Perticipants', 'uses' =>'CoursesController@saveSelectedPerson'));
+	Route::post('/course/save-remove-person',array('as'=>'Save Remove Perticipants', 'uses' =>'CoursesController@saveRemovePerson'));
 
 
 
@@ -126,6 +136,8 @@ Route::group(['middleware' => ['permission']], function () {
 	/*----- Course Start -----*/
 	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
+	Route::get('/course/course-edit/{id}',array('as'=>'Course Edit' , 'action_id'=>'76', 'uses' =>'CoursesController@courseEdit'));
+	Route::get('/course/course-delete/{id}',array('as'=>'Course Delete' , 'action_id'=>'77', 'uses' =>'CoursesController@courseDelete'));
 	/*----- Course End -----*/
 
 	/*----- Survey Start -----*/

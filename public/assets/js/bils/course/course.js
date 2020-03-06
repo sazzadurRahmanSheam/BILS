@@ -3,7 +3,7 @@ $(document).ready(function () {
 	
 	// for get site url
 	var url = $('.site_url').val();
-
+	var global_id ;
 	
 	//Load App User Group Using Notice Controller
 	/*$.ajax({
@@ -80,7 +80,7 @@ $(document).ready(function () {
 						$("#message_form .tableflat").iCheck('check');
 						course_table.ajax.reload();
 						clear_form();
-						$("#courses_add_button").html('Add Publication');
+						$("#courses_add_button").html('Open Course');
 						$(".save").html('Save');
 						$("#courses_list_button").trigger('click');
 						
@@ -107,24 +107,148 @@ $(document).ready(function () {
 		],
 	});
 
-	//Message View
-	/*message_view = function message_view(id){
+	//Course View
+	course_view = function course_view(id){
 		var id = id;
 		$.ajax({
-			url: url+'/message/message-view/'+id,
+			url: url+'/course/course-view/'+id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#admin_user_view").modal();
-				$("#modal_title").html("Message View");
-				var message_info = "";
-			
-				$("#modal_body").html(message_info);
+				$("#course_view_li").css('display','block');
+				$("#course_view_button").trigger('click');
+				$("#c_title").html("<h2>Title: "+data['course_title']+"</h2>");
+				var left_sub = "";
+				left_sub += "<p><b>Duration: </b>"+data['duration']+" Hours</p>";
+				left_sub += "<b>Approximate Start Time: </b>"+data['appx_start_time'];
+				left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];
+				left_sub += "<br><b>Course Type: </b>"+data['course_type'];
+				left_sub += "<br><b>Created By: </b>"+data['created_by'];
+				left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];
+				left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];
+				$("#left_sub").html(left_sub);
+
+
+				var right_sub = "";
+				right_sub +=(data['pub_status']=='0')?"<button class='btn btn-sm btn-danger'>Not-published</button>":"<button class='btn btn-sm btn-success'>Published</button>";
+				if (data['course_status']=='1') {
+					right_sub +=" <button class='btn btn-sm btn-warning'>Initiated</button>"
+				}else if (data['course_status']=='2') {
+					right_sub +=" <button class='btn btn-sm btn-success'>Approved</button>"
+				}else if (data['course_status']=='3') {
+					right_sub +=" <button class='btn btn-sm btn-danger'>Rejected</button>"
+				}else if (data['course_status']=='4') {
+					right_sub +=" <button class='btn btn-sm btn-info'>Started</button>"
+				}else if (data['course_status']=='5') {
+					right_sub +=" <button class='btn btn-sm btn-success'>Completed</button>"
+				}
+				right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];
+				right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];
+				right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];
+				right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
+				right_sub +="<br/><b>Payment Method: </b>"+data['payment_method'];
+				right_sub +="<br/><b>Course Responsible Person: </b>"+data['course_responsible_person'];
+
+				$("#right_sub").html(right_sub);
+
+				var description = "";
+				description +="<hr><p>Details</p>"+data['details'];
+				$("#description").html(description);
+				global_id = id;
+				perticipant_manage();
+				
 			}
 		});
 	}
 
+
+
+				//Getting perticipant list
+				perticipant_manage = function perticipant_manage(){
+					$.ajax({
+					url: url+"/course/course-participant-list/"+global_id,
+					success: function(res){
+						var perticipants = JSON.parse(res);
+						var perticipantsList = perticipants['perticipantsList'];
+						var registeredList = perticipants['registeredList'];
+						var selectedList = perticipants['selectedList'];
+
+						var perticipantTotal = perticipants['perticipantTotal'];
+						var registerTotal = perticipants['registerTotal'];
+						var selectedTotal = perticipants['selectedTotal'];
+
+						if(!jQuery.isEmptyObject(perticipants)){
+							var html='';
+							html +='<br><div class="tabbable">';
+							html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
+							html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List  ('+perticipantTotal+')</b></a></li>';
+							html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List  ('+registerTotal+')</b></a></li>';
+							html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List  ('+selectedTotal+')</b></a></li>';
+							html +='</ul>';
+							html +='<div class="tab-content">';
+							
+							//Interested Table Start
+							html +='<div id="interested_div" class="tab-pane in active">';
+							html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th style="display:none" class="selected_col"><button onclick="saveSelect()" class="btn btn-sam btn-success">Select</button></th></tr></thead>';
+							$.each(perticipantsList, function(i,row){
+								html += '<tr>';
+								html += '<td>'+row["name"]+'</td>';
+								html += '<td>'+row["email"]+'</td>';
+								html += '<td>'+row["mobile"]+'</td>';
+								html += '<td class="checkBoxInput" style="display:none">';
+								html +=(row["is_selected"]=="1")?'<input checked value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
+								
+								html += '</td></tr>';
+							});
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showCheckBox()" type="button" id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
+							html +='</table>';
+							html +='</div>';
+							//Interested Table End
+
+							//Registered Table Start
+							html +='<div id="registered_div" class="tab-pane">';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							$.each(registeredList, function(i,register_row){
+								html += '<tr>';
+								html += '<td>'+register_row["name"]+'</td>';
+								html += '<td>'+register_row["email"]+'</td>';
+								html += '<td>'+register_row["mobile"]+'</td>';
+								html += '</tr>';
+							});
+							html +='</table>';
+							html +='</div>';
+							//Registered Table End
+
+							//Selected Table Start
+							html +='<div id="selected_div" class="tab-pane">';
+							html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th id="rem_col" style="display:none"><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></th></tr></thead>';
+							$.each(selectedList, function(i,selected_row){
+								html += '<tr>';
+								html += '<td>'+selected_row["name"]+'</td>';
+								html += '<td>'+selected_row["email"]+'</td>';
+								html += '<td>'+selected_row["mobile"]+'</td>';
+								html += '<td class="rem_input" style="display:none" ><input value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
+								html += '</tr>';
+								
+							});
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showRemove()" type="button" id="select_participant_btn" class="btn btn-sm btn-danger">Remove Selected Perticipant</button></td></tr>';
+							html +='</table>';
+							html +='</div>';
+							//Selected Table End
+
+
+							html +='</div>';
+
+							html +='</div>';	
+						}
+						$('#participant_table').html(html);
+					}
+				});
+				}
+
+
+
 	//Message Delete
-	delete_message = function delete_message(id){
+	delete_course = function delete_course(id){
 		var delete_id = id;
 		swal({
 			title: "Are you sure?",
@@ -135,14 +259,14 @@ $(document).ready(function () {
 		}).then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url: url+'/message/message-delete/'+delete_id,
+					url: url+'/course/course-delete/'+delete_id,
 					cache: false,
 					success: function(response){
 						var response = JSON.parse(response);
 						swal(response['deleteMessage'], {
 						icon: "success",
 						});
-						message_table.ajax.reload();
+						course_table.ajax.reload();
 					}
 				});
 			} 
@@ -155,24 +279,36 @@ $(document).ready(function () {
 	}
 
 	//Publication Edit
-	edit_publication = function edit_publication(id){
+	edit_course = function edit_course(id){
 		var edit_id = id;
 		$.ajax({
-			url: url+'/publication/publication-edit/'+edit_id,
+			url: url+'/course/course-edit/'+edit_id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#publication_entry").trigger('click');
-				$("#publication_entry").html('Publication Update');
-				$("#save_publication").html('Update');
-				$("#publication_edit_id").val(data['id']);
-				$("#publication_title").val(data['publication_title']);
+				$("#courses_add_button").trigger('click');
+				$("#courses_add_button").html('Course Update');
+				$(".save").html('Update');
+				
+				$("#course_edit_id").val(data['id']);
+				$("#course_title").val(data['course_title']);
 				$("#details").val(data['details']);
-				$("#authors").val(data['authors']);
-				$("#publication_type").val(data['publication_type']).change();
-				(data['status']=='1')?$("#is_active").iCheck('check'):$("#is_active").iCheck('uncheck');
+				$("#duration").val(data['duration']);
+				$("#course_type").val(data['course_type']).change();
+				$("#appx_start_time").val(data['appx_start_time']);
+				$("#appx_end_time").val(data['appx_end_time']);
+				$("#act_start_time").val(data['act_start_time']);
+				$("#act_end_time").val(data['act_end_time']);
+				$("#payment_fee").val(data['payment_fee']);
+				$("#payment_method").val(data['payment_method']);
+				$("#course_teacher").val(data['course_teacher']);
+				$("#discount_message").val(data['discount_message']);
+				(data['pub_status']=='0')?$("#pub_status").iCheck('uncheck'):$("#pub_status").iCheck('check');
+				$("#edit_course_status").css('display','block');
+				$("#course_status").val(data['course_status']).change();
+
 			}
 		});
-	}*/
+	}
 
 	// Get Course Category
 	$.ajax({
@@ -187,6 +323,70 @@ $(document).ready(function () {
 			}
 		});
 
+	
+	showCheckBox = function showCheckBox(){
+		$(".checkBoxInput").css('display', 'block');
+		$(".selected_col").css('display', 'block');
+	}
+
+	saveSelect = function saveSelect(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#select_form')[0]);
+
+		$.ajax({
+				url: url+"/course/save-select-person",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					
+					perticipant_manage();
+					$("#p_mess").html(data);
+				}	
+			});
+
+	}
+
+	showRemove = function showRemove(){
+		$("#rem_col").css('display', 'block');
+		$(".rem_input").css('display', 'block');
+	}
+
+
+	save_remove_person = function save_remove_person(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#select_remove_form')[0]);
+
+		$.ajax({
+				url: url+"/course/save-remove-person",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					
+					perticipant_manage();
+					//$("#selected_list_button").trigger('click');
+					$("#p_mess").html(data);
+				}	
+			});
+
+	}
 
 
 
