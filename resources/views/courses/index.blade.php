@@ -216,7 +216,7 @@
 								</div>
 							</div>
 
-							<div class="col-md-12"><br><br>
+							<div class="col-md-12"><br>
 								<span id="p_mess"></span>
 								<div id="participant_table">
 									

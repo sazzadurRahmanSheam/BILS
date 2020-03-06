@@ -455,7 +455,10 @@ class CoursesController extends Controller
                 $data->update(['is_selected' => 1]);
             }
         }
-        return "Successfuly selected";
+        return '<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Participants Selected!</strong>successfully.
+  </div>';
     }
 
     ##Save Remove Person
@@ -467,9 +470,9 @@ class CoursesController extends Controller
                 $data->update(['is_selected' => 0]);
             }
         }
-        return '<div class="alert alert-success alert-dismissible">
+        return '<div class="alert alert-danger alert-dismissible">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success!</strong> This alert box could indicate a successful or positive action.
+    <strong>Participants Removed!</strong>.
   </div>';
     }
 

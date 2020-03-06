@@ -347,8 +347,9 @@ $(document).ready(function () {
 				cache:false,
 				contentType:false,processData:false,
 				success: function(data){
-					//var response = JSON.parse(data);
+					
 					perticipant_manage();
+					$("#p_mess").html(data);
 				}	
 			});
 
@@ -380,7 +381,7 @@ $(document).ready(function () {
 				success: function(data){
 					
 					perticipant_manage();
-					$("#selected_list_button").trigger('click');
+					//$("#selected_list_button").trigger('click');
 					$("#p_mess").html(data);
 				}	
 			});
