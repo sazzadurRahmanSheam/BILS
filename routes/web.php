@@ -118,6 +118,11 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('/course/course-participant-list/{id}',array('as'=>'Perticipants List', 'uses' =>'CoursesController@interestedPerticipantsList'));
 
+	##Save Selected Person
+	Route::post('/course/save-select-person',array('as'=>'Save Selected Perticipants', 'uses' =>'CoursesController@saveSelectedPerson'));
+	Route::post('/course/save-remove-person',array('as'=>'Save Remove Perticipants', 'uses' =>'CoursesController@saveRemovePerson'));
+
+
 
 
 

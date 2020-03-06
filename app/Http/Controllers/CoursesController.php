@@ -389,7 +389,7 @@ class CoursesController extends Controller
                             ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
                             ->where('cp.course_id', $c_id)
                             ->whereIn('cp.is_interested', ['1','3'])
-                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
                             ->get();
 
         $registeredList = DB::table('course_perticipants as cp')
@@ -403,7 +403,7 @@ class CoursesController extends Controller
                             ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
                             ->where('cp.course_id', $c_id)
                             ->where('cp.is_selected', '1')
-                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
                             ->get();
 
 
@@ -443,6 +443,34 @@ class CoursesController extends Controller
             "selectedTotal"=>$selectedTotal
         ));
 
+    }
+
+
+    ##Save Selected Person
+    public function saveSelectedPerson(Request $req){
+        $selected_person = $req->input('selected_person');
+        if (isset($selected_person)&&$selected_person!="") {
+            foreach($selected_person as $selected_person){
+                $data = CoursePerticipant::find($selected_person);
+                $data->update(['is_selected' => 1]);
+            }
+        }
+        return "Successfuly selected";
+    }
+
+    ##Save Remove Person
+    public function saveRemovePerson(Request $req){
+        $remove_person = $req->input('remove_person');
+        if (isset($remove_person)&&$remove_person!="") {
+            foreach($remove_person as $remove_person){
+                $data = CoursePerticipant::find($remove_person);
+                $data->update(['is_selected' => 0]);
+            }
+        }
+        return '<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> This alert box could indicate a successful or positive action.
+  </div>';
     }
 
 

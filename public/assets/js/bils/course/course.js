@@ -3,7 +3,7 @@ $(document).ready(function () {
 	
 	// for get site url
 	var url = $('.site_url').val();
-
+	var global_id ;
 	
 	//Load App User Group Using Notice Controller
 	/*$.ajax({
@@ -153,10 +153,19 @@ $(document).ready(function () {
 				var description = "";
 				description +="<hr><p>Details</p>"+data['details'];
 				$("#description").html(description);
+				global_id = id;
+				perticipant_manage();
+				
+			}
+		});
+	}
+
+
 
 				//Getting perticipant list
-				$.ajax({
-					url: url+"/course/course-participant-list/"+id,
+				perticipant_manage = function perticipant_manage(){
+					$.ajax({
+					url: url+"/course/course-participant-list/"+global_id,
 					success: function(res){
 						var perticipants = JSON.parse(res);
 						var perticipantsList = perticipants['perticipantsList'];
@@ -179,16 +188,18 @@ $(document).ready(function () {
 							
 							//Interested Table Start
 							html +='<div id="interested_div" class="tab-pane in active">';
-							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th class="selected_col">Action</th></tr></thead>';
+							html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th style="display:none" class="selected_col"><button onclick="saveSelect()" class="btn btn-sam btn-success">Select</button></th></tr></thead>';
 							$.each(perticipantsList, function(i,row){
 								html += '<tr>';
 								html += '<td>'+row["name"]+'</td>';
 								html += '<td>'+row["email"]+'</td>';
 								html += '<td>'+row["mobile"]+'</td>';
-								html += '<td><input type="checkbox" name=""></td>';
-								html += '</tr>';
+								html += '<td class="checkBoxInput" style="display:none">';
+								html +=(row["is_selected"]=="1")?'<input checked value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
+								
+								html += '</td></tr>';
 							});
-							html +='<tr><td class="text-center" colspan="3"><button id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showCheckBox()" type="button" id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
 							html +='</table>';
 							html +='</div>';
 							//Interested Table End
@@ -209,14 +220,17 @@ $(document).ready(function () {
 
 							//Selected Table Start
 							html +='<div id="selected_div" class="tab-pane">';
-							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th id="rem_col" style="display:none"><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></th></tr></thead>';
 							$.each(selectedList, function(i,selected_row){
 								html += '<tr>';
 								html += '<td>'+selected_row["name"]+'</td>';
 								html += '<td>'+selected_row["email"]+'</td>';
 								html += '<td>'+selected_row["mobile"]+'</td>';
+								html += '<td class="rem_input" style="display:none" ><input value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
 								html += '</tr>';
+								
 							});
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showRemove()" type="button" id="select_participant_btn" class="btn btn-sm btn-danger">Remove Selected Perticipant</button></td></tr>';
 							html +='</table>';
 							html +='</div>';
 							//Selected Table End
@@ -229,10 +243,9 @@ $(document).ready(function () {
 						$('#participant_table').html(html);
 					}
 				});
-				
-			}
-		});
-	}
+				}
+
+
 
 	//Message Delete
 	delete_course = function delete_course(id){
@@ -310,11 +323,69 @@ $(document).ready(function () {
 			}
 		});
 
-	$("#select_participant_btn").click(function(){
-		$(".selected_col").removeClass('hidden');
-		$(".selected_col").addClass('show');
-	});
+	
+	showCheckBox = function showCheckBox(){
+		$(".checkBoxInput").css('display', 'block');
+		$(".selected_col").css('display', 'block');
+	}
 
+	saveSelect = function saveSelect(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#select_form')[0]);
+
+		$.ajax({
+				url: url+"/course/save-select-person",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					//var response = JSON.parse(data);
+					perticipant_manage();
+				}	
+			});
+
+	}
+
+	showRemove = function showRemove(){
+		$("#rem_col").css('display', 'block');
+		$(".rem_input").css('display', 'block');
+	}
+
+
+	save_remove_person = function save_remove_person(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#select_remove_form')[0]);
+
+		$.ajax({
+				url: url+"/course/save-remove-person",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,processData:false,
+				success: function(data){
+					
+					perticipant_manage();
+					$("#selected_list_button").trigger('click');
+					$("#p_mess").html(data);
+				}	
+			});
+
+	}
 
 
 
