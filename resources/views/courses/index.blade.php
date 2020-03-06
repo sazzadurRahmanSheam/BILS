@@ -205,15 +205,21 @@
 
                     <div id="course_view" class="tab-pane in">
                         <div class="row no-margin-row">
-
-							<div class="text-center col-md-12">
-								<h2 class="text-info">Course Details</h2><hr>
-							</div>
 							<div class="col-md-12">
 								<div id="c_title" class="col-md-12"></div>
-								<div class="col-md-12">
+								<div class="col-md-12" style="padding-left: 0px;">
 									<div id="left_sub" class="col-md-6"></div>
 									<div id="right_sub" class="col-md-6"></div>
+								</div>
+								<div class="col-md-12" id="description">
+									
+								</div>
+							</div>
+
+							<div class="col-md-12"><br>
+								<span id="p_mess"></span>
+								<div id="participant_table">
+									
 								</div>
 							</div>
 
