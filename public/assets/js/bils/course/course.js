@@ -1,5 +1,15 @@
 // All the user related js functions will be here
 $(document).ready(function () {	
+
+	// icheck for the inputs
+	$('.form').iCheck({
+		checkboxClass: 'icheckbox_flat-green',
+		radioClass: 'iradio_flat-green'
+	});	
+
+	$('.flat_radio').iCheck({
+		radioClass: 'iradio_flat-green'
+	});
 	
 	// for get site url
 	var url = $('.site_url').val();
@@ -116,7 +126,22 @@ $(document).ready(function () {
 				var data = JSON.parse(response);
 				$("#course_view_li").css('display','block');
 				$("#course_view_button").trigger('click');
-				$("#c_title").html("<h2>Title: "+data['course_title']+"</h2>");
+				$("#c_title").html("<h2>"+data['course_title']+"</h2>");
+				var status_btn = "";
+				status_btn +=(data['pub_status']=='0')?"<button class='btn  btn-danger'>Not-published</button>":"<button class='btn  btn-success'>Published</button>";
+				if (data['course_status']=='1') {
+					status_btn +=" <button class='btn  btn-warning'>Initiated</button>"
+				}else if (data['course_status']=='2') {
+					status_btn +=" <button class='btn  btn-success'>Approved</button>"
+				}else if (data['course_status']=='3') {
+					status_btn +=" <button class='btn  btn-danger'>Rejected</button>"
+				}else if (data['course_status']=='4') {
+					status_btn +=" <button class='btn  btn-info'>Started</button>"
+				}else if (data['course_status']=='5') {
+					status_btn +=" <button class='btn  btn-success'>Completed</button>"
+				}
+				$("#status_btn").html(status_btn);
+
 				var left_sub = "";
 				left_sub += "<p><b>Duration: </b>"+data['duration']+" Hours</p>";
 				left_sub += "<b>Approximate Start Time: </b>"+data['appx_start_time'];
@@ -129,18 +154,7 @@ $(document).ready(function () {
 
 
 				var right_sub = "";
-				right_sub +=(data['pub_status']=='0')?"<button class='btn btn-sm btn-danger'>Not-published</button>":"<button class='btn btn-sm btn-success'>Published</button>";
-				if (data['course_status']=='1') {
-					right_sub +=" <button class='btn btn-sm btn-warning'>Initiated</button>"
-				}else if (data['course_status']=='2') {
-					right_sub +=" <button class='btn btn-sm btn-success'>Approved</button>"
-				}else if (data['course_status']=='3') {
-					right_sub +=" <button class='btn btn-sm btn-danger'>Rejected</button>"
-				}else if (data['course_status']=='4') {
-					right_sub +=" <button class='btn btn-sm btn-info'>Started</button>"
-				}else if (data['course_status']=='5') {
-					right_sub +=" <button class='btn btn-sm btn-success'>Completed</button>"
-				}
+				
 				right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];
 				right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];
 				right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];
@@ -401,15 +415,7 @@ $(document).ready(function () {
 		clear_form();
 	});
 
-	// icheck for the inputs
-	$('.form').iCheck({
-		checkboxClass: 'icheckbox_flat-green',
-		radioClass: 'iradio_flat-green'
-	});	
-
-	$('.flat_radio').iCheck({
-		radioClass: 'iradio_flat-green'
-	});
+	
 
 		
 		
