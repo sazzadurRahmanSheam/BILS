@@ -106,10 +106,10 @@
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<input type="text" id="duration" name="duration"  class="form-control col-lg-12"/>
 										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Type</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Category</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<select name="course_type" id="course_type" class="form-control col-lg-12" >
-												<option selected="" disabled="" value="">Select Course Type</option>
+												<option selected="" disabled="" value="">Select Course Category</option>
 											</select>
 										</div>			
 									</div>
@@ -206,7 +206,14 @@
                     <div id="course_view" class="tab-pane in">
                         <div class="row no-margin-row">
 							<div class="col-md-12">
-								<div id="c_title" class="col-md-12"></div>
+								<div class="col-md-12">
+									<div class="col-md-9" style="padding-left:0px">
+										<span id="c_title"></span>
+									</div>
+									<div class="col-md-3" style="text-align: right;padding-right:0px;">
+										<span id="status_btn"></span>
+									</div>
+								</div>
 								<div class="col-md-12" style="padding-left: 0px;">
 									<div id="left_sub" class="col-md-6"></div>
 									<div id="right_sub" class="col-md-6"></div>
@@ -237,9 +244,6 @@
 
 
 @section('JScript')
-
 	<script src="{{ asset('assets/js/bils/course/course.js')}}"></script>
-
+	
 @endsection
-
-

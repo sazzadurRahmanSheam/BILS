@@ -162,88 +162,88 @@ $(document).ready(function () {
 
 
 
-    //Getting perticipant list
-    perticipant_manage = function perticipant_manage(){
-        $.ajax({
-        url: url+"/course/course-participant-list/"+global_id,
-        success: function(res){
-            var perticipants = JSON.parse(res);
-            var perticipantsList = perticipants['perticipantsList'];
-            var registeredList = perticipants['registeredList'];
-            var selectedList = perticipants['selectedList'];
+				//Getting perticipant list
+				perticipant_manage = function perticipant_manage(){
+					$.ajax({
+					url: url+"/course/course-participant-list/"+global_id,
+					success: function(res){
+						var perticipants = JSON.parse(res);
+						var perticipantsList = perticipants['perticipantsList'];
+						var registeredList = perticipants['registeredList'];
+						var selectedList = perticipants['selectedList'];
 
-            var perticipantTotal = perticipants['perticipantTotal'];
-            var registerTotal = perticipants['registerTotal'];
-            var selectedTotal = perticipants['selectedTotal'];
+						var perticipantTotal = perticipants['perticipantTotal'];
+						var registerTotal = perticipants['registerTotal'];
+						var selectedTotal = perticipants['selectedTotal'];
 
-            if(!jQuery.isEmptyObject(perticipants)){
-                var html='';
-                html +='<br><div class="tabbable">';
-                html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
-                html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List  ('+perticipantTotal+')</b></a></li>';
-                html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List  ('+registerTotal+')</b></a></li>';
-                html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List  ('+selectedTotal+')</b></a></li>';
-                html +='</ul>';
-                html +='<div class="tab-content">';
+						if(!jQuery.isEmptyObject(perticipants)){
+							var html='';
+							html +='<br><div class="tabbable">';
+							html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
+							html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List  ('+perticipantTotal+')</b></a></li>';
+							html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List  ('+registerTotal+')</b></a></li>';
+							html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List  ('+selectedTotal+')</b></a></li>';
+							html +='</ul>';
+							html +='<div class="tab-content">';
 
-                //Interested Table Start
-                html +='<div id="interested_div" class="tab-pane in active">';
-                html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th style="display:none" class="selected_col"><button onclick="saveSelect()" class="btn btn-sam btn-success">Select</button></th></tr></thead>';
-                $.each(perticipantsList, function(i,row){
-                    html += '<tr>';
-                    html += '<td>'+row["name"]+'</td>';
-                    html += '<td>'+row["email"]+'</td>';
-                    html += '<td>'+row["mobile"]+'</td>';
-                    html += '<td class="checkBoxInput" style="display:none">';
-                    html +=(row["is_selected"]=="1")?'<input checked value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
+							//Interested Table Start
+							html +='<div id="interested_div" class="tab-pane in active">';
+							html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th style="display:none" class="selected_col"><button onclick="saveSelect()" class="btn btn-sam btn-success">Select</button></th></tr></thead>';
+							$.each(perticipantsList, function(i,row){
+								html += '<tr>';
+								html += '<td>'+row["name"]+'</td>';
+								html += '<td>'+row["email"]+'</td>';
+								html += '<td>'+row["mobile"]+'</td>';
+								html += '<td class="checkBoxInput" style="display:none">';
+								html +=(row["is_selected"]=="1")?'<input checked value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
 
-                    html += '</td></tr>';
-                });
-                html +='</form><tr><td class="text-center" colspan="3"><button onclick="showCheckBox()" type="button" id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
-                html +='</table>';
-                html +='</div>';
-                //Interested Table End
+								html += '</td></tr>';
+							});
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showCheckBox()" type="button" id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
+							html +='</table>';
+							html +='</div>';
+							//Interested Table End
 
-                //Registered Table Start
-                html +='<div id="registered_div" class="tab-pane">';
-                html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
-                $.each(registeredList, function(i,register_row){
-                    html += '<tr>';
-                    html += '<td>'+register_row["name"]+'</td>';
-                    html += '<td>'+register_row["email"]+'</td>';
-                    html += '<td>'+register_row["mobile"]+'</td>';
-                    html += '</tr>';
-                });
-                html +='</table>';
-                html +='</div>';
-                //Registered Table End
+							//Registered Table Start
+							html +='<div id="registered_div" class="tab-pane">';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							$.each(registeredList, function(i,register_row){
+								html += '<tr>';
+								html += '<td>'+register_row["name"]+'</td>';
+								html += '<td>'+register_row["email"]+'</td>';
+								html += '<td>'+register_row["mobile"]+'</td>';
+								html += '</tr>';
+							});
+							html +='</table>';
+							html +='</div>';
+							//Registered Table End
 
-                //Selected Table Start
-                html +='<div id="selected_div" class="tab-pane">';
-                html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th id="rem_col" style="display:none"><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></th></tr></thead>';
-                $.each(selectedList, function(i,selected_row){
-                    html += '<tr>';
-                    html += '<td>'+selected_row["name"]+'</td>';
-                    html += '<td>'+selected_row["email"]+'</td>';
-                    html += '<td>'+selected_row["mobile"]+'</td>';
-                    html += '<td class="rem_input" style="display:none" ><input value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
-                    html += '</tr>';
+							//Selected Table Start
+							html +='<div id="selected_div" class="tab-pane">';
+							html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th id="rem_col" style="display:none"><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></th></tr></thead>';
+							$.each(selectedList, function(i,selected_row){
+								html += '<tr>';
+								html += '<td>'+selected_row["name"]+'</td>';
+								html += '<td>'+selected_row["email"]+'</td>';
+								html += '<td>'+selected_row["mobile"]+'</td>';
+								html += '<td class="rem_input" style="display:none" ><input value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
+								html += '</tr>';
 
-                });
-                html +='</form><tr><td class="text-center" colspan="3"><button onclick="showRemove()" type="button" id="select_participant_btn" class="btn btn-sm btn-danger">Remove Selected Perticipant</button></td></tr>';
-                html +='</table>';
-                html +='</div>';
-                //Selected Table End
+							});
+							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showRemove()" type="button" id="select_participant_btn" class="btn btn-sm btn-danger">Remove Selected Perticipant</button></td></tr>';
+							html +='</table>';
+							html +='</div>';
+							//Selected Table End
 
 
-                html +='</div>';
+							html +='</div>';
 
-                html +='</div>';
-            }
-            $('#participant_table').html(html);
-        }
-    });
-    }
+							html +='</div>';
+						}
+						$('#participant_table').html(html);
+					}
+				});
+				}
 
 
 

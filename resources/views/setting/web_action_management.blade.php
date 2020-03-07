@@ -17,6 +17,7 @@
                 <div id="entry_form_div" class="tab-pane in">
                     @if($actions['add_permisiion']==1)
                         <div class="row no-margin-row">
+<<<<<<< HEAD
                             <form id="web_action_form" name="web_action_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
                                 @csrf
                                 <div class="row">
@@ -56,6 +57,47 @@
                                     </div>
                                 </div>
                             </form>
+=======
+							<form id="web_action_form" name="web_action_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+								@csrf
+								<div class="row">
+									<div class="col-md-12">
+										<input type="hidden" name="edit_id" id="edit_id">
+										<div class="form-group"> 
+											<label class="control-label col-md-3 col-sm-3 col-xs-6" >Module Name<span class="required">*</span></label>
+											<div class="col-md-9 col-sm-9  col-xs-6">
+												<select class="form-control col-lg-12" id="module_name_for_web_action" name="module_name_for_web_action">
+													<option value="" disabled selected>Select Module Name</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group"> 
+											<label class="control-label col-md-3 col-sm-3 col-xs-6" >Action Name<span class="required">*</span></label>
+											<div class="col-md-9 col-sm-9  col-xs-6">
+												<input type="text" id="activity_name" name="activity_name" class="form-control col-lg-12" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Active</label>
+											<div class="col-md-4 col-sm-4 col-xs-6">
+												<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
+											</div>
+										</div>
+										<div class="ln_solid"></div>
+									</div>
+								</div>
+								<div class="form-group">
+								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
+								<div class="col-md-4 col-sm-4 col-xs-12">
+									<button type="submit" id="save_web_action" class="btn btn-success">Save</button>                    
+									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+								</div>
+								 <div class="col-md-6 col-sm-6 col-xs-12">
+									<div id="form_submit_error" class="text-center" style="display:none"></div>
+								 </div>
+							</div>
+							</form>		
+>>>>>>> 4b0afb754a8986ba93ebdceb4b32121f51361979
                         </div>
                     @endif
                 </div>
