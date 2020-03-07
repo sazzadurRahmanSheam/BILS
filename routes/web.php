@@ -134,7 +134,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/course/save-select-person',array('as'=>'Save Selected Perticipants', 'uses' =>'CoursesController@saveSelectedPerson'));
 	Route::post('/course/save-remove-person',array('as'=>'Save Remove Perticipants', 'uses' =>'CoursesController@saveRemovePerson'));
 
-
+	Route::post('/course/teacher/admin-user-name',array('as'=>'Admin User Name Auto-complete', 'uses' =>'TeacherController@adminUserNameAutoComplete'));
+	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
 
 
 
@@ -272,6 +273,13 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::post('/message/message-entry',array('as'=>'Message Entry', 'action_id'=>'73', 'uses' =>'MessageController@messageEntry'));
 	Route::get('/message/message-delete/{id}',array('as'=>'Message Delete', 'action_id'=>'75', 'uses' =>'MessageController@messageDelete'));
 	/*--------------  Sent Message Management End  -------------*/
+
+	/*--------------  Manage Teacher Start  -------------*/
+	Route::get('course/teacher/manage-teacher',array('as'=>'Manage Teacher', 'action_id'=>'88', 'uses' =>'TeacherController@index'));
+	Route::post('/course/teacher/teacher-entry',array('as'=>'Teacher Entry', 'action_id'=>'89', 'uses' =>'TeacherController@teacherEntryUpdate'));
+	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
+	/*--------------  Manage Teacher End  -------------*/
+
 
 });
 

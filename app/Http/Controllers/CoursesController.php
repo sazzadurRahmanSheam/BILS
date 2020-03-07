@@ -33,7 +33,7 @@ class CoursesController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "Courses";
-        $data['sub_module']= "Open Courses";
+        $data['sub_module']= "Courses";
         // action permissions
         $admin_user_id  = Auth::user()->id;
         $add_action_id  = 26;
@@ -47,7 +47,7 @@ class CoursesController extends Controller
         return json_encode($data);
     }
 
-    //Notice Entry And Update
+    //Course Entry And Update
     public function courseEntryUpdate(Request $request){ 
         $rule = [
             'course_title' => 'Required|max:100',
@@ -396,7 +396,7 @@ class CoursesController extends Controller
                             ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
                             ->where('cp.course_id', $c_id)
                             ->where('cp.is_interested', '3')
-                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
                             ->get();
 
         $selectedList = DB::table('course_perticipants as cp')
