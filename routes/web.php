@@ -113,9 +113,24 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
 
-	##Course View
+
+	##Chaki---------start
+	##Getting Survey Type For Add Add Survey
+    Route::get('/survey/get-survey-type',array('as'=>'Get Survey Types', 'uses' =>'SurveysController@getSurveyTypes'));
+    Route::get('/survey/get-user-group',array('as'=>'Get Survey User Group', 'uses' =>'SurveysController@getUserGroup'));
+
+    Route::get('/survey/survey-list',array('as'=>'Get Survey List', 'uses' =>'SurveysController@getSurveyList'));
+
+    ##Chaki---------End
+
+
+    Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
+
+
+
+    ##Course View
 	Route::get('/course/course-view/{id}',array('as'=>'Course View', 'uses' =>'CoursesController@courseView'));
-	
+
 	Route::get('/course/course-participant-list/{id}',array('as'=>'Perticipants List', 'uses' =>'CoursesController@interestedPerticipantsList'));
 
 	##Save Selected Person
@@ -143,7 +158,18 @@ Route::group(['middleware' => ['permission']], function () {
 
 	/*----- Survey Start -----*/
 	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'27', 'uses' =>'SurveysController@index'));
-	/*----- Survey End -----*/
+
+	##chaki-------------Start
+    Route::post('/survey/survey-body-entry',array('as'=>'Survey Body Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyBodyEntry'));
+    Route::post('/survey/survey-question-entry',array('as'=>'Survey Question Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyQuestionEntry'));
+    Route::get('/survey/survey-edit/{id}',array('as'=>'Survey Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@surveyEdit'));
+    Route::get('/survey/question-edit/{id}',array('as'=>'Question Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@questionEdit'));
+    Route::get('/survey/question-delete/{id}',array('as'=>'Question Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@questionDelete'));
+    Route::get('/survey/answer-option-delete/{id}',array('as'=>'Answer Option Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@answerDelete'));
+
+    ##chaki-------------End
+
+    /*----- Survey End -----*/
 
 	/*----- Admin User Start -----*/
 	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'action_id'=>'1', 'uses' =>'AdminController@adminUserManagement'));
