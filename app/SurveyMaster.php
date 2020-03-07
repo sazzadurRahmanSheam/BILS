@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SueveyMaster extends Model
+class SurveyMaster extends Model
 {
     //
     protected $table = 'survey_masters';

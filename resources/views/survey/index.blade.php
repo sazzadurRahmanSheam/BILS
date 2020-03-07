@@ -55,20 +55,19 @@
 									<div class="text-center">
 										<h2 class="text-info">Survey Grid Summary</h2>
 									</div>
-									<!--<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important">
+									<table class="table table-bordered table-hover admin_user_table" id="survey_data_table" style="width:100% !important">
 										<thead>
 											<tr>
-												<th>Photo</th>
-												<th>User ID</th>
-												<th>Name</th>
-												<th>Email </th>
-												<th class="hidden-xs">Status</th>
-												<th>Actions</th>
+												<th>Survey Name</th>
+												<th  style="max-width: 120px">Start Date</th>
+												<th style="max-width: 120px" >End Date</th>
+												<th style="max-width: 120px" >Status</th>
+												<th style="max-width: 130px" >Actions</th>
 											</tr>
 										</thead>
 										<tbody>
 										</tbody>
-									</table> -->
+									</table>
 								</div>
 							</div>
 							<!-- END Categoreis -->
@@ -79,7 +78,7 @@
                     <!-- PANEL FOR SURVEY ENTRY UPDATE -->
                     <div id="entry_form_div" class="tab-pane in">
                         <div class="row no-margin-row">
-                            <input type="hidden" id="survey_id" value="1">
+                            <input type="hidden" id="survey_id">
                             <div style="border: solid 1px; padding: 20px; margin-bottom: 20px">
 							    <form id="survey_body" name="survey_body" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
 								@csrf
@@ -138,7 +137,7 @@
                                 <div class="form-group" id="survey_body_button">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
                                     <div class="col-md-3 col-sm-3 col-xs-12">
-                                        <button type="submit" id="save_survey_body" class="btn btn-success">Save</button>
+                                        <button type="submit" id="save_survey_body" class="btn btn-success save">Save</button>
                                         <button type="button" id="clear_button" class="btn btn-warning">Clear</button>
                                     </div>
                                     <div class="col-md-7 col-sm-7 col-xs-12">
@@ -147,7 +146,7 @@
                                 </div>
                             </form>
                             </div>
-                            <div style="border: solid 1px; padding: 20px; margin-bottom: 20px">
+                            <div class="survey_question_display"  style="border: solid 1px; padding: 20px; margin-bottom: 20px">
 
                                 <table class="table table-bordered table-hover course_table" id="question_table" style="width:100% !important">
                                     <thead>
@@ -161,13 +160,18 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <form id="survey_question" name="survey_question" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+
+                            <div class="survey_question_display" style="border: solid 1px; padding: 20px; margin-bottom: 20px">
+
+                                <form id="survey_question" name="survey_question" enctype="multipart/form-data" class="form form-horizontal form-label-left">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-12">
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Survey Questions</label>
-										<div class="col-md-10 col-sm-10 col-xs-12">
+                                        <div style="background-color: #114177; color: white; height: 35px; padding: 10px;">
+                                            <label>Survey Questions</label>
+                                        </div>
+										<div class="col-md-12 col-sm-12 col-xs-12">
 
 											<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 
@@ -177,127 +181,26 @@
                                                         <label class="control-label col-md-2 col-sm-2 col-xs-6">Question Title<span class="required">*</span></label>
                                                         <div class="col-md-4 col-sm-4 col-xs-6">
                                                             <textarea id="question" name="question" class="form-control col-lg-12"></textarea>
+                                                            <input type="hidden" name="question_id" id="question_id">
                                                         </div>
                                                         <label class="control-label col-md-2 col-sm-2 col-xs-6" >Answer Type<span class="required">*</span></label>
                                                         <div class="col-md-4 col-sm-4 col-xs-6">
                                                             <select name="option_type" id="option_type" class="form-control col-md-6">
                                                                 <option value="" disabled selected>Select Question Type</option>
-                                                                <option value="1">Test Input</option>
+                                                                <option value="1">Text Input</option>
                                                                 <option value="2">Number Input</option>
                                                                 <option value="3">Single Choice</option>
                                                                 <option value="4">Multiple Choice</option>
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-md-12 panel-body" id="option_input" style="display: none">
-                                                            <label class="control-label col-md-2 col-sm-2 answer_list" >1</label>
-                                                            <div class="form-group col-md-10">
-                                                                <input type="text"  name="answer[]"  class="form-control col-md-10" placeholder="Set Answers" />
-                                                            </div>
-                                                            <label class="control-label col-md-2 col-sm-2 answer_list" >2</label>
-                                                            <div class="form-group col-md-10">
-                                                                <input type="text"  name="answer[]"  class="form-control col-md-10" placeholder="Set Answers" />
-                                                            </div>
-
+                                                        <div class="col-md-12 panel-body answer_option_input" id="option_input" style="display: none">
                                                         </div>
-                                                        <button class="btn btn-dark-grey"  onclick="add_answer_choice()">Add Answer Field</button>
-                                                        <button id="save_question" class="btn btn-success">Save</button>
+                                                        <button class="btn btn-dark-grey option_input"  onclick="add_answer_choice()">Add Answer Field</button>
 
                                                     </div>
                                                 </div>
 											</div>
-                                            <!--
-											<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-												<div class="panel panel-default">
-													<div class="panel-body">
-														<div class="form-group col-md-12">
-																<input type="" id="" name=""  class="form-control col-md-10" placeholder="Question 2" />
-														</div>
-														<div class="col-md-12">
-															<label class="control-label col-md-2 col-sm-2" >1.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >2.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >3.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >4.</label>
-																<div class="form-group col-md-10">
-
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-
-
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-												<div class="panel panel-default">
-													<div class="panel-body">
-														<div class="form-group col-md-12">
-																<input type="" id="" name=""  class="form-control col-md-10" placeholder="Question 3" />
-														</div>
-														<div class="col-md-12">
-															<label class="control-label col-md-2 col-sm-2" >1.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >2.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >3.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >4.</label>
-																<div class="form-group col-md-10">
-
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-
-
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-												<div class="panel panel-default">
-													<div class="panel-body">
-														<div class="form-group col-md-12">
-																<input type="" id="" name=""  class="form-control col-md-10" placeholder="Question 4" />
-														</div>
-														<div class="col-md-12">
-															<label class="control-label col-md-2 col-sm-2" >1.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >2.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >3.</label>
-																<div class="form-group col-md-10">
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-															<label class="control-label col-md-2 col-sm-2" >4.</label>
-																<div class="form-group col-md-10">
-
-																	<input type="" id="" name=""  class="form-control col-md-10" placeholder="Set Answerrs" />
-																</div>
-
-
-														</div>
-													</div>
-												</div>
-											</div>
-											-->
 										</div>
 									</div>
 									<div class="ln_solid"></div>
@@ -307,14 +210,16 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12">
-									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>
-									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
+                                    <button id="save_question" class="btn btn-success save">Save</button>
+									<button type="button" id="save_question_clear" class="btn btn-warning">Clear</button>
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>
 								 </div>
 							</div>
 							</form>
+
+                            </div>
                         </div>
                     </div>
                     <!-- END PANEL FOR CHANGE PASSWORD -->
