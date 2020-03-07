@@ -206,8 +206,10 @@ $(document).ready(function () {
 		minLength: 2,
 		select: function(event, ui) { 
 			var id = ui.item.id;
+			
 			$(this).next().val(id);
 			$("#app_user_id").val(id);
+			
 		}
 	});
 

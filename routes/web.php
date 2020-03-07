@@ -113,16 +113,32 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
 
-	##Course View
+
+	##Chaki---------start
+	##Getting Survey Type For Add Add Survey
+    Route::get('/survey/get-survey-type',array('as'=>'Get Survey Types', 'uses' =>'SurveysController@getSurveyTypes'));
+    Route::get('/survey/get-user-group',array('as'=>'Get Survey User Group', 'uses' =>'SurveysController@getUserGroup'));
+
+    Route::get('/survey/survey-list',array('as'=>'Get Survey List', 'uses' =>'SurveysController@getSurveyList'));
+
+    ##Chaki---------End
+
+
+    Route::get('/course/course-list',array('as'=>'Get Course List', 'uses' =>'CoursesController@getCourseList'));
+
+
+
+    ##Course View
 	Route::get('/course/course-view/{id}',array('as'=>'Course View', 'uses' =>'CoursesController@courseView'));
-	
+
 	Route::get('/course/course-participant-list/{id}',array('as'=>'Perticipants List', 'uses' =>'CoursesController@interestedPerticipantsList'));
 
 	##Save Selected Person
 	Route::post('/course/save-select-person',array('as'=>'Save Selected Perticipants', 'uses' =>'CoursesController@saveSelectedPerson'));
 	Route::post('/course/save-remove-person',array('as'=>'Save Remove Perticipants', 'uses' =>'CoursesController@saveRemovePerson'));
 
-
+	Route::post('/course/teacher/admin-user-name',array('as'=>'Admin User Name Auto-complete', 'uses' =>'TeacherController@adminUserNameAutoComplete'));
+	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
 
 
 
@@ -142,7 +158,18 @@ Route::group(['middleware' => ['permission']], function () {
 
 	/*----- Survey Start -----*/
 	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'27', 'uses' =>'SurveysController@index'));
-	/*----- Survey End -----*/
+
+	##chaki-------------Start
+    Route::post('/survey/survey-body-entry',array('as'=>'Survey Body Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyBodyEntry'));
+    Route::post('/survey/survey-question-entry',array('as'=>'Survey Question Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyQuestionEntry'));
+    Route::get('/survey/survey-edit/{id}',array('as'=>'Survey Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@surveyEdit'));
+    Route::get('/survey/question-edit/{id}',array('as'=>'Question Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@questionEdit'));
+    Route::get('/survey/question-delete/{id}',array('as'=>'Question Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@questionDelete'));
+    Route::get('/survey/answer-option-delete/{id}',array('as'=>'Answer Option Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@answerDelete'));
+
+    ##chaki-------------End
+
+    /*----- Survey End -----*/
 
 	/*----- Admin User Start -----*/
 	Route::get('user/admin/admin-user-management',array('as'=>'Admin Users' , 'action_id'=>'1', 'uses' =>'AdminController@adminUserManagement'));
@@ -252,6 +279,13 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::post('/message/message-entry',array('as'=>'Message Entry', 'action_id'=>'73', 'uses' =>'MessageController@messageEntry'));
 	Route::get('/message/message-delete/{id}',array('as'=>'Message Delete', 'action_id'=>'75', 'uses' =>'MessageController@messageDelete'));
 	/*--------------  Sent Message Management End  -------------*/
+
+	/*--------------  Manage Teacher Start  -------------*/
+	Route::get('course/teacher/manage-teacher',array('as'=>'Manage Teacher', 'action_id'=>'88', 'uses' =>'TeacherController@index'));
+	Route::post('/course/teacher/teacher-entry',array('as'=>'Teacher Entry', 'action_id'=>'89', 'uses' =>'TeacherController@teacherEntryUpdate'));
+	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
+	/*--------------  Manage Teacher End  -------------*/
+
 
 });
 
