@@ -1,15 +1,7 @@
 // All the user related js functions will be here
 $(document).ready(function () {	
 
-	// icheck for the inputs
-	$('.form').iCheck({
-		checkboxClass: 'icheckbox_flat-green',
-		radioClass: 'iradio_flat-green'
-	});	
-
-	$('.flat_radio').iCheck({
-		radioClass: 'iradio_flat-green'
-	});
+	
 	
 	// for get site url
 	var url = $('.site_url').val();
@@ -48,7 +40,7 @@ $(document).ready(function () {
 		}
 	});*/
 
-	//Message Entry And update
+	//Course Entry And update
 	$('#save_course ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
@@ -101,7 +93,7 @@ $(document).ready(function () {
 		}
 	});
 
-	//Publication Data Table
+	//Course Data Table
 	var course_table = $('#course_table').DataTable({
 		destroy: true,
 		"processing": true,
@@ -143,29 +135,29 @@ $(document).ready(function () {
 				$("#status_btn").html(status_btn);
 
 				var left_sub = "";
-				left_sub += "<p><b>Duration: </b>"+data['duration']+" Hours</p>";
-				left_sub += "<b>Approximate Start Time: </b>"+data['appx_start_time'];
-				left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];
-				left_sub += "<br><b>Course Type: </b>"+data['course_type'];
+				if(data['duration']!=null){left_sub += "<br><b>Duration: </b>"+data['duration']+" Hours";}
+				if(data['appx_start_time']!=null){left_sub += "<br><b>Approximate Start Time: </b>"+data['appx_start_time'];}
+				if(data['act_start_time']!=null){left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];}
+				if(data['course_type']!=null){left_sub += "<br><b>Course Type: </b>"+data['course_type'];}				
 				left_sub += "<br><b>Created By: </b>"+data['created_by'];
-				left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];
-				left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];
+				if(data['payment_fee']!=null){left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];}
+				if(data['discount_message']!=null){left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];}								
 				$("#left_sub").html(left_sub);
 
 
 				var right_sub = "";
-				
-				right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];
-				right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];
-				right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];
+								
+				if(data['appx_end_time']!=null){right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];}
+				if(data['act_end_time']!=null){right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];}
+				if(data['course_teacher']!=null){right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];}				
 				right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
-				right_sub +="<br/><b>Payment Method: </b>"+data['payment_method'];
+				if(data['payment_method']!=null){right_sub +="<br/><b>Payment Method: </b>"+data['payment_method'];}				
 				right_sub +="<br/><b>Course Responsible Person: </b>"+data['course_responsible_person'];
 
 				$("#right_sub").html(right_sub);
 
 				var description = "";
-				description +="<hr><p>Details</p>"+data['details'];
+				description +="<hr>"+data['details']+"<hr>";
 				$("#description").html(description);
 				global_id = id;
 				perticipant_manage();
@@ -194,58 +186,69 @@ $(document).ready(function () {
 							var html='';
 							html +='<br><div class="tabbable">';
 							html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
-							html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List  ('+perticipantTotal+')</b></a></li>';
-							html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List  ('+registerTotal+')</b></a></li>';
-							html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List  ('+selectedTotal+')</b></a></li>';
+							html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List <span class="badge badge-pill badge-warning">'+perticipantTotal+'</span></b></a></li>';
+							if(registerTotal>0){html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List <span class="badge badge-pill badge-warning">'+registerTotal+'</span></b></a></li>';}
+							if(selectedTotal>0){html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List <span class="badge badge-pill badge-warning">'+selectedTotal+'</span></b></a></li>';}
 							html +='</ul>';
 							html +='<div class="tab-content">';
 							
 							//Interested Table Start
 							html +='<div id="interested_div" class="tab-pane in active">';
-							html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th style="display:none" class="selected_col"><button onclick="saveSelect()" class="btn btn-sam btn-success">Select</button></th></tr></thead>';
+							html += '<table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:40%">Name</th><th style="width:30%">Email</th><th  style="width:20%">Phone</th></tr></thead>';
+							var interest_sl = 1;
 							$.each(perticipantsList, function(i,row){
 								html += '<tr>';
+								html += '<td>'+interest_sl+'</td>';
 								html += '<td>'+row["name"]+'</td>';
 								html += '<td>'+row["email"]+'</td>';
 								html += '<td>'+row["mobile"]+'</td>';
-								html += '<td class="checkBoxInput" style="display:none">';
-								html +=(row["is_selected"]=="1")?'<input checked value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input value="'+row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
 								
-								html += '</td></tr>';
+								html += '</tr>';
+								interest_sl++;
 							});
-							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showCheckBox()" type="button" id="select_participant_btn" class="btn btn-sm btn-success">Select Perticipant</button></td></tr>';
 							html +='</table>';
 							html +='</div>';
 							//Interested Table End
 
 							//Registered Table Start
 							html +='<div id="registered_div" class="tab-pane">';
-							html += '<table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th></tr></thead>';
+							html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%"></th></tr></thead>';
+							var register_sl = 1;
 							$.each(registeredList, function(i,register_row){
 								html += '<tr>';
+								html += '<td>'+register_sl+'</td>';
 								html += '<td>'+register_row["name"]+'</td>';
 								html += '<td>'+register_row["email"]+'</td>';
 								html += '<td>'+register_row["mobile"]+'</td>';
-								html += '</tr>';
+								html += '<td>';
+								html +=(register_row["is_selected"]=="1")?'<input class="form-control" checked value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input class="form-control" value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
+								
+								html += '</td></tr>';
+								register_sl++;
 							});
-							html +='</table>';
+							html +='<tr><td class="text-center" colspan="4"></td>';
+							html +='<td><button onclick="saveSelect()" class="btn btn-sam btn-success">Submit Selection</button></td></tr>'
+							html +='</form></table>';
 							html +='</div>';
 							//Registered Table End
 
 							//Selected Table Start
 							html +='<div id="selected_div" class="tab-pane">';
-							html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th>Name</th><th>Email</th><th>Phone</th><th id="rem_col" style="display:none"><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></th></tr></thead>';
+							html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%"></th></tr></thead>';
+							var selected_sl = 1;
 							$.each(selectedList, function(i,selected_row){
 								html += '<tr>';
+								html += '<td>'+selected_sl+'</td>';
 								html += '<td>'+selected_row["name"]+'</td>';
 								html += '<td>'+selected_row["email"]+'</td>';
 								html += '<td>'+selected_row["mobile"]+'</td>';
-								html += '<td class="rem_input" style="display:none" ><input value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
+								html += '<td class="rem_input" ><input class="form-control" value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
 								html += '</tr>';
-								
+								selected_sl++;
 							});
-							html +='</form><tr><td class="text-center" colspan="3"><button onclick="showRemove()" type="button" id="select_participant_btn" class="btn btn-sm btn-danger">Remove Selected Perticipant</button></td></tr>';
-							html +='</table>';
+							html +='<tr><td class="text-center" colspan="4"></td>';
+							html +='<td><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></td>';
+							html +='</form></table>';
 							html +='</div>';
 							//Selected Table End
 
@@ -254,7 +257,12 @@ $(document).ready(function () {
 
 							html +='</div>';	
 						}
+						
 						$('#participant_table').html(html);
+						$('.form').iCheck({
+							checkboxClass: 'icheckbox_flat-green',
+							radioClass: 'iradio_flat-green'
+						});	
 					}
 				});
 				}
@@ -338,10 +346,7 @@ $(document).ready(function () {
 		});
 
 	
-	showCheckBox = function showCheckBox(){
-		$(".checkBoxInput").css('display', 'block');
-		$(".selected_col").css('display', 'block');
-	}
+	
 
 	saveSelect = function saveSelect(){
 		event.preventDefault();
@@ -368,10 +373,7 @@ $(document).ready(function () {
 
 	}
 
-	showRemove = function showRemove(){
-		$("#rem_col").css('display', 'block');
-		$(".rem_input").css('display', 'block');
-	}
+	
 
 
 	save_remove_person = function save_remove_person(){
@@ -416,7 +418,15 @@ $(document).ready(function () {
 	});
 
 	
+	// icheck for the inputs
+	$('.form').iCheck({
+		checkboxClass: 'icheckbox_flat-green',
+		radioClass: 'iradio_flat-green'
+	});	
 
+	$('.flat_radio').iCheck({
+		radioClass: 'iradio_flat-green'
+	});
 		
 		
 	

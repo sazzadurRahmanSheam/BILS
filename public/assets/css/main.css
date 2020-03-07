@@ -242,7 +242,8 @@ textarea.autosize {
 }
 [class^="icheckbox_"], [class*="icheckbox_"], [class^="iradio_"], [class*="iradio_"] {
     float: left !important;
-    margin: 0 5px 0 -20px !important;
+    /*margin: 0 5px 0 -20px !important;*/
+    margin-right:5px !important;
 }
 .help-inline {
     margin-top: 6px;
