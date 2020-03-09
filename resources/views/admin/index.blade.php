@@ -145,7 +145,7 @@
 								</div>
 								<div class="col-md-3">
 									<img src="src" width="70%" height="70%" class="img-thumbnail" id="emp_img">
-									<input type="file" name="emp_image_upload" id="emp_image_upload"> 
+									<input type="file" name="user_profile_image" id="user_profile_image"> 
 								</div>
 								</div>
 								<div class="form-group">

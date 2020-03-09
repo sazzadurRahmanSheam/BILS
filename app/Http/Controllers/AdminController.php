@@ -56,11 +56,14 @@ class AdminController extends Controller
 		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
+		//$public_path = public_path();
+		$a = asset('assets/images/user/admin');
 		$adminUser = User::Select('user_profile_image', 'id',  'name',  'email', 'status')->where('user_type','1')
 			->orderBy('created_at','desc')
 			->get();
 		$return_arr = array();
 		foreach($adminUser as $user){
+			$user['user_profile_image'] = '<img height="70" max-width="100" src="'.$a.'/'.$user->user_profile_image.'" alt="image" />';
 			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
 
 			$user['actions']=" <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
@@ -116,7 +119,20 @@ class AdminController extends Controller
 
 			try{
 				DB::beginTransaction();
-				$is_active = ($request->is_active=="")?"2":"1";
+				$is_active = ($request->is_active=="")?"0":"1";
+				##Image
+				$admin_image = $request->file('user_profile_image');
+				if (isset($admin_image)) {
+					$image_name = time();
+					$ext = $admin_image->getClientOriginalExtension();
+					$image_full_name = $image_name.'.'.$ext;
+					// $upload_path = 'assets/images/user/admin/';
+					$image_url_for_save = $image_full_name;
+					$success=$admin_image->move($upload_path,$image_full_name);
+				}else{
+					$image_url_for_save="";
+				}
+
 
 				$password = ($request->password =="")?md5('1234'):md5($request->password);
 				$column_value = [
@@ -127,8 +143,8 @@ class AdminController extends Controller
 					'address'=>$request->address,
 					'password'=>$password,
 					'status'=>$is_active,
-					'remarks'=>$request->remarks
-					//'user_profile_image'=>$image_name,
+					'remarks'=>$request->remarks,
+					'user_profile_image'=>$image_url_for_save
 				];
 
 				if ($request->id == '') {

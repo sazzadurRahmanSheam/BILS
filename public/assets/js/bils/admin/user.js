@@ -129,7 +129,8 @@ $(document).ready(function () {
 				$("#email").val(emp_data['email']);
 				$("#address").val(emp_data['address']);
 				$("#remarks").val(emp_data['remarks']);
-				
+				//$("#user_profile_image").val(emp_data['user_profile_image']);
+				//console.log(emp_data['user_profile_image']);
 				(emp_data['status']==2)?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
 				/*get group for edit*/
 				if(!jQuery.isEmptyObject(user_group_member_details)){
@@ -177,23 +178,39 @@ $(document).ready(function () {
 			url: url+'/admin/admin-view/'+user_id,
 			success: function(response){
 				var data = JSON.parse(response);
-				$("#admin_user_view").modal();
-				var user_type,login_status,status;
-				(data['user_type']=="1")? user_type = "Admin" : "App User";
-				(data['login_status']=="1")? login_status = "Logged In" : "Not Logged In";
-				(data['status']=="1")? status = "Active" : "In-active";
-				var admin_info = "";
-				admin_info+="<h4>"+data['id']+"</h4>";
-				admin_info+="<h4>"+data['name']+"</h4>";
-				admin_info+="<h4>"+data['nid_no']+"</h4>";
-				admin_info+="<h4>"+data['contact_no']+"</h4>";
-				admin_info+="<h4>"+data['email']+"</h4>";
-				admin_info+="<h4>"+data['address']+"</h4>";
-				admin_info+="<h4>"+user_type+"</h4>";
-				admin_info+="<h4>"+login_status+"</h4>";
-				admin_info+="<h4>"+status+"</h4>";
+
+				$("#profile_modal").modal();
+				$("#name_div").html('<h2>'+data['name']+'</h2>');
+				$("#contact_div").html(data['contact_no']);
+				$("#email_div").html(data['email']);
+				$("#nid_div").html(data['nid_no']);
+				$("#address_div").html(data['address']);
+				$("#remarks_div").html('<h2>Remarks</h2>');
+				$("#remarks_details").html(data['remarks']);
+				if(data['status']==1){
+					$("#status_div").html('<span class="badge badge-success">Active</span>');
+				}
+				else{
+					$("#status_div").html('<span class="badge badge-danger">In-active</span>');
+				}
+
+				// $("#admin_user_view").modal();
+				// var user_type,login_status,status;
+				// (data['user_type']=="1")? user_type = "Admin" : "App User";
+				// (data['login_status']=="1")? login_status = "Logged In" : "Not Logged In";
+				// (data['status']=="1")? status = "Active" : "In-active";
+				// var admin_info = "";
+				// admin_info+="<h4>"+data['id']+"</h4>";
+				// admin_info+="<h4>"+data['name']+"</h4>";
+				// admin_info+="<h4>"+data['nid_no']+"</h4>";
+				// admin_info+="<h4>"+data['contact_no']+"</h4>";
+				// admin_info+="<h4>"+data['email']+"</h4>";
+				// admin_info+="<h4>"+data['address']+"</h4>";
+				// admin_info+="<h4>"+user_type+"</h4>";
+				// admin_info+="<h4>"+login_status+"</h4>";
+				// admin_info+="<h4>"+status+"</h4>";
 				
-				$("#modal_body").html(admin_info);
+				// $("#modal_body").html(admin_info);
 				//console.log(data);
 			}
 		});

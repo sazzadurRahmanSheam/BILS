@@ -54,6 +54,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery.jgrowl.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery-ui.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
+    
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/image-uploader.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery-editable.css') }}"/>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
@@ -133,6 +134,121 @@
    
 </div>
 {{-- End Modal --}}
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profile_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div id="">
+                <div class="title text-center">
+                    <h4 class="text-info">Profile View</h4>
+                </div>
+                <div class="done_registration ">                                
+                    <div class="doc_content">
+                        <div class="col-md-12">
+                            <div class="" style="text-align:left">
+                                <div class="byline">
+                                    <span id="profile_modal_body"></span>
+                                     <div class="">    
+                                        <div class="jumbotron" style="margin-bottom: 0px!important">
+                                          <div class="row">
+                                              <div class="col-md-3 col-xs-12 col-sm-6 col-lg-3">
+                                                <div class="thumbnail text-center photo_view_postion_b" >
+                                                  <img src="" alt="User Image" class="img">
+                                                </div>
+                                              </div>
+                                              <div class="col-md-9 col-xs-12 col-sm-6 col-lg-9">
+                                                  <div class="" style="border-bottom:1px solid black">
+                                                    <span id="name_div"></span>
+                                                    <p><div id="status_div"></div></p>
+                                                  </div>
+                                                    <hr>
+                                                  <div class="col-md-6">  
+                                                  
+                                                    <p title="Phone"><span class="glyphicon glyphicon-earphone one" style="width:50px;"></span><span id="contact_div"></span></p>
+                                                    <p title="Email"><span class="glyphicon glyphicon-envelope one" style="width:50px;"></span><span id="email_div"></span></p>
+                                                    
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <p title="NID NO"><span class="glyphicon glyphicon-credit-card one" style="width:50px;"></span><span id="nid_div"></span></p>
+                                                    <p title="Address"><span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span><span id="address_div"></span></p>
+                                                  </div>
+
+
+
+                                                  
+                                              </div>
+                                            </div>
+                    <div class="row">
+                      <div class="form-group row">
+                        <div class="col-md-12">
+                        <div class="form-group" style="border-bottom:1px solid black">
+                            <div id="remarks_div"></div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row"> 
+                     <div class="col-md-12">
+                        <div id="remarks_details">
+                            
+                        </div>
+                     </div>
+                     
+                    
+                    </div>
+                    
+                    {{-- <div class="row">
+                      <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="form-group" style="border-bottom:1px solid black">
+                                <h2>CAR INFO</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-sm-4 col-xs-6 tital " >Brand:</div><div class="col-sm-8 col-xs-6 contant_i">Prasad</div>
+                                <div class="clearfix"></div><div class="bot-border"></div>
+                                <div class="col-sm-4 col-xs-6 tital " >Year:</div><div class="col-sm-8 col-xs-6 contant_i">Prasad</div>
+                                <div class="clearfix"></div><div class="bot-border"></div>
+                             </div>    
+                           <div class="col-md-6">
+                                <div class="col-sm-4 col-xs-6 tital " >Model:</div><div class="col-sm-8 col-xs-6 contant_i">Prasad</div>
+                                <div class="clearfix"></div><div class="bot-border"></div>
+                                <div class="col-sm-4 col-xs-6 tital " >Color:</div><div class="col-sm-8 col-xs-6 contant_i">Prasad</div>
+                                <div class="clearfix"></div><div class="bot-border"></div>
+                             </div>    
+                            
+                        </div>
+                      </div>
+                    </div> --}}
+                    
+                    
+                    
+                    
+                    
+                    
+                </div>
+            </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>                                  
+                </div>                          
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+     
+   
+</div>
+{{-- End Profile Modal --}}
 
 
 

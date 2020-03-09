@@ -153,6 +153,64 @@ $(document).ready(function () {
 		});
 	}
 
+	//Teacher Delete (Just Change Status to Deleted)
+    teacher_delete = function teacher_delete(id){
+        var delete_id = id;
+        swal({
+            title: "Are you sure?",
+            text: "You wants to delete item parmanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: url+'/course/teacher/teacher-delete/'+delete_id,
+                    cache: false,
+                    success: function(response){
+                        var response = JSON.parse(response);
+                        swal(response['deleteMessage'], {
+                            icon: "success",
+                        });
+                        teacher_table.ajax.reload();
+                    }
+                });
+            }
+            else {
+                swal("Your Data is safe..!", {
+                    icon: "warning",
+                });
+            }
+        });
+    }
+
+    //Teacher View
+	 teacher_view = function teacher_view(id){	
+		var user_id = id;
+		$.ajax({
+			url: url+'/course/teacher/teacher-view/'+user_id,
+			success: function(response){
+				var data = JSON.parse(response);
+				$("#profile_modal").modal();
+				$("#name_div").html('<h2>'+data['name']+'</h2>');
+				$("#contact_div").html(data['contact_no']);
+				$("#email_div").html(data['email']);
+				$("#nid_div").html(data['nid']);
+				$("#address_div").html(data['address']);
+				
+				if(data['status']==0){
+					$("#status_div").html('<span class="badge badge-warning">In-active</span>');
+				}
+				else if(data['status']==1){
+					$("#status_div").html('<span class="badge badge-success">Active</span>');
+				}
+				else{
+					$("#status_div").html('<span class="badge badge-danger">Deleted</span>');
+				}
+			}
+		});
+	}
+
 
 
 

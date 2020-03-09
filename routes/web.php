@@ -139,6 +139,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::post('/course/teacher/admin-user-name',array('as'=>'Admin User Name Auto-complete', 'uses' =>'TeacherController@adminUserNameAutoComplete'));
 	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
+	Route::get('/course/teacher/teacher-view/{id}',array('as'=>'Teacher View', 'uses' =>'TeacherController@teacherView'));
+	Route::get('/course/get-teacher',array('as'=>'Teacher View', 'uses' =>'CoursesController@getTeacher'));
 
 
 
@@ -150,7 +152,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['permission']], function () {
 	/*----- Course Start -----*/
-	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
+	Route::get('courses/open-course',array('as'=>'Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
 	Route::get('/course/course-edit/{id}',array('as'=>'Course Edit' , 'action_id'=>'76', 'uses' =>'CoursesController@courseEdit'));
 	Route::get('/course/course-delete/{id}',array('as'=>'Course Delete' , 'action_id'=>'77', 'uses' =>'CoursesController@courseDelete'));
@@ -284,6 +286,7 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('course/teacher/manage-teacher',array('as'=>'Manage Teacher', 'action_id'=>'88', 'uses' =>'TeacherController@index'));
 	Route::post('/course/teacher/teacher-entry',array('as'=>'Teacher Entry', 'action_id'=>'89', 'uses' =>'TeacherController@teacherEntryUpdate'));
 	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
+	Route::get('/course/teacher/teacher-delete/{id}',array('as'=>'Teacher Delete', 'action_id'=>'91', 'uses' =>'TeacherController@teacherDelete'));
 	/*--------------  Manage Teacher End  -------------*/
 
 
