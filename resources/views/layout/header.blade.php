@@ -135,7 +135,7 @@
                     <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
                         @if(\Auth::check())
                             @if((\Auth::user()->user_profile_image != ''))
-                                <img width="30px" height="30px;" src="{{asset(\Auth::user()->user_profile_image)}}" class="circle-img" >
+                                <img width="30px" height="30px;" src="{{ asset('assets/images/user/admin') }}/{{ Auth::user()->user_profile_image }}" class="circle-img" >
                             @else
                                 <img width="30px" height="30px;" src="{{asset('assets/images/user/admin/small/profile.png')}}" class="circle-img" >
                             @endif

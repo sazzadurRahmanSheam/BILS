@@ -1,4 +1,5 @@
 // All the user related js functions will be here
+
 $(document).ready(function () {
 
 
@@ -182,6 +183,8 @@ $(document).ready(function () {
                 var registerTotal = perticipants['registerTotal'];
                 var selectedTotal = perticipants['selectedTotal'];
 
+                
+	
                 if(!jQuery.isEmptyObject(perticipants)){
                     var html='';
                     html +='<br><div class="tabbable">';
@@ -212,7 +215,7 @@ $(document).ready(function () {
 
                     //Registered Table Start
                     html +='<div id="registered_div" class="tab-pane">';
-                    html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%"></th></tr></thead>';
+                    html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%">Selection</th></tr></thead>';
                     var register_sl = 1;
                     $.each(registeredList, function(i,register_row){
                         html += '<tr>';
@@ -221,20 +224,26 @@ $(document).ready(function () {
                         html += '<td>'+register_row["email"]+'</td>';
                         html += '<td>'+register_row["mobile"]+'</td>';
                         html += '<td>';
-                        html +=(register_row["is_selected"]=="1")?'<input class="form-control" checked value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input class="form-control" value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
-
+                       
+                        if(select_perticipant_permisiion==1){
+                            html +=(register_row["is_selected"]=="1")?'<input class="form-control" checked value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input class="form-control" value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
+                        }
                         html += '</td></tr>';
                         register_sl++;
                     });
                     html +='<tr><td class="text-center" colspan="4"></td>';
-                    html +='<td><button onclick="saveSelect()" class="btn btn-sam btn-success">Submit Selection</button></td></tr>'
+                    html +='<td>'
+                    if(select_perticipant_permisiion==1){
+                        html +='<button onclick="saveSelect()" class="btn btn-sam btn-success">Submit Selection</button></td></tr>'
+                    }
+                    html +='</td></tr>'
                     html +='</form></table>';
                     html +='</div>';
                     //Registered Table End
 
                     //Selected Table Start
                     html +='<div id="selected_div" class="tab-pane">';
-                    html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%"></th></tr></thead>';
+                    html += '<form id="select_remove_form" name="select_remove_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%">Selection</th></tr></thead>';
                     var selected_sl = 1;
                     $.each(selectedList, function(i,selected_row){
                         html += '<tr>';
@@ -242,12 +251,20 @@ $(document).ready(function () {
                         html += '<td>'+selected_row["name"]+'</td>';
                         html += '<td>'+selected_row["email"]+'</td>';
                         html += '<td>'+selected_row["mobile"]+'</td>';
-                        html += '<td class="rem_input" ><input class="form-control" value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]"></td>';
+                        html += '<td class="rem_input" >';
+                        if(select_perticipant_permisiion==1){
+                            html += '<input class="form-control" value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]">';
+                        }
+                        html +='</td>;'
                         html += '</tr>';
                         selected_sl++;
                     });
                     html +='<tr><td class="text-center" colspan="4"></td>';
-                    html +='<td><button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button></td>';
+                    html +='<td>';
+                    if(select_perticipant_permisiion==1){
+                        html +='<button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button>';
+                    }
+                    html +='</td>';
                     html +='</form></table>';
                     html +='</div>';
                     //Selected Table End
@@ -269,7 +286,7 @@ $(document).ready(function () {
 
 
 
-    //Message Delete
+    //Course Delete
     delete_course = function delete_course(id){
         var delete_id = id;
         swal({
@@ -322,11 +339,12 @@ $(document).ready(function () {
                 $("#act_end_time").val(data['act_end_time']);
                 $("#payment_fee").val(data['payment_fee']);
                 $("#payment_method").val(data['payment_method']);
-                $("#course_teacher").val(data['course_teacher']);
+                
                 $("#discount_message").val(data['discount_message']);
                 (data['pub_status']=='0')?$("#pub_status").iCheck('uncheck'):$("#pub_status").iCheck('check');
                 $("#edit_course_status").css('display','block');
                 $("#course_status").val(data['course_status']).change();
+                $("#course_teacher").val(data['course_teacher']).change();
 
             }
         });
@@ -342,6 +360,19 @@ $(document).ready(function () {
                 option += '<option value="'+row['id']+'">'+row['category_name']+'</option>';
             });
             $("#course_type").append(option);
+        }
+    });
+
+    // Get Teacher
+    $.ajax({
+        url: url+'/course/get-teacher',
+        success: function(response){
+            var data = JSON.parse(response);
+            var option = "";
+            $.each(data,function (k,row) {
+                option += '<option>'+row['name']+'</option>';
+            });
+            $("#course_teacher").append(option);
         }
     });
 
