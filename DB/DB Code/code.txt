@@ -18,3 +18,5 @@ COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 ;
 
+ALTER TABLE `users`
+	CHANGE COLUMN `user_type` `user_type` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1:admin user , 2:App user, 3: Teacher' AFTER `address`;

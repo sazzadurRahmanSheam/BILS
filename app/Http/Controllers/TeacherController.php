@@ -114,6 +114,7 @@ class TeacherController extends Controller
 								'address'=>$request->address,
 								'password'=>$password,
 								'status'=>$is_active,
+								'user_type'=>3,
 							];
 							$response = User::create($column_value1);
 						
@@ -181,17 +182,23 @@ class TeacherController extends Controller
 		$teacher_list = Teacher::Select('id', 'name', 'email', 'contact_no', 'status')->get();
 		$return_arr = array();
 		foreach($teacher_list as $row){
-			$row['status']=($row->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
-
 			$row['actions']="<button title='View' onclick='teacher_view(".$row->id.")' id=view_" . $row->id . "  class='btn btn-xs btn-info ' ><i class='clip-zoom-in'></i></button>";
 
-			if($edit_permisiion>0){
+			if($edit_permisiion>0 ){//&& $row->status != 2
 				$row['actions'] .=" <button title='Edit' onclick='teacher_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green module-edit' ><i class='clip-pencil-3'></i></button>";
 			}
-			if ($delete_permisiion>0) {
+			if ($delete_permisiion>0 && $row->status != 2) {
 				$row['actions'] .=" <button title='Delete' onclick='teacher_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
 			}
-
+			if($row->status == 0){
+				$row['status'] = "<button class='btn btn-xs btn-warning' disabled>In-active</button>";
+			}
+			else if($row->status == 1){
+				$row['status']="<button class='btn btn-xs btn-success' disabled>Active</button>";
+			}
+			if($row->status == 2){
+				$row['status']="<button class='btn btn-xs btn-danger' disabled>Deleted</button>";
+			}
 
 			$return_arr[] = $row;
 		}
@@ -207,6 +214,19 @@ class TeacherController extends Controller
 			"data"=>$data,
 			"admin_id"=>$admin_id
 		));
+	}
+
+	public function teacherDelete($id){
+		$data = Teacher::find($id)->update(['status'=>2]);
+		return json_encode(array(
+			"deleteMessage"=>"Teacher Deleted Successful"
+		));
+	}
+
+	//Teacher View
+	public function teacherView($id){
+		$data = Teacher::find($id);
+		return json_encode($data);
 	}
 
 

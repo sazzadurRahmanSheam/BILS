@@ -45,7 +45,7 @@
 											<div class="row">
 												<div class="col-md-12">
 													<div class="bio-image">
-														<img src="https://image.ibb.co/f5Kehq/bio-image.jpg" alt="image" />
+														<img class="img-thumbnail" src="{{ asset('assets/images/user/admin') }}/{{ Auth::user()->user_profile_image }}" alt="image" />
 													</div>			
 												</div>
 											</div>	
