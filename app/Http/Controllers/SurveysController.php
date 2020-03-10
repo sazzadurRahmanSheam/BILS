@@ -217,7 +217,12 @@ class SurveysController extends Controller
                                 'answer_option' => $answer_choice,
                                 'survey_question_id' => $question_id,
                             ];
+
                             if(isset($request->answer_id[$array_index]) && $request->answer_id[$array_index]!=''){
+                                if($request->option_type==2 || $request->option_type==1){
+                                    //echo 1; die;
+                                    SurveyQuestionAnswerOption::where('id',$request->answer_id[$array_index])->delete();
+                                }
                                 SurveyQuestionAnswerOption::where('id',$request->answer_id[$array_index])->update($column_value);
                             }
                             else{
@@ -274,7 +279,7 @@ class SurveysController extends Controller
 
     public function questionEdit($id){
 
-        $question = SurveyQuestion::where('id','=',$id)->get();
+        $question =SurveyQuestion ::where('id','=',$id)->get();
 
         $data['question']=$question[0];
 
@@ -306,6 +311,19 @@ class SurveysController extends Controller
         //echo (json_encode($question_id)); die;
         return 1;
 
+    }
+
+    public function surveyView($id){
+        //return 1;
+        $survey = SurveyMaster::find($id);
+        $data['survey']=$survey;
+        $question =SurveyQuestion ::where('survey_id','=',$id)->orderBy('serial')->get();
+        //echo json_encode($question);
+        foreach ($question as $i=>$values){
+            $data['question'][$values['serial']]=$values;
+            $data['question'][$values['serial']]['answer'] =SurveyQuestionAnswerOption ::where('survey_question_id','=',$values['id'])->get();
+        }
+        return json_encode($data);
     }
 
 

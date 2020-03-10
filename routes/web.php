@@ -121,6 +121,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/survey/survey-list',array('as'=>'Get Survey List', 'uses' =>'SurveysController@getSurveyList'));
 
+    Route::get('/survey/survey-view/{id}',array('as'=>'Survey View', 'uses' =>'SurveysController@surveyView'));
+
+
     ##Chaki---------End
 
 
