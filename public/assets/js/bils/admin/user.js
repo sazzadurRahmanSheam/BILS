@@ -38,7 +38,7 @@ $(document).ready(function () {
 	});
 		
 		
-	// save and update for public post/notice
+	// Admin User Entry And Update
 	$('#save_admin_info').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
@@ -104,6 +104,15 @@ $(document).ready(function () {
 		clear_form();
 	});	
 
+	$("#cancle_admin_update").click(function(){
+		clear_form();
+		$(".save").html('Save');
+		$("#admin_user_list_button").trigger('click');
+		$("#admin_user_add_button").html('Add Admin User');
+		$("#cancle_admin_update").addClass('hidden');
+		$("#emp_img").attr("src", "src");
+	});
+
 	
 		
 		
@@ -129,12 +138,13 @@ $(document).ready(function () {
 				$("#email").val(emp_data['email']);
 				$("#address").val(emp_data['address']);
 				$("#remarks").val(emp_data['remarks']);
+				$("#emp_img").attr("src", profile_image_url+"/"+emp_data["user_profile_image"]);
 				//$("#user_profile_image").val(emp_data['user_profile_image']);
 				//console.log(emp_data['user_profile_image']);
 				(emp_data['status']==2)?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
 				/*get group for edit*/
 				if(!jQuery.isEmptyObject(user_group_member_details)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >Admin User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"><input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(user_group_member_details, function(i,row){
 						if (row['status']=='0') {
@@ -187,31 +197,14 @@ $(document).ready(function () {
 				$("#address_div").html(data['address']);
 				$("#remarks_div").html('<h2>Remarks</h2>');
 				$("#remarks_details").html(data['remarks']);
+				$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
+				
 				if(data['status']==1){
 					$("#status_div").html('<span class="badge badge-success">Active</span>');
 				}
 				else{
 					$("#status_div").html('<span class="badge badge-danger">In-active</span>');
-				}
-
-				// $("#admin_user_view").modal();
-				// var user_type,login_status,status;
-				// (data['user_type']=="1")? user_type = "Admin" : "App User";
-				// (data['login_status']=="1")? login_status = "Logged In" : "Not Logged In";
-				// (data['status']=="1")? status = "Active" : "In-active";
-				// var admin_info = "";
-				// admin_info+="<h4>"+data['id']+"</h4>";
-				// admin_info+="<h4>"+data['name']+"</h4>";
-				// admin_info+="<h4>"+data['nid_no']+"</h4>";
-				// admin_info+="<h4>"+data['contact_no']+"</h4>";
-				// admin_info+="<h4>"+data['email']+"</h4>";
-				// admin_info+="<h4>"+data['address']+"</h4>";
-				// admin_info+="<h4>"+user_type+"</h4>";
-				// admin_info+="<h4>"+login_status+"</h4>";
-				// admin_info+="<h4>"+status+"</h4>";
-				
-				// $("#modal_body").html(admin_info);
-				//console.log(data);
+				} //alert(profile_image_url);
 			}
 		});
 	}
@@ -347,9 +340,10 @@ $(document).ready(function () {
 	//cancle (Admin & App user) group update 
 	cancle_admin_user_group_update = function cancle_admin_user_group_update(){
 		$("#cancle_admin_user_group_button").click(function(){
+			clear_form();
 			$("#cancle_admin_user_group_button").addClass('hidden');
 			$(".save").html('Save');
-			clear_form();
+			
 		});
 	}
 
@@ -400,10 +394,10 @@ $(document).ready(function () {
 		var data = response.data;	
 			
 			if(!jQuery.isEmptyObject(data)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input checked type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >Admin User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
 					html += '<tr><td colspan="2">';
 					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
 					});
 					html += '</td></tr>';
 				html +='</table>';	

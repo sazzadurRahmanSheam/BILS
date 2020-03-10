@@ -55,7 +55,7 @@
 									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>Photo</th>
+												<th width="100px">Photo</th>
 												<th>User ID</th>
 												<th>Name</th>
 												<th>Email </th>
@@ -138,7 +138,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >User Group</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Select Group</label>
 										<div id="group_select" class="col-md-10 col-sm-10 col-xs-12"></div>
 									</div>
 									<div class="ln_solid"></div>
@@ -154,7 +154,7 @@
 								<div class="col-md-4 col-sm-4 col-xs-12">
 									
 									
-									<button type="submit" id="save_admin_info" class="btn btn-success">Save</button>                    
+									<button type="submit" id="save_admin_info" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                        
 									<button type="button" id="cancle_admin_update" class="btn btn-danger hidden">Cancle</button>                        
 								</div>
@@ -177,11 +177,13 @@
 
 
 @section('JScript')
-
-<script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
-<script>
-// save the state of the page in local storage
-</script>
+	<script>
+		var profile_image_url = "<?php echo asset('assets/images/user/admin'); ?>";
+	</script>
+	<script src="{{ asset('assets/js/bils/admin/user.js')}}"></script>
+	<script>
+	// save the state of the page in local storage
+	</script>
 
 
 
