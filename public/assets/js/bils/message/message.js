@@ -179,8 +179,90 @@ $(document).ready(function () {
 	}*/
 
 
+	loadAppUser = function loadAppUser(){
+		$.ajax({
+			url: url+'/message/load-app-user',
+			success: function(response){
+				var response = JSON.parse(response);
+				var app_user = response['app_user_info'];
+				var message = response['message'];
+				//Load App user who are chated 
+				if(!jQuery.isEmptyObject(app_user)){
+					var html = "";
+					var active_chat_class = "active";
+					$.each(app_user, function(i,row){
+						html+='<li class="contact '+active_chat_class+'">';
+						html+='<div class="wrap">';
+						//html+='<span class="contact-status busy"></span>';
+						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+						html+='<div class="meta">';
+						html+='<p class="name">'+row["name"]+'</p>';
+						html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+						html+='</div>';
+						html+='</div>';
+						html+='</li>';
+						active_chat_class = "";
+					});
+				}
+				$("#app_user_show").append(html);
+
+				//Messages
+				if(!jQuery.isEmptyObject(message)){
+
+					var message_body = "";
+					
+					
+					$.each(message, function(i,message){
+						if(message["admin_message"]!=null && message["admin_message"]!=""){
+							message_body += '<li class="sent_msg">';
+							message_body += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							message_body += '<p>'+message["admin_message"]+'</p>';
+							message_body += '</li>';
+							message_body += '<span class="time_date_sent"> 11:01 AM    |    June 9</span>';
+							
+						}
+						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
+							
+
+							message_body += '<li class="receive_msg">';
+							message_body += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+							message_body += '<p>'+message["app_user_message"]+'</p>';
+							message_body += '<span class="time_date"> 11:01 AM    |    June 9</span>';
+							message_body += '</li>';
+							
+						}
+						
+					});
+					
+				}
+				$(".message_body").append(message_body);
+
+				
+					
+					 
+				
+
+
+			}
+		});
+	}
+	loadAppUser();
+
+		  
+			
+			
+			  
+			  
+
+
+
+
+
+	
+
+
 	//autosuggest
-	$.ajaxSetup({
+	/*$.ajaxSetup({
 		headers:{
 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 		}
@@ -211,7 +293,7 @@ $(document).ready(function () {
 			$("#app_user_id").val(id);
 			
 		}
-	});
+	});*/
 
 
 
