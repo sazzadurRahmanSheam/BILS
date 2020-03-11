@@ -82,6 +82,8 @@ class SurveysController extends Controller
             $data['actions']=" <button title='View' onclick='survey_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
             if($edit_permisiion>0){
+                $data['actions'] .=" <button title='Serial' onclick='survey_view(".$data->id.",1)' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-list-3'></i></button>";
+
                 $data['actions'] .=" <button title='Edit' onclick='edit_survey(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
             if ($delete_permisiion>0) {
@@ -166,6 +168,10 @@ class SurveysController extends Controller
 
     public function surveyQuestionEntry(Request $request)
     {
+        //echo $request->survey_id;
+        //echo $request->serial; die;
+        $serial_check = SurveyQuestion::where([['survey_id','=',$request->survey_id],['serial','=',$request->serial]])->get();
+        //return json_encode(sizeof($serial_check));
 
         //echo json_encode($request->all()); die;
         $rule = [
@@ -186,10 +192,30 @@ class SurveysController extends Controller
                 ##Entry
 
                 //$created_by = Auth::user()->id;
+
+                //echo $serial_check;
+                //echo $request->question_id;
+                //echo $serial_check[0]['id'];
+
+                if($serial_check!=[] ){
+                    //echo json_encode($serial_check[0]['id']); die;
+
+                    if(sizeof($serial_check)>1 || (sizeof($serial_check)==1 && !isset($request->question_id)) || (isset($request->question_id) && isset($serial_check[0]['id']) && $serial_check[0]['id']!=$request->question_id)){
+                        $return['result'] = "0";
+                        $return['errors'][] = "Serial number is not Unique for this survey";
+                        $return['exception']='Serial number is not Unique for this survey';
+                        return json_encode($return);
+                    }
+                }
+
+
+
                 $column_value = [
                     'question_details' => $request->question,
                     'survey_id' => $request->survey_id,
                     'question_type' => $request->option_type,
+                    'serial' => $request->serial,
+                    'display_option' => $request->display_option,
                 ];
                 if(isset($request->question_id) && $request->question_id!=''){
                     $response = SurveyQuestion::where('id',$request->question_id)->update($column_value);
@@ -259,21 +285,40 @@ class SurveysController extends Controller
         //echo json_encode($survey); die;
         $data['survey']=$survey[0];
 
-        $question = SurveyQuestion::where('survey_id','=',$id)->get();
+        $question = SurveyQuestion::where('survey_id','=',$id)->orderBy('serial')->get();
 
         $data['question']=$question;
 
-        /*
-         $perticipantsList = DB::table('survey_questions as sq')
-            ->leftJoin('survey_question_answer_options as sqao', 'sqao.survey_question_id', '=', 'sq.id')
-            ->where('sq.survey_id', $id)
-            ->select('sq.question_details as question', 'sq.question_type as type', 'sq.id as question_id',
-                'sqao.answer_option as answer', 'sqao.id as answer_id')
-            ->get();
-        */
-
-
         return json_encode($data);
+
+    }
+
+    public function surveyDelete($id){
+        //echo $id; die;
+
+        try {
+            DB::beginTransaction();
+            $question = SurveyQuestion::where('survey_id','=',$id)->get();
+
+            foreach ($question as $key=>$value){
+                //echo json_encode($value['id']); die;
+                SurveyQuestionAnswerOption::where('survey_question_id',$value['id'])->delete();
+            }
+            SurveyQuestion::where('survey_id','=',$id)->delete();
+
+            SurveyMaster::where('id','=',$id)->delete();
+
+            DB::commit();
+            $return['result'] = "1";
+            $return['message'][] = "Successfully  Deleted";
+            return json_encode($return);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $return['result'] = "0";
+            $return['errors'][] = "Failed to Delete";
+            $return['exception']=$e;
+            return json_encode($return);
+        }
 
     }
 
@@ -288,6 +333,17 @@ class SurveysController extends Controller
         $data['question_answer']=$question_answer;
 
         return json_encode($data);
+    }
+
+    public function surveyQuestionSerialize(Request $request){
+        //return json_encode($request->survey_id_for_serial);
+
+        $tem_sl = 0;
+        foreach ($request->serial as $keys=>$value){
+            //echo $request->id[$keys];
+            SurveyQuestion::find($request->id[$keys])->update(array('serial' => $value));
+        }
+        return 1;
     }
 
     public function questionDelete($id){
@@ -325,7 +381,5 @@ class SurveysController extends Controller
         }
         return json_encode($data);
     }
-
-
 
 }

@@ -26,7 +26,7 @@
 	                @endif
                     <li style="display: block;" id="survey_view_li">
                         <a data-toggle="tab" href="#survey_view" id="survey_view_button">
-                            <b>Courses View</b>
+                            <b>Survey View</b>
                         </a>
                     </li>
                 </ul>
@@ -67,7 +67,7 @@
 												<th  style="max-width: 120px">Start Date</th>
 												<th style="max-width: 120px" >End Date</th>
 												<th style="max-width: 120px" >Status</th>
-												<th style="max-width: 130px" >Actions</th>
+												<th style="max-width: 140px" >Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -158,6 +158,7 @@
                                     <tr style="background-color: #114177; color: white">
                                         <th width="60%">Question Title</th>
                                         <th>Answer Type </th>
+                                        <th width="10%">Serial </th>
                                         <th width="10%">Actions</th>
                                     </tr>
                                     </thead>
@@ -183,20 +184,44 @@
 
 												<div class="panel panel-default">
                                                     <div class="form-group panel-body" >
-                                                        <label class="control-label col-md-2 col-sm-2 col-xs-6">Question Title<span class="required">*</span></label>
-                                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                                            <textarea id="question" name="question" class="form-control col-lg-12"></textarea>
-                                                            <input type="hidden" name="question_id" id="question_id">
+                                                        <div class="col-md-7">
+                                                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Question Title<span class="required">*</span></label>
+                                                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                                                <textarea rows="5" id="question" name="question" class="form-control col-lg-12 col-md-12"></textarea>
+                                                                <input type="hidden" name="question_id" id="question_id">
+                                                            </div>
                                                         </div>
-                                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" >Answer Type<span class="required">*</span></label>
-                                                        <div class="col-md-4 col-sm-4 col-xs-6">
-                                                            <select name="option_type" id="option_type" class="form-control col-md-6">
-                                                                <option value="" disabled selected>Select Question Type</option>
-                                                                <option value="1">Text Input</option>
-                                                                <option value="2">Number Input</option>
-                                                                <option value="3">Single Choice</option>
-                                                                <option value="4">Multiple Choice</option>
-                                                            </select>
+                                                        <div class="col-md-5">
+                                                            <div class="col-md-12" style="margin: 2px">
+                                                                <label class="control-label col-md-4 col-sm-4 col-xs-4" >Answer Type<span class="required">*</span></label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                    <select name="option_type" id="option_type" class="form-control col-md-12">
+                                                                        <option value="" disabled selected>Select Question Type</option>
+                                                                        <option value="1">Text Input</option>
+                                                                        <option value="2">Number Input</option>
+                                                                        <option value="3">Single Choice</option>
+                                                                        <option value="4">Multiple Choice</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" style="margin: 4px">
+                                                                <label class="control-label col-md-4 col-sm-4 col-xs-4" >Display Option<span class="required">*</span></label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                    <select name="display_option" id="display_option" class="form-control col-md-12">
+                                                                        <option value="" disabled selected>Select Display Type</option>
+                                                                        <option value="1">Row</option>
+                                                                        <option value="2">Single Column</option>
+                                                                        <option value="3">Multiple Column</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12" style="margin: 4px">
+                                                                <label class="control-label col-md-4 col-sm-4 col-xs-4">Serial<span class="required">*</span></label>
+                                                                <div class="col-md-8 col-sm-8 col-xs-8">
+                                                                    <input type="number" name="serial" id="serial" class="col-md-12">
+                                                                </div>
+                                                            </div>
+
                                                         </div>
 
                                                         <div class="col-md-12 panel-body answer_option_input" id="option_input" style="display: none">
@@ -228,6 +253,8 @@
                         </div>
                     </div>
                     <!-- END PANEL FOR SURVEY CREATE/UPDATE -->
+
+                    <!--Survey View  Start-->
                     <div id="survey_view" class="tab-pane in" style="width: 595px; border: solid 1px">
                         <div class="row no-margin-row">
                             <div class="col-md-12">
@@ -241,59 +268,12 @@
                                     <div id="left_sub" class="col-md-6"></div>
                                     <div id="right_sub" class="col-md-6" style="text-align: right"></div>
                                 </div>
-                                <div class="col-md-12" id="survey_body_view">
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>1. What is your Name</h6>
-                                        <br><hr style="margin-bottom: 0px; border: .5px dashed ">
+                                <form id="serial_update" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+                                    <div class="col-md-12" id="survey_body_view">
                                     </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>2. How Old are you?</h6>
-                                        <input class="form-control col-lg-12" type="number">
-                                    </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>3. What is you gender?</h6>
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Male
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Female
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Common
-                                    </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>4. What is you Profession?</h6>
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Student
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Govt. Servant
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Teacher
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Lawyer
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Doctor
-                                        <input type="radio" name="gender" style="margin-left: 10px; margin-right: 5px">Unemployed
-                                    </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>5. What is you Profession?</h6>
-                                        <p style="margin: 10px">(A): Student</p>
-                                        <p style="margin: 10px">(B): Student</p>
-                                        <p style="margin: 10px">(C): Student</p>
-                                        <p style="margin: 10px">(D): Student</p>
-                                        <p style="margin: 10px">(E): Student</p>
-                                        <p style="margin: 10px">(F): Student</p>
-                                    </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>6. What is you Profession?</h6>
-                                        <span style="margin: 10px">(A): Student</span>
-                                        <span style="margin: 10px">(B): Student</span>
-                                        <span style="margin: 10px">(C): Student</span>
-                                        <span style="margin: 10px">(D): Student</span>
-                                        <span style="margin: 10px">(E): Student</span>
-                                        <span style="margin: 10px">(F): Student</span>
-                                    </div>
-                                    <div class="col-md-12" style="margin-bottom: 10px">
-                                        <h6>6. What is you Profession?</h6>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                        <div class="col-md-6" style="padding: 10px">(A): Student</div>
-                                    </div>
-
-                                </div>
+                                    <button id="updateSerial" class="btn btn-success serial">Update Serial</button>
+                                    <input type="hidden" name="survey_id_for_serial" id="survey_id_for_serial">
+                                </form>
                             </div>
 
                             <div class="col-md-12"><br>
@@ -305,6 +285,7 @@
 
                         </div>
                     </div>
+                    <!--Survey View  End-->
 
                 </div>
             </div>
