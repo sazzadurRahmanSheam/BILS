@@ -123,6 +123,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/survey/survey-view/{id}',array('as'=>'Survey View', 'uses' =>'SurveysController@surveyView'));
 
+    Route::get('/survey/survey-participant_view/{id}',array('as'=>'Survey Participants View', 'uses' =>'SurveysController@surveyParticipantView'));
+    Route::get('/survey/survey-participant_result_view/{survey_id}/{id}',array('as'=>'Survey Participants Result View', 'uses' =>'SurveysController@surveyParticipantResultView'));
 
     ##Chaki---------End
 

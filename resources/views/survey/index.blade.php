@@ -29,6 +29,11 @@
                             <b>Survey View</b>
                         </a>
                     </li>
+                    <li style="display: block;" id="survey_view_li">
+                        <a data-toggle="tab" href="#survey_participants" id="survey_participants_button">
+                            <b>Survey Participants</b>
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
@@ -67,7 +72,7 @@
 												<th  style="max-width: 120px">Start Date</th>
 												<th style="max-width: 120px" >End Date</th>
 												<th style="max-width: 120px" >Status</th>
-												<th style="max-width: 140px" >Actions</th>
+												<th style="max-width: 170px" >Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -287,6 +292,69 @@
                     </div>
                     <!--Survey View  End-->
 
+                    <!--Survey Participants  Start-->
+                    <div id="survey_participants" class="tab-pane in" >
+                        <div class="row no-margin-row">
+                            <!-- List of Categories -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-external-link-square"></i>
+
+                                    <div class="panel-tools">
+                                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                                        </a>
+                                        <a class="btn btn-xs btn-link panel-config" href="#panel-config" data-toggle="modal">
+                                            <i class="fa fa-wrench"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-link panel-refresh" href="#">
+                                            <i class="fa fa-refresh"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                                            <i class="fa fa-resize-full"></i>
+                                        </a>
+                                        <a class="btn btn-xs btn-link panel-close" href="#">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="text-center">
+                                        <h2 class="text-info" id="survey_name_participant_view">Survey Grid Summary</h2>
+                                        <p id="survey_details_participant_view"></p>
+                                    </div>
+                                    <div class="col-md-12" style="margin-left: 5px;">
+                                        <div id="left_sub_participant_view" class="col-md-6"></div>
+                                        <div id="right_sub_participant_view" class="col-md-6" style="text-align: right"></div>
+                                    </div>
+                                    <table class="table table-bordered table-hover admin_user_table" id="survey_participant_view" style="width:100% !important">
+                                        <thead>
+                                        <tr>
+                                            <th>Participant Name</th>
+                                            <th  style="max-width: 80px">Question Total</th>
+                                            <th style="max-width: 80px" >Question Answered</th>
+                                            <th style="max-width: 100px" >Date</th>
+                                            <th style="max-width: 50px" >Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="panel panel-default" style="display: none">
+                                <div id="survey_view_participant" class="tab-pane in" style="width: 595px; border: solid 1px">
+                                    <div class="row no-margin-row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-12" id="survey_participant_body_view">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END Categoreis -->
+                        </div>
+                    </div>
+                    <!--Survey Participants  End-->
                 </div>
             </div>
         </div>

@@ -151,6 +151,62 @@ $(document).ready(function () {
         })
     }
 
+
+    survey_participant_answer = function survey_participant_answer(survey_id,id){
+        $.ajax({
+            url: url + '/survey/survey-participant_result_view/'+survey_id+'/'+ id,
+            success: function (response) {
+            }
+        })
+    }
+
+
+    survey_participant = function survey_participant(id){
+
+
+        //$('#survey_id_for_serial').val(id)
+        $.ajax({
+            url: url+'/survey/survey-participant_view/'+id,
+            success: function(response){
+                var datas = JSON.parse(response);
+                //console.log(data)
+
+               // $("#survey_view_li").css('display','block');
+                $("#survey_participants_button").trigger('click');
+                console.log(datas)
+
+                $("#survey_name_participant_view").html(datas['survey']['survey_name']);
+                $('#survey_details_participant_view').html(datas['survey']['details'])
+
+                var left_sub = "";
+                left_sub += "<br><b>Start Date: </b>"+datas['survey']['start_date'];
+                left_sub += "<br><b>End Date: </b>"+datas['survey']['end_date'];
+                left_sub += "<br><b>Survey Category: </b>"+datas['survey']['survey_category'];
+
+                $("#left_sub_participant_view").html(left_sub);
+
+
+                var right_sub = "";
+
+                right_sub += "<br><b>Created By: </b>"+datas['survey']['created_by'];
+                right_sub += "<br><b>Last Updated By: </b>"+datas['survey']['updated_by'];
+
+                $("#right_sub_participant_view").html(right_sub);
+
+
+
+                var html='';
+                $.each(datas.surveyParticipant, function (key, data) {
+                    html+='<tr><td>'+data['name']+'</td><td>'+datas.surveyQuestion+'</td><td>'+data['question_answered']+'</td><td>'+data['created_at']+'</td><td><button ' +
+                        ' onclick="survey_participant_answer('+id+','+data['user_id']+')" class="btn btn-xs btn-primary" ><i class=clip-zoom-in></i></button></td></tr>'
+                })
+
+                $('#survey_participant_view tbody').html(html)
+
+            }
+        });
+    }
+
     //edit_survey('1')
 
     //Save survey body
@@ -333,7 +389,7 @@ $(document).ready(function () {
 
 
 
-                var description = "";
+                var description = "</br>";
                 $.each(data['question'], function (key, value) {
                     //console.log(value)
 
@@ -367,7 +423,7 @@ $(document).ready(function () {
                         }
                         else if(value['display_option']==3){
                             $.each(value['answer'],function (key2, answer) {
-                                description+='<div width="45%" style="margin: 10px">('+sl+'): '+answer['answer_option']+'</div>\n';
+                                description+='<div class="col-md-5" style="margin: 10px">('+sl+'): '+answer['answer_option']+'</div>\n';
                                 sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
                             })
                         }

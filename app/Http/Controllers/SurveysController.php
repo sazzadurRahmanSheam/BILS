@@ -16,6 +16,9 @@ use App\UserGroup;
 use App\SurveyMaster;
 use App\SurveyQuestion;
 use App\SurveyQuestionAnswerOption;
+use App\SurveyParticipatentAnswerOption;
+use App\SurveyParticipatent;
+use App\SurveyParticipatentAnswer;
 
 
 class SurveysController extends Controller
@@ -79,10 +82,12 @@ class SurveysController extends Controller
                 $data['course_status'] = "<button class='btn btn-xs btn-success' disabled>Completed</button>";
             }
 */
-            $data['actions']=" <button title='View' onclick='survey_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+            $data['actions']=" <button title='View' onclick='survey_view(".$data->id.",0)' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+
+            $data['actions'].=" <button title='Result' onclick='survey_participant(".$data->id.")' id='view_result" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
             if($edit_permisiion>0){
-                $data['actions'] .=" <button title='Serial' onclick='survey_view(".$data->id.",1)' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-list-3'></i></button>";
+                $data['actions'] .=" <button title='Serial' onclick='survey_view(".$data->id.",1)' id=edit_serial" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-list-3'></i></button>";
 
                 $data['actions'] .=" <button title='Edit' onclick='edit_survey(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
@@ -92,6 +97,44 @@ class SurveysController extends Controller
             $return_arr[] = $data;
         }
         return json_encode(array('data'=>$return_arr));
+    }
+
+    public function surveyParticipantView($id){
+        $admin_user_id      = Auth::user()->id;
+        $edit_action_id     = 86;
+        $delete_action_id   = 87;
+        $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
+        $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
+
+        /*$survey_list = SurveyMaster::Select('id','survey_name', 'start_date', 'end_date', 'status')
+            ->orderBy('id','desc')
+            ->get();
+        */
+
+        $survey_participant = DB::table('survey_participants')
+            ->select('survey_participants.id','survey_participants.survey_id','survey_participants.created_at','app_users.name', 'app_users.id as user_id')
+            ->join('app_users','app_users.id','=','survey_participants.app_user_id')
+            ->where('survey_participants.survey_id','=',$id)
+            ->get();
+        //echo json_encode($survey); die;
+        $survey = SurveyMaster::where('id',$id)->get();
+        $surveyQuestion = SurveyQuestion::where('survey_id',$id)->get();
+        $surveyQuestion = $surveyQuestion->count();
+
+        $return_arr = array();
+        foreach ($survey_participant as $key=>$value){
+            $questionAnswer=SurveyParticipatentAnswer::where('survey_participan_id',$value->id)->get();
+            $questionAnswer=$questionAnswer->count();
+            //echo $questionAnswer;
+            $value->question_answered=$questionAnswer;
+            $return_arr[]=$value;
+        }
+
+        $data['survey']=$survey[0];
+        $data['surveyQuestion']=$surveyQuestion;
+        $data['surveyParticipant']=$return_arr;
+
+        return json_encode($data);
     }
 
 
@@ -380,6 +423,11 @@ class SurveysController extends Controller
             $data['question'][$values['serial']]['answer'] =SurveyQuestionAnswerOption ::where('survey_question_id','=',$values['id'])->get();
         }
         return json_encode($data);
+    }
+
+    public  function surveyParticipantResultView($survey_id,$id){
+        $survey_data = $this.surveyView($survey_id);
+        return $survey_data;
     }
 
 }
