@@ -6,66 +6,28 @@
 
 @section('content')
 	
-	{{-- <div class="messaging">
-  <div class="inbox_msg">
 	
-	
-	<div class="mesgs">
-	  <div class="msg_history">
-		<div class="message_body">
-			
-		</div>
-
-		
-	  </div>
-	  <div class="type_msg">
-		<div class="input_msg_write">
-		  <input type="text" class="write_msg" placeholder="Type a message" />
-		  <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-		</div>
-	  </div>
-	</div>
-	
-	<div class="inbox_people">
-	  <div class="headind_srch">
-		<div class="recent_heading">
-		  <h4>Recent</h4>
-		</div>
-		<div class="srch_bar">
-		  <div class="stylish-input-group">
-			<input type="text" class="search-bar"  placeholder="Search" >
-			</div>
-		</div>
-	  </div>
-	  <div class="inbox_chat scroll">
-	  	<div id="app_user_show_div">
-	  		
-	  	</div>
-		
-	  </div>
-	</div>
-	
-	
-  </div>
-</div> --}}
 
 
-	<div class="col-md-12">
+	<div class="col-md-12" style="padding: 0;">
 		<div id="frame">
 
 	
 	<div class="content">
-		{{-- <div class="contact-profile">
+		<div class="contact-profile">
 			<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-			<p>Harvey Specter</p>
+			<p id="app_user_name"></p>
 			<div class="social-media">
-				<i class="fa fa-facebook" aria-hidden="true"></i>
-				<i class="fa fa-twitter" aria-hidden="true"></i>
-				 <i class="fa fa-instagram" aria-hidden="true"></i>
+				<div id="load_more_message">
+					
+				</div>
 			</div>
-		</div> --}}
+		</div>
 		<div class="messages">
-			<ul class="message_body">
+			<ul style="padding-left: 0;">
+				<div class="message_body">
+					
+				</div>
 				{{-- <li class="sent">
 					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
 					<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
@@ -91,15 +53,24 @@
 
 
 	<div id="sidepanel">
-		<div style="height:40px">
-			
+
+		<div id="profile">
+			<div class="wrap">
+				<img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
+				<p>{{ Auth::user()->name }}</p>
+			</div>
 		</div>
+
+		
 		<div id="search">
 			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-			<input type="text" placeholder="Search App Users..." />
+			<input type="text" id="search_app_user" name="search_app_user" placeholder="Search App Users...." />
 		</div>
 		<div id="contacts">
-			<ul id="app_user_show" style="list-style-type: none;">
+			<ul style="list-style-type: none; padding: 0;">
+				<div id="app_user_show">
+					
+				</div>
 				{{-- <li class="contact active">
 					<div class="wrap">
 						<span class="contact-status busy"></span>

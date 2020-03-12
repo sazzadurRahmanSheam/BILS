@@ -3,7 +3,7 @@ $(document).ready(function () {
 	
 	// for get site url
 	var url = $('.site_url').val();
-
+	var number_of_msg = 2;
 	
 	//Load App User Group Using Notice Controller
 	$.ajax({
@@ -185,71 +185,158 @@ $(document).ready(function () {
 			success: function(response){
 				var response = JSON.parse(response);
 				var app_user = response['app_user_info'];
-				var message = response['message'];
 				//Load App user who are chated 
 				if(!jQuery.isEmptyObject(app_user)){
 					var html = "";
-					var active_chat_class = "active";
+					//var active_chat_class = "active";
 					$.each(app_user, function(i,row){
-						html+='<li class="contact '+active_chat_class+'">';
+						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact">';
 						html+='<div class="wrap">';
-						//html+='<span class="contact-status busy"></span>';
+						html+='<span class="contact-status online"></span>';
 						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
 						html+='<div class="meta">';
 						html+='<p class="name">'+row["name"]+'</p>';
-						html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
 						html+='</div>';
 						html+='</div>';
 						html+='</li>';
-						active_chat_class = "";
+						//active_chat_class = "";
 					});
 				}
-				$("#app_user_show").append(html);
-
-				//Messages
-				if(!jQuery.isEmptyObject(message)){
-
-					var message_body = "";
-					
-					
-					$.each(message, function(i,message){
-						if(message["admin_message"]!=null && message["admin_message"]!=""){
-							message_body += '<li class="sent_msg">';
-							message_body += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
-							message_body += '<p>'+message["admin_message"]+'</p>';
-							message_body += '</li>';
-							message_body += '<span class="time_date_sent"> 11:01 AM    |    June 9</span>';
-							
-						}
-						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
-							
-
-							message_body += '<li class="receive_msg">';
-							message_body += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
-							message_body += '<p>'+message["app_user_message"]+'</p>';
-							message_body += '<span class="time_date"> 11:01 AM    |    June 9</span>';
-							message_body += '</li>';
-							
-						}
-						
-					});
-					
-				}
-				$(".message_body").append(message_body);
-
-				
-					
-					 
-				
-
-
+				$("#app_user_show").html(html);
 			}
 		});
 	}
 	loadAppUser();
 
+
+	loadMessage = function loadMessage(app_user_id, number_of_msg){//
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		var app_user_id_load_msg = app_user_id;
+		var msg_no = number_of_msg;
+
+		$.ajax({
+			url: url+'/message/load-message',
+			type:'POST',
+				data:{
+					app_user_id_load_msg:app_user_id_load_msg,
+					msg_no:msg_no
+				},
+				async:false,
+			success: function(response){
+				var response = JSON.parse(response);
+				
+				var message = response['message'];
+				var app_user_name = response['app_user_name'];
+				
+				//Messages
+				if(!jQuery.isEmptyObject(message)){
+
+					var message_body = "";
+					
+					$.each(message, function(i,message){
+						html = "";
+						if(message["admin_message"]!=null && message["admin_message"]!=""){
+							html += '<li class="sent_msg">';
+							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							html += '<p>'+message["admin_message"]+'</p>';
+							html += '</li>';
+							html += '<span class="time_date_sent"> 11:01 AM    |    June 9</span>';
+							
+						}
+						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
+							
+
+							html += '<li class="receive_msg">';
+							html += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+							html += '<p>'+message["app_user_message"]+'</p>';
+							html += '<span class="time_date"> 11:01 AM    |    June 9</span>';
+							html += '</li>';
+							
+						}
+						message_body = html+message_body;
+						
+					});
+					
+				}
+				$(".message_body").html(message_body);
+				$("#app_user_name").html(app_user_name['name']);
+				$("#load_more_message").html('<button onclick="limitIncrease('+app_user_name["id"]+');" style="margin-right: 10px;" type="button" class="btn btn-xs btn-warning">Load Old Message</button>');
+				
+			}
+		});
+	}
+
+
+	searchAppUsers = function searchAppUsers(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		var name = $("#search_app_user").val();
+		if(name!=""){
+			$.ajax({
+				url: url+"/message/search-app-users",
+				type:'POST',
+				data:{name:name},
+				async:false,
+				success: function(data){
+					var app_users = JSON.parse(data);
+					
+					if(!jQuery.isEmptyObject(app_users)){
+					var html = "";
+					$.each(app_users, function(i,row){
+						html+='<li class="contact">';
+						html+='<div class="wrap">';
+						//html+='<span class="contact-status busy"></span>';
+						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+						html+='<div class="meta">';
+						html+='<p onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="name">'+row["name"]+'</p>';
+						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+						html+='</div>';
+						html+='</div>';
+						html+='</li>';
+						
+					});
+				}
+				$("#app_user_show").html(html);
+				 }	
+			});
+		
+
+		}
+		else {
+			loadAppUser();
+		}
+	}
+
+	$("#search_app_user").keyup(function(){
+		searchAppUsers();
+	});
+
+
+	limitIncrease = function limitIncrease(id){
+		number_of_msg = number_of_msg+2;
+		loadMessage(id,number_of_msg);
+	}
+
+
+	
+        
+      
+	
+
 		  
-			
+		 
+
+
 			
 			  
 			  

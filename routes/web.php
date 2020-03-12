@@ -147,6 +147,10 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	## Load App User For Message
 	Route::get('/message/load-app-user',array('as'=>'Load App User', 'uses' =>'MessageController@loadAppUser'));
+	##Load Messages for one-to-one Chat
+	Route::post('/message/load-message',array('as'=>'Load Message', 'uses' =>'MessageController@loadMessage'));
+	##Search App Users
+	Route::post('/message/search-app-users',array('as'=>'Search App Users', 'uses' =>'MessageController@searchAppUsers'));
 
 
 
