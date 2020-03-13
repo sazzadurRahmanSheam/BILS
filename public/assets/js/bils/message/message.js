@@ -344,8 +344,11 @@ $(document).ready(function () {
 	});
 
 	newMsgSent = function newMsgSent(){
+        	
+    	
 		var formData = new FormData($('#sent_message_to_user')[0]);
-		if($.trim($('#admin_message').val()) != "" && $.trim($('#app_user_id').val()) != ""){
+		if(( $.trim($('#admin_message').val()) != "" || $.trim($('#attachment').val()) != "" ) && $.trim($('#app_user_id').val()) != ""){
+			alert();
 			$.ajax({
 				url: url+"/message/admin-message-sent-to-user",
 				type:'POST',

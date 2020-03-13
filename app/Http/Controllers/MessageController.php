@@ -259,12 +259,38 @@ class MessageController extends Controller
         $app_user_id = $r->app_user_id;
         $admin_message = $r->admin_message;
         $admin_id = Auth::user()->id;
+        // $attachment = $r->file('attachment');
+
+        // if (isset($attachment)) {
+        //     $attachment_name = time();
+        //     $ext = $attachment->getClientOriginalExtension();
+        //     $attachment_full_name = $attachment_name.'.'.$ext;
+        //     echo $attachment_full_name;
+        //     // foreach($attachment as $attachment){
+        //     //     echo 1;
+        //     // }
+        // }
+
+        $attachment = $r->file('attachment');
+
+        if($r->hasFile('attachment'))
+        {
+            foreach ($attachment as $attachment) {
+                $attachment_name = rand().time().$attachment->getClientOriginalName();
+                //$ext = $attachment->getClientOriginalExtension();
+                //$attachment_full_name = $attachment_name.'.'.$ext;
+                echo $attachment_name."<br>";
+                
+            }
+        }
         
-        $new_msg = new MessageMaster();
-        $new_msg->admin_id = $admin_id;
-        $new_msg->admin_message = $admin_message;
-        $new_msg->app_user_id = $app_user_id;
-        $new_msg->save();
+        // $new_msg = new MessageMaster();
+        // $new_msg->admin_id = $admin_id;
+        // $new_msg->admin_message = $admin_message;
+        // $new_msg->app_user_id = $app_user_id;
+        // $new_msg->save();
+
+
     }
 
 
