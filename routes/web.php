@@ -123,6 +123,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/survey/survey-view/{id}',array('as'=>'Survey View', 'uses' =>'SurveysController@surveyView'));
 
+    Route::get('/survey/survey-participant_view/{id}',array('as'=>'Survey Participants View', 'uses' =>'SurveysController@surveyParticipantView'));
+    Route::get('/survey/survey-participant_result_view/{survey_id}/{id}',array('as'=>'Survey Participants Result View', 'uses' =>'SurveysController@surveyParticipantResultView'));
 
     ##Chaki---------End
 
@@ -183,6 +185,8 @@ Route::group(['middleware' => ['permission']], function () {
     Route::get('/survey/question-edit/{id}',array('as'=>'Question Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@questionEdit'));
     Route::get('/survey/question-delete/{id}',array('as'=>'Question Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@questionDelete'));
     Route::get('/survey/answer-option-delete/{id}',array('as'=>'Answer Option Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@answerDelete'));
+    Route::post('/survey/survey-question-serialize',array('as'=>'Survey Question Serialization' , 'action_id'=>'86', 'uses' =>'SurveysController@surveyQuestionSerialize'));
+    Route::get('/survey/survey-delete/{id}',array('as'=>'Survey Delete' , 'action_id'=>'87', 'uses' =>'SurveysController@surveyDelete'));
 
     ##chaki-------------End
 
