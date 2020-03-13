@@ -3,7 +3,7 @@ $(document).ready(function () {
 	
 	// for get site url
 	var url = $('.site_url').val();
-	var number_of_msg = 2;
+	var number_of_msg = 10;
 	
 	//Load App User Group Using Notice Controller
 	$.ajax({
@@ -180,6 +180,7 @@ $(document).ready(function () {
 
 
 	loadAppUser = function loadAppUser(){
+
 		$.ajax({
 			url: url+'/message/load-app-user',
 			success: function(response){
@@ -204,6 +205,7 @@ $(document).ready(function () {
 					});
 				}
 				$("#app_user_show").html(html);
+
 			}
 		});
 	}
@@ -211,6 +213,7 @@ $(document).ready(function () {
 
 
 	loadMessage = function loadMessage(app_user_id, number_of_msg){//
+		$("#search_app_user").val("");
 		event.preventDefault();
 		$.ajaxSetup({
 			headers:{
@@ -246,7 +249,7 @@ $(document).ready(function () {
 							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
 							html += '<p>'+message["admin_message"]+'</p>';
 							html += '</li>';
-							html += '<span class="time_date_sent"> 11:01 AM    |    June 9</span>';
+							html += '<span class="time_date_sent"> '+message["msg_date"]+'</span>';
 							
 						}
 						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
@@ -255,8 +258,9 @@ $(document).ready(function () {
 							html += '<li class="receive_msg">';
 							html += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
 							html += '<p>'+message["app_user_message"]+'</p>';
-							html += '<span class="time_date"> 11:01 AM    |    June 9</span>';
+							html += '<span class="time_date">'+message["msg_date"]+'</span>';
 							html += '</li>';
+							// 11:01 AM    |    June 9
 							
 						}
 						message_body = html+message_body;
@@ -264,10 +268,14 @@ $(document).ready(function () {
 					});
 					
 				}
+				loadAppUser();
 				$(".message_body").html(message_body);
 				$("#app_user_name").html(app_user_name['name']);
 				$("#load_more_message").html('<button onclick="limitIncrease('+app_user_name["id"]+');" style="margin-right: 10px;" type="button" class="btn btn-xs btn-warning">Load Old Message</button>');
-				
+				$("#app_user_id").val(app_user_name['id']);
+				if (number_of_msg==10) {
+					$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+				}
 			}
 		});
 	}
@@ -291,23 +299,24 @@ $(document).ready(function () {
 					var app_users = JSON.parse(data);
 					
 					if(!jQuery.isEmptyObject(app_users)){
-					var html = "";
-					$.each(app_users, function(i,row){
-						html+='<li class="contact">';
-						html+='<div class="wrap">';
-						//html+='<span class="contact-status busy"></span>';
-						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
-						html+='<div class="meta">';
-						html+='<p onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="name">'+row["name"]+'</p>';
-						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
-						html+='</div>';
-						html+='</div>';
-						html+='</li>';
-						
-					});
-				}
+						var html = "";
+						$.each(app_users, function(i,row){
+							html+='<li class="contact">';
+							html+='<div class="wrap">';
+							//html+='<span class="contact-status busy"></span>';
+							html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							html+='<div class="meta">';
+							html+='<p onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="name">'+row["name"]+'</p>';
+							//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+							html+='</div>';
+							html+='</div>';
+							html+='</li>';
+							
+						});
+					}
 				$("#app_user_show").html(html);
-				 }	
+
+				}	
 			});
 		
 
@@ -322,11 +331,45 @@ $(document).ready(function () {
 	});
 
 
-	limitIncrease = function limitIncrease(id){
-		number_of_msg = number_of_msg+2;
-		loadMessage(id,number_of_msg);
+	
+
+	$("#message_sent_to_user").click(function(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		newMsgSent();
+	});
+
+	newMsgSent = function newMsgSent(){
+		var formData = new FormData($('#sent_message_to_user')[0]);
+		if($.trim($('#admin_message').val()) != "" && $.trim($('#app_user_id').val()) != ""){
+			$.ajax({
+				url: url+"/message/admin-message-sent-to-user",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,
+				processData:false,
+				success: function(data){
+					loadMessage($('#app_user_id').val(),number_of_msg);
+					$('#admin_message').val("");
+					$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+					loadAppUser();
+				 }	
+			});
+		}
 	}
 
+	$(window).on('keydown', function(e) {
+		if (e.which == 13) {
+			newMsgSent();
+			return false;
+		}
+	});
 
 	
         
@@ -347,6 +390,10 @@ $(document).ready(function () {
 
 	
 
+	limitIncrease = function limitIncrease(id){
+		number_of_msg = number_of_msg+10;
+		loadMessage(id,number_of_msg);
+	}
 
 	//autosuggest
 	/*$.ajaxSetup({

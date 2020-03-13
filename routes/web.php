@@ -153,6 +153,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/message/load-message',array('as'=>'Load Message', 'uses' =>'MessageController@loadMessage'));
 	##Search App Users
 	Route::post('/message/search-app-users',array('as'=>'Search App Users', 'uses' =>'MessageController@searchAppUsers'));
+	
+	##Sent message to user
+	Route::post('/message/admin-message-sent-to-user',array('as'=>'Admin message Sent', 'uses' =>'MessageController@newMsgSent'));
 
 
 
