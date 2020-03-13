@@ -14,6 +14,7 @@ use \App\Setting;
 use App\Menu;
 use App\MessageMaster;
 use App\AppUserGroupMember;
+use App\AppUser;
 
 class MessageController extends Controller
 {
@@ -192,6 +193,65 @@ class MessageController extends Controller
             "deleteMessage"=>"Deleted Successful"
         ));
     }
+
+
+    ## Load app user for message
+    public function loadAppUser(){
+        
+        //$app_user = AppUser::get();
+        $app_user_info = DB::table('message_masters as mm')
+                            ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+                            ->select('apu.name as name','apu.id as app_user_id')
+                            ->distinct('mm.app_user_id')
+                            ->orderBy('mm.created_at', 'desc')
+                            ->get();
+        // $message = DB::table('message_masters as mm')
+        //                     ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+        //                     ->where('mm.app_user_id',5)
+        //                     ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message')
+        //                     ->orderBy('mm.created_at')
+        //                     ->get();
+        
+
+        return json_encode(array(
+            "app_user_info"=>$app_user_info,
+            // "message"=>$message,
+        ));
+    }
+
+
+     ## Load app user message
+    public function loadMessage(){
+        $app_user_id_load_msg = $_POST['app_user_id_load_msg'];
+        $number_of_msg = $_POST['msg_no'];
+        $message = DB::table('message_masters as mm')
+                            ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+                            ->where('mm.app_user_id',$app_user_id_load_msg)
+                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message')
+                            ->orderBy('mm.created_at','desc')
+                            ->limit($number_of_msg)
+                            ->get();
+        $app_user_name = AppUser::select('name','id')
+                                    ->where('id', $app_user_id_load_msg)
+                                    ->first();
+        
+
+        return json_encode(array(
+            "message"=>$message,
+            "app_user_name"=>$app_user_name,
+        ));
+    }
+
+    ##Search APP Users
+    public function searchAppUsers(){
+        $search_app_user_name = $_POST['name'];
+        $app_users = AppUser::select('id', 'name')
+                    ->where('name','like', '%'.$search_app_user_name.'%')
+                    ->get();
+        return json_encode($app_users);
+    }
+
+
 
     
     

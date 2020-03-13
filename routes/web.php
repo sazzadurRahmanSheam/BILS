@@ -146,6 +146,15 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
 	Route::get('/course/teacher/teacher-view/{id}',array('as'=>'Teacher View', 'uses' =>'TeacherController@teacherView'));
 	Route::get('/course/get-teacher',array('as'=>'Teacher View', 'uses' =>'CoursesController@getTeacher'));
+	
+	## Load App User For Message
+	Route::get('/message/load-app-user',array('as'=>'Load App User', 'uses' =>'MessageController@loadAppUser'));
+	##Load Messages for one-to-one Chat
+	Route::post('/message/load-message',array('as'=>'Load Message', 'uses' =>'MessageController@loadMessage'));
+	##Search App Users
+	Route::post('/message/search-app-users',array('as'=>'Search App Users', 'uses' =>'MessageController@searchAppUsers'));
+
+
 
 
 
@@ -295,6 +304,9 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
 	Route::get('/course/teacher/teacher-delete/{id}',array('as'=>'Teacher Delete', 'action_id'=>'91', 'uses' =>'TeacherController@teacherDelete'));
 	/*--------------  Manage Teacher End  -------------*/
+
+
+
 
 
 });
