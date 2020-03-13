@@ -41,10 +41,15 @@
 			</ul>
 		</div>
 		<div class="message-input">
+
 			<div class="wrap">
-			<input type="text" placeholder="Write your message..." />
-			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				<form id="sent_message_to_user" name="sent_message_to_user" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+					@csrf
+					<input type="hidden" name="app_user_id" id="app_user_id">
+					<input type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
+					<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+					<button type="submit" class="submit" id="message_sent_to_user"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				</form>
 			</div>
 		</div>
 	</div>

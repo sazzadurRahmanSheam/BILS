@@ -203,7 +203,8 @@ class MessageController extends Controller
                             ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
                             ->select('apu.name as name','apu.id as app_user_id')
                             ->distinct('mm.app_user_id')
-                            ->orderBy('mm.created_at', 'desc')
+                            //->orderBy('mm.message_date_time', 'desc')
+                            ->orderBy('mm.id', 'desc')
                             ->get();
         // $message = DB::table('message_masters as mm')
         //                     ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
@@ -227,10 +228,11 @@ class MessageController extends Controller
         $message = DB::table('message_masters as mm')
                             ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
                             ->where('mm.app_user_id',$app_user_id_load_msg)
-                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message')
-                            ->orderBy('mm.created_at','desc')
+                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date')
+                            ->orderBy('mm.message_date_time', 'desc')
                             ->limit($number_of_msg)
                             ->get();
+
         $app_user_name = AppUser::select('name','id')
                                     ->where('id', $app_user_id_load_msg)
                                     ->first();
@@ -239,6 +241,7 @@ class MessageController extends Controller
         return json_encode(array(
             "message"=>$message,
             "app_user_name"=>$app_user_name,
+            //"msg_date"=>$msg_date,
         ));
     }
 
@@ -251,6 +254,18 @@ class MessageController extends Controller
         return json_encode($app_users);
     }
 
+
+    public function newMsgSent(Request $r){
+        $app_user_id = $r->app_user_id;
+        $admin_message = $r->admin_message;
+        $admin_id = Auth::user()->id;
+        
+        $new_msg = new MessageMaster();
+        $new_msg->admin_id = $admin_id;
+        $new_msg->admin_message = $admin_message;
+        $new_msg->app_user_id = $app_user_id;
+        $new_msg->save();
+    }
 
 
     
