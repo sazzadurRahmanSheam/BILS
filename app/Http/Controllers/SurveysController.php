@@ -426,8 +426,36 @@ class SurveysController extends Controller
     }
 
     public  function surveyParticipantResultView($survey_id,$id){
-        $survey_data = $this.surveyView($survey_id);
-        return $survey_data;
+        //$survey_data = $tsurveyView($survey_id);
+        //return 1;
+        $survey = SurveyMaster::find($survey_id);
+        $data['survey']=$survey;
+        $question =SurveyQuestion ::where('survey_id','=',$survey_id)->orderBy('serial')->get();
+        //echo json_encode($question);
+        foreach ($question as $i=>$values){
+            $data['question'][$values['serial']]=$values;
+            $data['question'][$values['serial']]['answer'] =SurveyQuestionAnswerOption ::where('survey_question_id','=',$values['id'])->get();
+        }
+
+        $answers = DB::table('survey_participants')
+            ->select('survey_participant_answers.survey_question_id','survey_participant_answer_options.option_id','survey_participant_answer_options.answer')
+            ->join('survey_participant_answers','survey_participant_answers.survey_participan_id','survey_participants.id')
+            ->join('survey_participant_answer_options','survey_participant_answer_options.survey_participant_answer_id','=','survey_participant_answers.id')
+            ->where('survey_participants.survey_id', $survey_id)
+            ->where('survey_participants.app_user_id',$id)
+            ->get();
+
+        $answers_list=[];
+        foreach ($answers as $key=>$value){
+            $answers_list[$value->survey_question_id]=$value;
+            if($value->option_id!=0 && $value->option_id!=''){
+                $answers_list['answer_choice'][]=$value->option_id;
+            }
+        }
+        $data['answer']=$answers_list;
+        return json_encode($data);
+
+        //return $survey_data;
     }
 
 }

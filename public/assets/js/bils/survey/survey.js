@@ -153,9 +153,80 @@ $(document).ready(function () {
 
 
     survey_participant_answer = function survey_participant_answer(survey_id,id){
+        //alert(survey_id)
+        //alert(id)
         $.ajax({
             url: url + '/survey/survey-participant_result_view/'+survey_id+'/'+ id,
             success: function (response) {
+                var data = JSON.parse(response);
+                console.log(data)
+
+                var description = "</br>";
+                $.each(data['question'], function (key, value) {
+                    //console.log(value)
+
+                    description+='<div class="col-md-12" style="margin-bottom: 10px">\n'
+
+                    description+=' <h6>'+value['serial']+'. '+value['question_details']+'</h6>\n'
+
+
+                    if(value['question_type']==1 || value['question_type']==2){
+                        description+= '<p>:'+data['answer'][value['id']]['answer']+'</p>'
+                    }
+                    else {
+                        //alert('ok')
+                        var sl = 'A'
+                        if(value['display_option']==1){
+                            $.each(value['answer'],function (key2, answer) {
+                                //var answerChoose=''
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+
+                                description+='<span '+styleChoose+'>('+sl+'): '+answer['answer_option']+'</span>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==2){
+                            $.each(value['answer'],function (key2, answer) {
+
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+                                description+='<p '+styleChoose+'">('+sl+'): '+answer['answer_option']+'</p>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==3){
+
+                            $.each(value['answer'],function (key2, answer) {
+                                //alert(data['answer']['answer_choice'])
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+
+
+                                description+='<div class="col-md-5" '+styleChoose+'">('+sl+'): '+answer['answer_option']+'</div>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                    }
+                    description+='</div>'
+                })
+
+                //console.log(description)
+
+                $("#survey_participant_body_view").html(description);
+
             }
         })
     }

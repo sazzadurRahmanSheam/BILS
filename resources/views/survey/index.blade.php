@@ -340,16 +340,17 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                            <div class="panel panel-default" style="display: none">
-                                <div id="survey_view_participant" class="tab-pane in" style="width: 595px; border: solid 1px">
-                                    <div class="row no-margin-row">
-                                        <div class="col-md-12">
-                                            <div class="col-md-12" id="survey_participant_body_view">
+                                <div class="panel panel-default" style="display: block; alignment: center">
+                                    <div id="survey_view_participant" class="tab-pane in" style="width: 595px; border: solid 1px">
+                                        <div class="row no-margin-row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12" id="survey_participant_body_view">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <!-- END Categoreis -->
                         </div>
