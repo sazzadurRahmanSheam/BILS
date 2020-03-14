@@ -140,7 +140,9 @@
 
 
 @section('JScript')
-
+	<script>
+		var msg_image_url = "<?php echo asset('assets/images/message'); ?>";
+	</script>
 	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
 
 @endsection
