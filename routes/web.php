@@ -121,6 +121,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/survey/survey-list',array('as'=>'Get Survey List', 'uses' =>'SurveysController@getSurveyList'));
 
+    Route::get('/survey/survey-view/{id}',array('as'=>'Survey View', 'uses' =>'SurveysController@surveyView'));
+
+    Route::get('/survey/survey-participant_view/{id}',array('as'=>'Survey Participants View', 'uses' =>'SurveysController@surveyParticipantView'));
+    Route::get('/survey/survey-participant_result_view/{survey_id}/{id}',array('as'=>'Survey Participants Result View', 'uses' =>'SurveysController@surveyParticipantResultView'));
+
     ##Chaki---------End
 
 
@@ -139,6 +144,20 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::post('/course/teacher/admin-user-name',array('as'=>'Admin User Name Auto-complete', 'uses' =>'TeacherController@adminUserNameAutoComplete'));
 	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
+	Route::get('/course/teacher/teacher-view/{id}',array('as'=>'Teacher View', 'uses' =>'TeacherController@teacherView'));
+	Route::get('/course/get-teacher',array('as'=>'Teacher View', 'uses' =>'CoursesController@getTeacher'));
+	
+	## Load App User For Message
+	Route::get('/message/load-app-user',array('as'=>'Load App User', 'uses' =>'MessageController@loadAppUser'));
+	##Load Messages for one-to-one Chat
+	Route::post('/message/load-message',array('as'=>'Load Message', 'uses' =>'MessageController@loadMessage'));
+	##Search App Users
+	Route::post('/message/search-app-users',array('as'=>'Search App Users', 'uses' =>'MessageController@searchAppUsers'));
+	
+	##Sent message to user
+	Route::post('/message/admin-message-sent-to-user',array('as'=>'Admin message Sent', 'uses' =>'MessageController@newMsgSent'));
+
+
 
 
 
@@ -150,7 +169,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::group(['middleware' => ['permission']], function () {
 	/*----- Course Start -----*/
-	Route::get('courses/open-course',array('as'=>'Open Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
+	Route::get('courses/open-course',array('as'=>'Course Management' , 'action_id'=>'24', 'uses' =>'CoursesController@index'));
 	Route::post('/course/course-entry',array('as'=>'Course Entry' , 'action_id'=>'26', 'uses' =>'CoursesController@courseEntryUpdate'));
 	Route::get('/course/course-edit/{id}',array('as'=>'Course Edit' , 'action_id'=>'76', 'uses' =>'CoursesController@courseEdit'));
 	Route::get('/course/course-delete/{id}',array('as'=>'Course Delete' , 'action_id'=>'77', 'uses' =>'CoursesController@courseDelete'));
@@ -166,6 +185,8 @@ Route::group(['middleware' => ['permission']], function () {
     Route::get('/survey/question-edit/{id}',array('as'=>'Question Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@questionEdit'));
     Route::get('/survey/question-delete/{id}',array('as'=>'Question Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@questionDelete'));
     Route::get('/survey/answer-option-delete/{id}',array('as'=>'Answer Option Delete' , 'action_id'=>'86', 'uses' =>'SurveysController@answerDelete'));
+    Route::post('/survey/survey-question-serialize',array('as'=>'Survey Question Serialization' , 'action_id'=>'86', 'uses' =>'SurveysController@surveyQuestionSerialize'));
+    Route::get('/survey/survey-delete/{id}',array('as'=>'Survey Delete' , 'action_id'=>'87', 'uses' =>'SurveysController@surveyDelete'));
 
     ##chaki-------------End
 
@@ -284,7 +305,11 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('course/teacher/manage-teacher',array('as'=>'Manage Teacher', 'action_id'=>'88', 'uses' =>'TeacherController@index'));
 	Route::post('/course/teacher/teacher-entry',array('as'=>'Teacher Entry', 'action_id'=>'89', 'uses' =>'TeacherController@teacherEntryUpdate'));
 	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
+	Route::get('/course/teacher/teacher-delete/{id}',array('as'=>'Teacher Delete', 'action_id'=>'91', 'uses' =>'TeacherController@teacherDelete'));
 	/*--------------  Manage Teacher End  -------------*/
+
+
+
 
 
 });

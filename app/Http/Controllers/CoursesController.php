@@ -17,6 +17,7 @@ use App\CourseCategory;
 use App\AppUser;
 use App\CoursePerticipant;
 use App\Notification;
+use App\Teacher;
 
 class CoursesController extends Controller
 {
@@ -33,12 +34,18 @@ class CoursesController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "Courses";
-        $data['sub_module']= "Courses";
+        $data['sub_module']= "Manage Courses";
         // action permissions
         $admin_user_id  = Auth::user()->id;
         $add_action_id  = 26;
+        $publish_course_action_id  = 92;
+        $select_perticipant_action_id  = 93;
         $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $publish_course_permisiion = $this->PermissionHasOrNot($admin_user_id,$publish_course_action_id );
+        $select_perticipant_permisiion = $this->PermissionHasOrNot($admin_user_id,$select_perticipant_action_id );
         $data['actions']['add_permisiion']= $add_permisiion;
+        $data['actions']['publish_course_permisiion']= $publish_course_permisiion;
+        $data['actions']['select_perticipant_permisiion']= $select_perticipant_permisiion;
         return view('courses.index', $data);
     }
 
@@ -471,10 +478,18 @@ class CoursesController extends Controller
             }
         }
         return '<div class="alert alert-danger alert-dismissible">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Participants Removed!</strong>.
-  </div>';
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Participants Removed!</strong>.
+                </div>';
     }
+
+    public function getTeacher(){
+        $data = Teacher::select('name')->get();
+        return json_encode($data);
+    }
+
+
+
 
 
 

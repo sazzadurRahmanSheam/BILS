@@ -56,10 +56,15 @@ $(document).ready(function () {
                 $('#question').val(response['question']['question_details'])
                 $('#question_id').val(response['question']['id'])
                 $('#option_type').val(response['question']['question_type'])
+                $('#serial').val(response['question']['serial'])
+                $('#display_option').val(response['question']['display_option'])
                 var html = '';
                 var sl=1;
                 if(response['question']['question_type']==3 || response['question']['question_type']==4){
                     $('.option_input').css('display','block')
+                }
+                else{
+                    $('.option_input').css('display','none')
                 }
                 $.each(response['question_answer'], function (key, value) {
                     html+='<label class="control-label col-md-2 col-sm-2 answer_list" >'+sl+'</label>\n' +
@@ -126,7 +131,7 @@ $(document).ready(function () {
                     else if(value['question_type']==4){type = 'Multiple Choice'}
 
                     //console.log(value)
-                    html += '<tr><td>'+value['question_details']+'</td><td>'+type+'</td><td><button class="btn btn-xs btn-primary" onclick="editQuestion('+value['id']+')" style="margin-right: 5px"><i class="clip-pencil-3"></i></button><button class="btn btn-xs btn-danger" onclick="deleteQuestion('+value['id']+')"><i class="clip-remove"></i></button></td></tr>'
+                    html += '<tr><td>'+value['question_details']+'</td><td>'+type+'</td><td>'+value['serial']+'</td><td><button class="btn btn-xs btn-primary" onclick="editQuestion('+value['id']+')" style="margin-right: 5px"><i class="clip-pencil-3"></i></button><button class="btn btn-xs btn-danger" onclick="deleteQuestion('+value['id']+')"><i class="clip-remove"></i></button></td></tr>'
                 })
 
                 $('#question_table tbody').html(html)
@@ -136,8 +141,141 @@ $(document).ready(function () {
 
     }
 
-    survey_view = function survey_view(id){
 
+    delete_survey = function delete_survey(id){
+        $.ajax({
+            url: url + '/survey/survey-delete/' + id,
+            success: function (data) {
+                survey_data_table.ajax.reload()
+            }
+        })
+    }
+
+
+    survey_participant_answer = function survey_participant_answer(survey_id,id){
+        //alert(survey_id)
+        //alert(id)
+        $.ajax({
+            url: url + '/survey/survey-participant_result_view/'+survey_id+'/'+ id,
+            success: function (response) {
+                var data = JSON.parse(response);
+                console.log(data)
+
+                var description = "</br>";
+                $.each(data['question'], function (key, value) {
+                    //console.log(value)
+
+                    description+='<div class="col-md-12" style="margin-bottom: 10px">\n'
+
+                    description+=' <h6>'+value['serial']+'. '+value['question_details']+'</h6>\n'
+
+
+                    if(value['question_type']==1 || value['question_type']==2){
+                        description+= '<p>:'+data['answer'][value['id']]['answer']+'</p>'
+                    }
+                    else {
+                        //alert('ok')
+                        var sl = 'A'
+                        if(value['display_option']==1){
+                            $.each(value['answer'],function (key2, answer) {
+                                //var answerChoose=''
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+
+                                description+='<span '+styleChoose+'>('+sl+'): '+answer['answer_option']+'</span>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==2){
+                            $.each(value['answer'],function (key2, answer) {
+
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+                                description+='<p '+styleChoose+'">('+sl+'): '+answer['answer_option']+'</p>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==3){
+
+                            $.each(value['answer'],function (key2, answer) {
+                                //alert(data['answer']['answer_choice'])
+                                var styleChoose = 'style="margin: 10px"'
+
+                                if(data['answer']['answer_choice'].includes(answer['id'])){
+                                    //alert('ok')
+                                    styleChoose='style="margin: 10px; color:green"';
+                                }
+
+
+                                description+='<div class="col-md-5" '+styleChoose+'">('+sl+'): '+answer['answer_option']+'</div>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                    }
+                    description+='</div>'
+                })
+
+                //console.log(description)
+
+                $("#survey_participant_body_view").html(description);
+
+            }
+        })
+    }
+
+
+    survey_participant = function survey_participant(id){
+
+
+        //$('#survey_id_for_serial').val(id)
+        $.ajax({
+            url: url+'/survey/survey-participant_view/'+id,
+            success: function(response){
+                var datas = JSON.parse(response);
+                //console.log(data)
+
+               // $("#survey_view_li").css('display','block');
+                $("#survey_participants_button").trigger('click');
+                console.log(datas)
+
+                $("#survey_name_participant_view").html(datas['survey']['survey_name']);
+                $('#survey_details_participant_view').html(datas['survey']['details'])
+
+                var left_sub = "";
+                left_sub += "<br><b>Start Date: </b>"+datas['survey']['start_date'];
+                left_sub += "<br><b>End Date: </b>"+datas['survey']['end_date'];
+                left_sub += "<br><b>Survey Category: </b>"+datas['survey']['survey_category'];
+
+                $("#left_sub_participant_view").html(left_sub);
+
+
+                var right_sub = "";
+
+                right_sub += "<br><b>Created By: </b>"+datas['survey']['created_by'];
+                right_sub += "<br><b>Last Updated By: </b>"+datas['survey']['updated_by'];
+
+                $("#right_sub_participant_view").html(right_sub);
+
+
+
+                var html='';
+                $.each(datas.surveyParticipant, function (key, data) {
+                    html+='<tr><td>'+data['name']+'</td><td>'+datas.surveyQuestion+'</td><td>'+data['question_answered']+'</td><td>'+data['created_at']+'</td><td><button ' +
+                        ' onclick="survey_participant_answer('+id+','+data['user_id']+')" class="btn btn-xs btn-primary" ><i class=clip-zoom-in></i></button></td></tr>'
+                })
+
+                $('#survey_participant_view tbody').html(html)
+
+            }
+        });
     }
 
     //edit_survey('1')
@@ -165,12 +303,17 @@ $(document).ready(function () {
         if(option_type==4 || option_type==3){
             $('.option_input').css('display','block')
             $('.answer_option_input').css('display','block')
-            add_answer_choice()
-            add_answer_choice()
+            if($('#option_input').html()==''){
+                add_answer_choice()
+                add_answer_choice()
+            }
+
         }
         else {
             //$('.option_input').css('display','none')
             $('.answer_option_input').css('display','block')
+            $('.option_input').css('display','none')
+            $('.answer_option_input').css('display','none')
         }
 
     })
@@ -225,7 +368,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#save_question').click(function (even) {
+    $('#save_question').click(function (event) {
         event.preventDefault();
         $.ajaxSetup({
             headers:{
@@ -283,6 +426,144 @@ $(document).ready(function () {
             });
         }
     })
+
+
+    //Survey View
+    survey_view = function survey_view(id, serial){
+        var id = id;
+        $('#survey_id_for_serial').val(id)
+        $.ajax({
+            url: url+'/survey/survey-view/'+id,
+            success: function(response){
+                var data = JSON.parse(response);
+                $("#survey_view_li").css('display','block');
+                $("#survey_view_button").trigger('click');
+                console.log(data)
+
+                $("#survey_title").html("<h2>"+data['survey']['survey_name']+"</h2>");
+                $('#survey_description').html(data['survey']['details'])
+
+                var left_sub = "";
+                left_sub += "<br><b>Start Date: </b>"+data['survey']['start_date'];
+                left_sub += "<br><b>End Date: </b>"+data['survey']['end_date'];
+                left_sub += "<br><b>Survey Category: </b>"+data['survey']['survey_category'];
+
+                $("#left_sub").html(left_sub);
+
+
+                var right_sub = "";
+
+                right_sub += "<br><b>Created By: </b>"+data['survey']['created_by'];
+                right_sub += "<br><b>Last Updated By: </b>"+data['survey']['updated_by'];
+
+                $("#right_sub").html(right_sub);
+
+
+
+                var description = "</br>";
+                $.each(data['question'], function (key, value) {
+                    //console.log(value)
+
+                    description+='<div class="col-md-12" style="margin-bottom: 10px">\n'
+
+                    if(serial ==1){
+                        $('.serial').css('display','block')
+                        description+='<h6><input style="width: 40px; margin-right: 10px" type="number" name="serial[]" id="'+value['id']+'" value="'+value['serial']+'"><input type="hidden" name="id[]" value="'+value['id']+'">'+value['question_details']+'</h6>\n'
+                    }
+                    else {
+                        $('.serial').css('display','none')
+                        description+=' <h6>'+value['serial']+'. '+value['question_details']+'</h6>\n'
+                    }
+
+                    if(value['question_type']==1 || value['question_type']==2){
+                        description+= '<br><hr style="margin-bottom: 0px; border: .5px dashed ">'
+                    }
+                    else {
+                        var sl = 'A'
+                        if(value['display_option']==1){
+                            $.each(value['answer'],function (key2, answer) {
+                                description+='<span style="margin: 10px">('+sl+'): '+answer['answer_option']+'</span>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==2){
+                            $.each(value['answer'],function (key2, answer) {
+                                description+='<p style="margin: 10px">('+sl+'): '+answer['answer_option']+'</p>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                        else if(value['display_option']==3){
+                            $.each(value['answer'],function (key2, answer) {
+                                description+='<div class="col-md-5" style="margin: 10px">('+sl+'): '+answer['answer_option']+'</div>\n';
+                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
+                            })
+                        }
+                    }
+                    description+='</div>'
+                })
+
+                $("#survey_body_view").html(description);
+                //perticipant_manage();
+
+            }
+        });
+
+        $('#updateSerial').click(function (event) {
+            event.preventDefault();
+            var values = [];
+            var tem =0;
+            $.each($('#serial_update').serializeArray(), function(i, field) {
+                //alert(field.name)
+                if(field.name.includes("serial[")){
+                    values[tem] = field.value;
+                    tem++;
+                }
+            });
+            var duplcate_check = {};
+            values.forEach(function(i) { duplcate_check[i] = (duplcate_check[i]||0) + 1;});
+            var processNext = 1;
+            $.each(duplcate_check, function (key,value) {
+                //alert(value)
+                if(value>1){
+                    alert('You used '+key+' more than once')
+                    processNext = 0;
+                    return false;
+                }
+                if(key<1){
+                    alert('Serial can not be 0 or negative value')
+                    processNext = 0;
+                    return false;
+                }
+            })
+
+            if(processNext==1){
+                var formData = new FormData($('#serial_update')[0]);
+                $.ajaxSetup({
+                    headers:{
+                        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: url + "/survey/survey-question-serialize",
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false, processData: false,
+                    success: function (data) {
+                        if(data==1){
+                            success_or_error_msg('#master_message_div',"danger",'Serial has been successfully updated');
+                        }
+                    }
+                })
+            }
+
+
+        })
+
+    }
+
+
 
     // Get survey Category
     $.ajax({
