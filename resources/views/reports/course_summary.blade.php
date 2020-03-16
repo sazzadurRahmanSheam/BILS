@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<?php
-=======
 @extends('layout.master')
 @section('content')
     <!--MESSAGE-->
@@ -91,5 +88,3 @@
 
 @endsection
 
-
->>>>>>> 8fa1347e42b877b006f7e4e9b606469574a317d0
