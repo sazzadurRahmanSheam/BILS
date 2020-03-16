@@ -182,11 +182,6 @@ Route::group(['middleware' => ['permission']], function () {
     ##chaki-------------Start
 
 
-    Route::get('report/survey-summary',array('as'=>'Survey Summary' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummery'));
-    Route::get('report/survey-details',array('as'=>'Survey Details' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyDetails'));
-    Route::get('report/survey-data',array('as'=>'Survey Data' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyData'));
-    Route::get('report/survey-participants',array('as'=>'Survey Participant' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipant'));
-    Route::get('report/survey-participants-answers',array('as'=>'Survey Participant Answers' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipantAnswer'));
 
     Route::post('/survey/survey-body-entry',array('as'=>'Survey Body Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyBodyEntry'));
     Route::post('/survey/survey-question-entry',array('as'=>'Survey Question Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyQuestionEntry'));
@@ -199,6 +194,13 @@ Route::group(['middleware' => ['permission']], function () {
 
     ##chaki-------------End
     /*--------Report Start--------*/
+    Route::get('report/survey-summary',array('as'=>'Survey Summary' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummery'));
+    Route::get('report/survey-details',array('as'=>'Survey Details' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyDetails'));
+    Route::get('report/survey-data',array('as'=>'Survey Data' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyData'));
+    Route::get('report/survey-participants',array('as'=>'Survey Participant' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipant'));
+    Route::get('report/survey-participants-answers',array('as'=>'Survey Participant Answers' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipantAnswer'));
+
+
     Route::post('/survey/report/survey-summary',array('as'=>'Survey Summary Report' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummeryReport'));
     
     ## Siam Start
