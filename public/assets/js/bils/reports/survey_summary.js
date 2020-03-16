@@ -52,7 +52,7 @@ $(document).ready(function () {
                 var html = '<button style="text-align: right; background-color: #FFCC00 ; font-size: 20px; top: 0; float: right" id="printDiv" onclick="printDiv()">Print</button>\n' +
                     '<div id="order_summary_view">\n' +
                     '        <div style="alignment: center; text-align: center">\n' +
-                    '            <img src="http://bils.test/assets/images/logo.jpg" style=" height: 100px; width: auto;">' +
+                    '            <img src="'+url+'/assets/images/logo.jpg" style=" height: 100px; width: auto;">' +
                     '             <h2 style="text-align: center; color: #5897fb; size: 24px;">Survey Grid Summary</h2>\n' +
                     '        </div>\n' +
                     '        <div style="padding: 5px">\n' +

@@ -466,13 +466,6 @@ class SurveysController extends Controller
         $data['module_name'] = "Reports";
         $data['sub_module'] = "Survey Summery";
 
-        // action permissions
-        //echo 1;die;
-        $admin_user_id = Auth::user()->id;
-        $add_action_id = 27;
-        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
-        $data['actions']['add_permisiion'] = $add_permisiion;
-
         return view('reports.survey_summary', $data);
     }
 
@@ -481,26 +474,12 @@ class SurveysController extends Controller
         $data['module_name'] = "Reports";
         $data['sub_module'] = "Survey Details";
 
-        // action permissions
-        //echo 1;die;
-        $admin_user_id = Auth::user()->id;
-        $add_action_id = 27;
-        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
-        $data['actions']['add_permisiion'] = $add_permisiion;
-
         return view('reports.survey_details', $data);
     }
     public function surveyData(){
         $data['page_title'] = $this->page_title;
         $data['module_name'] = "Reports";
         $data['sub_module'] = "Survey Data";
-
-        // action permissions
-        //echo 1;die;
-        $admin_user_id = Auth::user()->id;
-        $add_action_id = 27;
-        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
-        $data['actions']['add_permisiion'] = $add_permisiion;
 
         return view('reports.survey_data', $data);
     }
@@ -509,26 +488,12 @@ class SurveysController extends Controller
         $data['module_name'] = "Reports";
         $data['sub_module'] = "Survey Participants";
 
-        // action permissions
-        //echo 1;die;
-        $admin_user_id = Auth::user()->id;
-        $add_action_id = 27;
-        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
-        $data['actions']['add_permisiion'] = $add_permisiion;
-
         return view('reports.survey_participant', $data);
     }
     public function surveyParticipantAnswer(){
         $data['page_title'] = $this->page_title;
         $data['module_name'] = "Reports";
         $data['sub_module'] = "Survey Participants Answer";
-
-        // action permissions
-        //echo 1;die;
-        $admin_user_id = Auth::user()->id;
-        $add_action_id = 27;
-        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
-        $data['actions']['add_permisiion'] = $add_permisiion;
 
         return view('reports.survey_participant_answer', $data);
     }
