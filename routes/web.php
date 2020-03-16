@@ -200,6 +200,10 @@ Route::group(['middleware' => ['permission']], function () {
     ##chaki-------------End
     /*--------Report Start--------*/
     Route::post('/survey/report/survey-summary',array('as'=>'Survey Summary Report' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummeryReport'));
+    
+    ## Siam Start
+    Route::post('report/course-summary',array('as'=>'Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@courseSummeryReport'));
+    ## Siam End
 
     /*--------Report End--------*/
 
