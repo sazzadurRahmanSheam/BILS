@@ -74,53 +74,6 @@
 
                 </div>
 
-                <div>
-                    <div style="alignment: center; text-align: center">
-                        <img src="http://bils.test/assets/images/logo.jpg" style=" height: 100px; width: auto;">
-                        <h2 style="text-align: center; color: #5897fb; size: 24px;">Survey Grid Summary</h2>
-                    </div>
-                    <div style="padding: 5px">
-                        <table style="width:100%; border: 1px solid grey; border-collapse: collapse">
-                            <thead>
-                            <tr style="padding: 5px; border: 1px solid gray; text-align: center ">
-                                <th style="padding: 5px; border: 1px solid grey">Survey Name</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center">Start Date</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >End Date</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Status</th>
-                                <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Question</th>
-                                <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Participants</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td style="border: 1px solid grey; padding: 5px">Survey Name</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">Start Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">End Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> Status</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">5</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> 234</td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid grey; padding: 5px">Survey Name</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">Start Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">End Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> Status</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">5</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> 234</td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-
-
-                    </div>
-
-                    <div style="alignment: left; bottom: 0; position: fixed">
-                        <label>Printed By: kajol</label><br>
-                        <label>Print Date: kajol</label>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>

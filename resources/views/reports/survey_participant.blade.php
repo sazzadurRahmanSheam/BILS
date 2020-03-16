@@ -17,7 +17,7 @@
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
                         <a id="survey_list_button" data-toggle="tab" href="#survey_list_div">
-                            <b> Surveys Details</b>
+                            <b> Surveys Participant</b>
                         </a>
                     </li>
                 </ul>
@@ -83,7 +83,7 @@
 
 @section('JScript')
 
-    <script src="{{ asset('assets/js/bils/reports/survey_participant.js')}}"></script>
+    <script src="{{ asset('assets/js/bils/reports/survey_participants.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 @endsection

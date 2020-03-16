@@ -125,7 +125,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/survey/survey-participant_view/{id}',array('as'=>'Survey Participants View', 'uses' =>'SurveysController@surveyParticipantView'));
     Route::get('/survey/survey-participant_result_view/{survey_id}/{id}',array('as'=>'Survey Participants Result View', 'uses' =>'SurveysController@surveyParticipantResultView'));
+
+
+    //auto suggest
     Route::post('/survey/survey-name',array('as'=>'Survey Name Auto-complete', 'uses' =>'SurveysController@SurveyNameAutoComplete'));
+    Route::post('/survey/participant-name',array('as'=>'Participant Name Auto-complete', 'uses' =>'SurveysController@ParticipantNameAutoComplete'));
 
     ##Chaki---------End
 
