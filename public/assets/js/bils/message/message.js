@@ -236,13 +236,15 @@ $(document).ready(function () {
 				
 				var message = response['message'];
 				var app_user_name = response['app_user_name'];
-				
+				var img_id="";
 				//Messages
+
 				var message_body = "";
 				if(!jQuery.isEmptyObject(message)){
 
 					$.each(message, function(i,message){
 						html = "";
+
 						if((message["admin_message"]!=null && message["admin_message"]!="") || ( message["is_attachment"]!=""&& message["is_attachment"]!=null ) ){
 							html += '<li class="sent_msg">';
 							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
@@ -252,7 +254,8 @@ $(document).ready(function () {
 							if(message["is_attachment"]==1){
 								if(message["attachment_type"]==1){
 									//Image
-									html += '<img style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
+								 //onclick="zoomImg()"
 								}
 								else if(message["attachment_type"]==2){
 									//Video
@@ -299,7 +302,16 @@ $(document).ready(function () {
 				}
 			}
 		});
+
+		$(".zoomImg").click(function(){
+			var image_src = $(this).attr('src');
+			$("#modalIMG").modal();
+			$("#load_zoom_img").attr('src',image_src);
+		});
 	}
+
+	
+
 
 
 	searchAppUsers = function searchAppUsers(){
@@ -453,6 +465,15 @@ $(document).ready(function () {
 			
 		}
 	});*/
+
+
+	
+
+
+
+
+
+	
 
 
 

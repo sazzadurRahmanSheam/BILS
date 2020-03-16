@@ -64,15 +64,20 @@ class AdminController extends Controller
 		$return_arr = array();
 		foreach($adminUser as $user){
 			$user['user_profile_image'] = '<img height="70" max-width="100" src="'.$a.'/'.$user->user_profile_image.'" alt="image" />';
-			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+			
+			if($user->status == 0){$user['status']="<button class='btn btn-xs btn-warning' disabled>In-active</button>";}
+			else if($user->status == 1){$user['status']="<button class='btn btn-xs btn-success' disabled>Active</button>";}
+			else{$user['status']="<button class='btn btn-xs btn-danger' disabled>Deleted</button>";}
 
 			$user['actions']=" <button onclick='admin_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
 
 			if($edit_permisiion>0){
 				$user['actions'] .=" <button onclick='admin_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
 			}
-			if ($delete_permisiion>0) {
-				$user['actions'] .=" <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+			if ($delete_permisiion > 0) {
+				
+					$user['actions'] .=" <button onclick='delete_admin_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
+				
 			}
 			$return_arr[] = $user;
 		}
@@ -143,7 +148,8 @@ class AdminController extends Controller
 						'remarks'=>$request->remarks,
 						'user_profile_image'=>$image_full_name,
 					];
-				}else{
+				}
+				else{
 					$column_value = [
 						'name'=>$request->emp_name,
 						'nid_no'=>$request->nid_no,
@@ -217,7 +223,8 @@ class AdminController extends Controller
 
 	//Admin user delete
 	public function adminDestroy($id){
-		User::find($id)->delete();
+		User::where('id',$id)->update(['status'=>2]);
+
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));

@@ -135,6 +135,26 @@
 </div>
 {{-- End Modal --}}
 
+
+
+
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="width:100% !important;">
+        <div class="modal-content">
+            
+                <img id="load_zoom_img" src="" alt="" style="height: 410px;width: 100%;">
+            
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <!-- Profile Modal -->
 <div class="modal fade" id="profile_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-content">

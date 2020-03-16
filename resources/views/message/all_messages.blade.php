@@ -3,6 +3,52 @@
 @section('style')
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bils/messages.css') }}">
 
+
+	<style>
+
+		h4 { font-family: 'Open Sans'; margin: 0;}
+
+.modal,body.modal-open {
+    padding-right: 0!important
+}
+
+body.modal-open {
+    overflow: auto
+}
+
+body.scrollable {
+    overflow-y: auto
+}
+
+.modal-footer {
+	display: flex;
+	justify-content: flex-start;
+	.btn {
+		position: absolute;
+		right: 10px;
+	}
+}
+
+.modal {
+	/*height:500px;*/
+	left: 35%;
+	bottom: auto;
+	right: auto;
+	padding: 0;
+	width: 62%;
+	margin-left: -250px;
+	background-color: #ffffff;
+	border: 1px solid #999999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box;
+}
+
+</style>
+
+
 @endsection
 
 @section('content')
@@ -44,6 +90,7 @@
 		<div class="message-input">
 
 			<div class="wrap">
+				
 				<form id="sent_message_to_user" name="sent_message_to_user" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 					@csrf
 					<input type="hidden" name="app_user_id" id="app_user_id">
@@ -143,6 +190,7 @@
 	<script>
 		var msg_image_url = "<?php echo asset('assets/images/message'); ?>";
 	</script>
+	
 	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
 
 @endsection
