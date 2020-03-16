@@ -17,7 +17,7 @@
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
                         <a id="survey_list_button" data-toggle="tab" href="#survey_list_div">
-                            <b> Surveys Summary</b>
+                            <b> Surveys Details</b>
                         </a>
                     </li>
                 </ul>
@@ -72,18 +72,6 @@
 
                 </div>
 
-                <div>
-                    <div style="alignment: center; text-align: center">
-                        <img src="http://bils.test/assets/images/logo.jpg" style=" height: 100px; width: auto;">
-                        <h2 style="text-align: center; color: #5897fb; size: 24px;">Survey Grid Summary</h2>
-                    </div>
-
-                    <div style="alignment: left; bottom: 0; position: fixed">
-                        <label>Printed By: kajol</label><br>
-                        <label>Print Date: kajol</label>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
