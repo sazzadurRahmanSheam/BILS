@@ -79,6 +79,30 @@ class AppUserController extends Controller
 				DB::beginTransaction();
 				$password = ($request->password =="")?md5('1234'):md5($request->password);
 				$is_active = ($request->is_active=="")?"0":$request->is_active;
+				# Image
+				$app_user_image = $request->file('app_user_image_upload');
+				if (isset($app_user_image)) {
+					
+					$image_name = time();
+					$ext = $app_user_image->getClientOriginalExtension();
+					$image_full_name = $image_name.'.'.$ext;
+					$upload_path = 'assets/images/user/app_user/';
+					
+					$success=$app_user_image->move($upload_path,$image_full_name);
+
+					$column_value = [
+					'name'=>$request->app_user_name,
+					'nid_no'=>$request->nid_no,
+					'contact_no'=>$request->contact_no,
+					'email'=>$request->email,
+					'address'=>$request->address,
+					'password'=>$password,
+					'status'=>$is_active,
+					'remarks'=>$request->remarks,
+					'user_profile_image'=>$image_full_name
+				];
+			}
+			else{
 				$column_value = [
 					'name'=>$request->app_user_name,
 					'nid_no'=>$request->nid_no,
@@ -88,8 +112,10 @@ class AppUserController extends Controller
 					'password'=>$password,
 					'status'=>$is_active,
 					'remarks'=>$request->remarks
-					//'user_profile_image'=>$image_name,	
 				];
+			}
+
+				
 				#Entry
 				if ($request->app_user_edit_id == '') {
 					$response = AppUser::create($column_value);
@@ -160,21 +186,32 @@ class AppUserController extends Controller
 
     /*----- App User List Start -----*/
     public function app_user_list(){
+    	$app_user_image_path = asset('assets/images/user/app_user');
     	$admin_user_id 		= Auth::user()->id;
 		$edit_action_id 	= 9;
 		$delete_action_id 	= 10;
 		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
-    	$app_user_details = AppUser::Select('user_profile_image', 'id',  'name',  'email', 'status')->get();		
+    	$app_user_details = AppUser::Select('user_profile_image', 'id',  'name',  'email', 'status')->orderBy('id', 'desc')->get();		
 		$return_arr = array();
-		foreach($app_user_details as $user){			
-			$user['status']=($user->status == 1)?"<button class='btn btn-xs btn-success' disabled>Active</button>":"<button class='btn btn-xs btn-danger' disabled>In-active</button>";
+		foreach($app_user_details as $user){	
+			$user['app_user_profile_image'] = '<img height="70" max-width="100" src="'.$app_user_image_path.'/'.$user->user_profile_image.'" alt="image" />';
+
+			if($user->status == 0){
+				$user['status']="<button class='btn btn-xs btn-warning' disabled>In-active</button>";
+			}		
+			else if($user->status == 1){
+				$user['status']="<button class='btn btn-xs btn-success' disabled>Active</button>";
+			}
+			else{
+				$user['status']="<button class='btn btn-xs btn-danger' disabled>Deleted</button>";
+			}
 			$user['actions']="<button title='View' onclick='app_user_view(".$user->id.")' id='view_" . $user->id . "' class='btn btn-xs btn-primary admin-user-view' ><i class='clip-zoom-in'></i></button>";
 
 			if($edit_permisiion>0){
 				$user['actions'] .=" <button title='Edit' onclick='app_user_edit(".$user->id.")' id=edit_" . $user->id . "  class='btn btn-xs btn-green admin-user-edit' ><i class='clip-pencil-3'></i></button>";
 			}
-			if ($delete_permisiion>0) {
+			if ( $delete_permisiion>0 ) {
 				$user['actions'] .=" <button title='Delete' onclick='delete_app_user(".$user->id.")' id='delete_" . $user->id . "' class='btn btn-xs btn-danger admin-user-delete' ><i class='clip-remove'></i></button>";
 			}
 
@@ -187,7 +224,7 @@ class AppUserController extends Controller
 
     /*----- App User Delete Start -----*/
     public function app_user_delete($id){
-    	AppUser::find($id)->delete();
+    	AppUser::find($id)->update(['status'=>2]);
 		return json_encode(array(
 			"deleteMessage"=>"Deleted Successful"
 		));

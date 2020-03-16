@@ -126,6 +126,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/survey/survey-participant_view/{id}',array('as'=>'Survey Participants View', 'uses' =>'SurveysController@surveyParticipantView'));
     Route::get('/survey/survey-participant_result_view/{survey_id}/{id}',array('as'=>'Survey Participants Result View', 'uses' =>'SurveysController@surveyParticipantResultView'));
 
+
+    //auto suggest
+    Route::post('/survey/survey-name',array('as'=>'Survey Name Auto-complete', 'uses' =>'SurveysController@SurveyNameAutoComplete'));
+    Route::post('/survey/participant-name',array('as'=>'Participant Name Auto-complete', 'uses' =>'SurveysController@ParticipantNameAutoComplete'));
+
     ##Chaki---------End
 
 
@@ -146,14 +151,14 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/course/teacher/teacher-list',array('as'=>'Teacher List', 'uses' =>'TeacherController@teacherList'));
 	Route::get('/course/teacher/teacher-view/{id}',array('as'=>'Teacher View', 'uses' =>'TeacherController@teacherView'));
 	Route::get('/course/get-teacher',array('as'=>'Teacher View', 'uses' =>'CoursesController@getTeacher'));
-	
+
 	## Load App User For Message
 	Route::get('/message/load-app-user',array('as'=>'Load App User', 'uses' =>'MessageController@loadAppUser'));
 	##Load Messages for one-to-one Chat
 	Route::post('/message/load-message',array('as'=>'Load Message', 'uses' =>'MessageController@loadMessage'));
 	##Search App Users
 	Route::post('/message/search-app-users',array('as'=>'Search App Users', 'uses' =>'MessageController@searchAppUsers'));
-	
+
 	##Sent message to user
 	Route::post('/message/admin-message-sent-to-user',array('as'=>'Admin message Sent', 'uses' =>'MessageController@newMsgSent'));
 
@@ -178,7 +183,10 @@ Route::group(['middleware' => ['permission']], function () {
 	/*----- Survey Start -----*/
 	Route::get('survey/management',array('as'=>'Surveys Management' , 'action_id'=>'27', 'uses' =>'SurveysController@index'));
 
-	##chaki-------------Start
+    ##chaki-------------Start
+
+
+
     Route::post('/survey/survey-body-entry',array('as'=>'Survey Body Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyBodyEntry'));
     Route::post('/survey/survey-question-entry',array('as'=>'Survey Question Entry' , 'action_id'=>'28', 'uses' =>'SurveysController@surveyQuestionEntry'));
     Route::get('/survey/survey-edit/{id}',array('as'=>'Survey Edit' , 'action_id'=>'86', 'uses' =>'SurveysController@surveyEdit'));
@@ -189,6 +197,23 @@ Route::group(['middleware' => ['permission']], function () {
     Route::get('/survey/survey-delete/{id}',array('as'=>'Survey Delete' , 'action_id'=>'87', 'uses' =>'SurveysController@surveyDelete'));
 
     ##chaki-------------End
+    /*--------Report Start--------*/
+    Route::get('report/survey-summary',array('as'=>'Survey Summary' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummery'));
+    Route::get('report/survey-details',array('as'=>'Survey Details' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyDetails'));
+    Route::get('report/survey-data',array('as'=>'Survey Data' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyData'));
+    Route::get('report/survey-participants',array('as'=>'Survey Participant' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipant'));
+    Route::get('report/survey-participants-answers',array('as'=>'Survey Participant Answers' , 'action_id'=>'27', 'uses' =>'SurveysController@surveyParticipantAnswer'));
+
+
+    Route::post('/survey/report/survey-summary',array('as'=>'Survey Summary Report' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummeryReport'));
+    
+    ## Siam Start
+    Route::get('report/course-summary',array('as'=>'Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@courseSummery'));
+    Route::post('/report/course/get-course-summary',array('as'=>'Get Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@getCourseSummery'));
+    ## Siam End
+
+    /*--------Report End--------*/
+
 
     /*----- Survey End -----*/
 
