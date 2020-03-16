@@ -204,7 +204,8 @@ Route::group(['middleware' => ['permission']], function () {
     Route::post('/survey/report/survey-summary',array('as'=>'Survey Summary Report' , 'action_id'=>'27', 'uses' =>'SurveysController@surveySummeryReport'));
     
     ## Siam Start
-    Route::post('report/course-summary',array('as'=>'Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@courseSummeryReport'));
+    Route::get('report/course-summary',array('as'=>'Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@courseSummery'));
+    Route::post('/report/course/get-course-summary',array('as'=>'Get Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@getCourseSummery'));
     ## Siam End
 
     /*--------Report End--------*/

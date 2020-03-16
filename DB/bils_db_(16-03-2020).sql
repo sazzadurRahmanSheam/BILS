@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `app_users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.app_users: ~8 rows (approximately)
+-- Dumping data for table bils_new_db.app_users: ~9 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
 	(5, 'Sazzadur', '123', '123', 'sazzadur@gmail.com', 'kalabagan,dhaka', '81dc9bdb52d04dc20036dbd8313ed055', '1584349969.jpg', NULL, 0, 2, '2020-02-10 09:12:29', '2020-03-16 11:50:52'),
@@ -113,6 +113,7 @@ INSERT INTO `course_categories` (`id`, `category_name`, `details`, `status`, `cr
 -- Dumping structure for table bils_new_db.course_masters
 CREATE TABLE IF NOT EXISTS `course_masters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_code` varchar(100) NOT NULL,
   `course_title` varchar(100) NOT NULL,
   `duration` int(11) DEFAULT NULL,
   `appx_start_time` date DEFAULT NULL,
@@ -138,9 +139,9 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
 
 -- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
-INSERT INTO `course_masters` (`id`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(4, 'Labour Study', 5, '2020-03-04', '2020-03-26', NULL, NULL, 3, 'Sazzadur Raman', 'admin', 'This is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details.', 1, 5000, 'Bkash', NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 06:06:36', '2020-03-09 08:03:29'),
-	(5, 'Web Design', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'admin', 'this is about web design.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 07:41:23', '2020-03-05 10:23:40');
+INSERT INTO `course_masters` (`id`, `course_code`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(4, '', 'Labour Study', 5, '2020-03-04', '2020-03-26', NULL, NULL, 3, 'Sazzadur Raman', 'admin', 'This is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details. \r\nThis is about details. This is about details. This is about details. This is about details. This is about details. This is about details.', 1, 5000, 'Bkash', NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 06:06:36', '2020-03-16 20:11:43'),
+	(5, '', 'Web Design', NULL, '2020-02-16', NULL, NULL, NULL, NULL, NULL, 'admin', 'this is about web design.', 1, NULL, NULL, NULL, NULL, 1, 'Momit', 'Momit', '2020-03-05 07:41:23', '2020-03-16 20:11:45');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -275,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `message_attachments` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_attachments: ~8 rows (approximately)
+-- Dumping data for table bils_new_db.message_attachments: ~9 rows (approximately)
 /*!40000 ALTER TABLE `message_attachments` DISABLE KEYS */;
 INSERT INTO `message_attachments` (`id`, `message_master_id`, `attachment_type`, `admin_atachment`, `app_user_attachment`, `created_at`, `updated_at`) VALUES
 	(3, 37, 1, '2660754011584184098a.png', '', '2020-03-14 11:08:18', '2020-03-14 17:26:30'),
@@ -328,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `message_masters` (
   CONSTRAINT `FK_message_masters_users` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_masters: ~33 rows (approximately)
+-- Dumping data for table bils_new_db.message_masters: ~35 rows (approximately)
 /*!40000 ALTER TABLE `message_masters` DISABLE KEYS */;
 INSERT INTO `message_masters` (`id`, `message_id`, `is_attachment`, `admin_id`, `admin_message`, `app_user_id`, `app_user_message`, `is_seen`, `message_category`, `message_date_time`, `status`, `created_at`, `updated_at`) VALUES
 	(4, 2, 0, 1, 'hi', 5, NULL, 0, NULL, '2020-03-11 14:51:50', 1, '2020-03-11 14:51:50', '2020-03-11 15:04:52'),
