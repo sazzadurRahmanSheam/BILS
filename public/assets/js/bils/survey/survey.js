@@ -438,7 +438,7 @@ $(document).ready(function () {
                 var data = JSON.parse(response);
                 $("#survey_view_li").css('display','block');
                 $("#survey_view_button").trigger('click');
-                console.log(data)
+                //console.log(data)
 
                 $("#survey_title").html("<h2>"+data['survey']['survey_name']+"</h2>");
                 $('#survey_description').html(data['survey']['details'])

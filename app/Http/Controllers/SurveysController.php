@@ -137,7 +137,6 @@ class SurveysController extends Controller
         return json_encode($data);
     }
 
-
     public function getSurveyTypes()
     {
         $data = SurveyCategory::select('id', 'category_name')->get();
@@ -456,6 +455,128 @@ class SurveysController extends Controller
         return json_encode($data);
 
         //return $survey_data;
+    }
+
+
+    //Survey Report modules
+
+    public function surveySummery()
+    {
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Survey Summery";
+
+        // action permissions
+        //echo 1;die;
+        $admin_user_id = Auth::user()->id;
+        $add_action_id = 27;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
+        $data['actions']['add_permisiion'] = $add_permisiion;
+
+        return view('reports.survey_summary', $data);
+    }
+
+    public function surveyDetails(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Survey Details";
+
+        // action permissions
+        //echo 1;die;
+        $admin_user_id = Auth::user()->id;
+        $add_action_id = 27;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
+        $data['actions']['add_permisiion'] = $add_permisiion;
+
+        return view('reports.survey_details', $data);
+    }
+    public function surveyData(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Survey Data";
+
+        // action permissions
+        //echo 1;die;
+        $admin_user_id = Auth::user()->id;
+        $add_action_id = 27;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
+        $data['actions']['add_permisiion'] = $add_permisiion;
+
+        return view('reports.survey_data', $data);
+    }
+    public function surveyParticipant(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Survey Participants";
+
+        // action permissions
+        //echo 1;die;
+        $admin_user_id = Auth::user()->id;
+        $add_action_id = 27;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
+        $data['actions']['add_permisiion'] = $add_permisiion;
+
+        return view('reports.survey_participant', $data);
+    }
+    public function surveyParticipantAnswer(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Survey Participants Answer";
+
+        // action permissions
+        //echo 1;die;
+        $admin_user_id = Auth::user()->id;
+        $add_action_id = 27;
+        $add_permisiion = $this->PermissionHasOrNot($admin_user_id, $add_action_id);
+        $data['actions']['add_permisiion'] = $add_permisiion;
+
+        return view('reports.survey_participant_answer', $data);
+    }
+
+
+
+    public function surveySummeryReport(Request $request){
+        //return 1;
+        $start_date_range = $request->date_from;
+        $stop_date_range = $request->date_to;
+
+        $survey =SurveyMaster::whereBetween('start_date',[$start_date_range,$stop_date_range])->get();
+
+        $data=[];
+        foreach ( $survey as $key=>$value){
+            $participant = SurveyParticipatent::where('survey_id','=',$value->id)->count();
+            $value['participant']=$participant;
+            $question = SurveyQuestion::where('survey_id','=',$value->id)->count();
+            $value['question']=$question;
+            $data[]=$value;
+        }
+        $userName = Auth::User()->name;
+        $data['user']=$userName;
+
+        return json_encode($data);
+
+    }
+
+
+
+    public function SurveyNameAutoComplete(){
+        $survey_name_code = $_REQUEST['term'];
+
+        $data = SurveyMaster::select('id', 'survey_code', 'survey_name')
+            ->where('survey_name','like','%'.$survey_name_code.'%')
+            ->orwhere('survey_code','like','%'.$survey_name_code.'%')
+            ->get();
+        $data_count = $data->count();
+
+        if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["survey_code"].'->'.$row["survey_name"]);
+            }
+        }
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+        return json_encode($json);
     }
 
 }
