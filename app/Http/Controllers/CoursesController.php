@@ -17,6 +17,7 @@ use App\CourseCategory;
 use App\AppUser;
 use App\CoursePerticipant;
 use App\Notification;
+use App\Teacher;
 
 class CoursesController extends Controller
 {
@@ -33,12 +34,18 @@ class CoursesController extends Controller
     {
         $data['page_title'] = $this->page_title;
 		$data['module_name']= "Courses";
-        $data['sub_module']= "Open Courses";
+        $data['sub_module']= "Manage Courses";
         // action permissions
         $admin_user_id  = Auth::user()->id;
         $add_action_id  = 26;
+        $publish_course_action_id  = 92;
+        $select_perticipant_action_id  = 93;
         $add_permisiion = $this->PermissionHasOrNot($admin_user_id,$add_action_id );
+        $publish_course_permisiion = $this->PermissionHasOrNot($admin_user_id,$publish_course_action_id );
+        $select_perticipant_permisiion = $this->PermissionHasOrNot($admin_user_id,$select_perticipant_action_id );
         $data['actions']['add_permisiion']= $add_permisiion;
+        $data['actions']['publish_course_permisiion']= $publish_course_permisiion;
+        $data['actions']['select_perticipant_permisiion']= $select_perticipant_permisiion;
         return view('courses.index', $data);
     }
 
@@ -47,7 +54,7 @@ class CoursesController extends Controller
         return json_encode($data);
     }
 
-    //Notice Entry And Update
+    //Course Entry And Update
     public function courseEntryUpdate(Request $request){ 
         $rule = [
             'course_title' => 'Required|max:100',
@@ -160,10 +167,148 @@ class CoursesController extends Controller
                         'act_end_time'=>$request->act_end_time,   
                         'updated_by'=>$updated_by,
                         'pub_status'=>$pub_status,
+                        'course_status'=>$request->course_status,
+                        'payment_fee'=>$request->payment_fee,
+                        'payment_method'=>$request->payment_method,
+                        'course_teacher'=>$request->course_teacher,
+                        'discount_message'=>$request->discount_message,
                     ];
 
+                   
+
+                    $data_check = CourseMaster::find($request->course_edit_id);
+
+                    if($data_check['pub_status']!='1'){
+                        ##Publish Notification
+                        if($pub_status=='1'){
+                            $course_id = $request->course_edit_id;
+                            $user_id = AppUser::select('id')->get();
+                            foreach($user_id as $perticipant_id){
+                                $column_value2 = [
+                                    'course_id'=>$course_id,
+                                    'perticipant_id'=>$perticipant_id['id'],
+                                    'is_interested'=>0,
+                                ];
+                                $res = CoursePerticipant::create($column_value2);
+
+                                ##Notification Entry
+                                $column_value1 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$perticipant_id['id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Initiate '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$course_id,
+                                ];
+                                $res1 = Notification::create($column_value1);
+                            }
+                        }
+                     }
+
+
+                    
                     $data = CourseMaster::find($request->course_edit_id);
                     $data->update($column_value);
+
+
+
+
+                    if($data_check['course_status']!='2'){
+
+                        if ($request->course_status=='2') {     ##Approve Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Approved '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='3'){
+
+                        if ($request->course_status=='3') {     ##Rejected Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Rejected '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='4'){
+
+                        if ($request->course_status=='4') {     ##Started Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Started '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+                    if($data_check['course_status']!='5'){
+
+                        if ($request->course_status=='5') {     ##Completed Course
+
+                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
+                                                ->where('is_interested','1')
+                                                ->get();
+                            foreach($Interested_user_id as $Interested_user_id){
+                                ##Notification Entry
+                                $column_value4 = [
+                                    'from_id'=>$from_id,
+                                    'from_user_type'=>$from_user_type,
+                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_user_type'=>$to_user_type,
+                                    'notification_title'=>'BILS Completed '.$request->course_title.' Course',
+                                    'view_url'=>'course/'.$request->course_edit_id,
+                                    
+                                ];
+                                $res2 = Notification::create($column_value4);
+                            }
+                        }
+                    }
+
+
+
+
                 }
                 DB::commit();
                 $return['result'] = "1";
@@ -209,17 +354,166 @@ class CoursesController extends Controller
                 $data['course_status'] = "<button class='btn btn-xs btn-success' disabled>Completed</button>";
             }
             
-            $data['actions']=" <button title='View' onclick='message_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+            $data['actions']=" <button title='View' onclick='course_view(".$data->id.")' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
             if($edit_permisiion>0){
-                $data['actions'] .=" <button title='Edit' onclick='edit_message(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
+                $data['actions'] .=" <button title='Edit' onclick='edit_course(".$data->id.")' id=edit_" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-pencil-3'></i></button>";
             }
             if ($delete_permisiion>0) {
-                $data['actions'] .=" <button title='Delete' onclick='delete_message(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
+                $data['actions'] .=" <button title='Delete' onclick='delete_course(".$data->id.")' id='delete_" . $data->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
             }
             $return_arr[] = $data;
         }
         return json_encode(array('data'=>$return_arr));
+    }
+
+    //Course view
+    public function courseView($id){
+        $data = CourseMaster::find($id);
+        return json_encode($data);
+    }
+
+    //Course edit data
+    public function courseEdit($id){
+        $data = CourseMaster::find($id);
+        return json_encode($data);
+    }
+
+
+     //Course Delete
+    public function courseDelete($id){
+        Notification::where('view_url','=','course/'.$id)->delete();
+        CoursePerticipant::where('course_id',$id)->delete();
+        CourseMaster::find($id)->delete();
+        return json_encode(array(
+            "deleteMessage"=>"Deleted Successful"
+        ));
+    }
+
+
+    public function interestedPerticipantsList($c_id){
+        $perticipantsList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->whereIn('cp.is_interested', ['1','3'])
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
+                            ->get();
+
+        $registeredList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_interested', '3')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
+                            ->get();
+
+        $selectedList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_selected', '1')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
+                            ->get();
+
+
+
+
+        $perticipantTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->whereIn('cp.is_interested', ['1','3'])
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+        $registerTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_interested', '3')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+        $selectedTotal = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_selected', '1')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->count();
+
+
+
+                          
+        return json_encode(array(
+            "perticipantsList"=>$perticipantsList,
+            "registeredList"=>$registeredList,
+            "selectedList"=>$selectedList,
+
+            "perticipantTotal"=>$perticipantTotal,
+            "registerTotal"=>$registerTotal,
+            "selectedTotal"=>$selectedTotal
+        ));
+
+    }
+
+
+    ##Save Selected Person
+    public function saveSelectedPerson(Request $req){
+        $selected_person = $req->input('selected_person');
+        if (isset($selected_person)&&$selected_person!="") {
+            foreach($selected_person as $selected_person){
+                $data = CoursePerticipant::find($selected_person);
+                $data->update(['is_selected' => 1]);
+            }
+        }
+        return '<div class="alert alert-success alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Participants Selected!</strong>successfully.
+  </div>';
+    }
+
+    ##Save Remove Person
+    public function saveRemovePerson(Request $req){
+        $remove_person = $req->input('remove_person');
+        if (isset($remove_person)&&$remove_person!="") {
+            foreach($remove_person as $remove_person){
+                $data = CoursePerticipant::find($remove_person);
+                $data->update(['is_selected' => 0]);
+            }
+        }
+        return '<div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Participants Removed!</strong>.
+                </div>';
+    }
+
+    public function getTeacher(){
+        $data = Teacher::select('name')->get();
+        return json_encode($data);
+    }
+
+    /* ----- Report ----- */
+    public function courseSummery(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Course Summary";
+
+        return view('reports.course_summary', $data);
+    }
+
+    public function getCourseSummery(Request $request){
+        
+        $summary_data = CourseMaster::whereBetween('appx_start_time',[$request->date_from, $request->date_to])->get();
+
+        $data=[];
+        foreach ( $summary_data as $key=>$value){
+            $interested = CoursePerticipant::where('course_id','=',$value->id)
+                        ->whereIn('is_interested',[1,3])
+                        ->count();
+            $value['interested']=$interested;
+           
+            $data[]=$value;
+        }
+        $userName = Auth::User()->name;
+        $data['user']=$userName;
+
+        return json_encode($data);
     }
 
 

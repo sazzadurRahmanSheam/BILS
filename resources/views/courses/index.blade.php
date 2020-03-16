@@ -20,10 +20,15 @@
                     @if($actions['add_permisiion']==1)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
-	                           <b> Add Courses</b>
+	                           <b> Open Courses</b>
 	                        </a>
 	                    </li>
 	                @endif
+	                <li style="display: none;" id="course_view_li">
+                        <a data-toggle="tab" href="#course_view" id="course_view_button">
+                           <b>Courses View</b>
+                        </a>
+	                </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
@@ -101,10 +106,10 @@
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<input type="text" id="duration" name="duration"  class="form-control col-lg-12"/>
 										</div>
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Type</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Category</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<select name="course_type" id="course_type" class="form-control col-lg-12" >
-												<option selected="" disabled="" value="">Select Course Type</option>
+												<option selected="" disabled="" value="">Select Course Category</option>
 											</select>
 										</div>			
 									</div>
@@ -146,7 +151,10 @@
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Teacher</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="course_teacher" name="course_teacher"  class="form-control col-lg-12"/>
+											<select name="course_teacher" id="course_teacher" class="form-control col-lg-12">
+												<option  selected="" disabled="" value="">Select Teacher</option>
+											</select>
+											
 										</div>
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Discount Message</label>
 										<div class="col-md-4 col-sm-4 col-xs-4">
@@ -154,19 +162,30 @@
 										</div>						
 									</div>
 
-									
-										
-									
-									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
-										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="checkbox" id="pub_status" name="pub_status" class="form-control col-lg-12"/>
+									@if($actions['publish_course_permisiion']==1)
+										<div style="display:none;" id="edit_course_status" class="form-group">
+											<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Status</label>
+											<div class="col-md-4 col-sm-4 col-xs-6">
+												<select name="course_status" id="course_status"  class="form-control col-lg-12">
+													<option disabled="" selected="" value="">Change Course Status</option>
+													<option value="1">Initiate</option>
+													<option value="2">Approved</option>
+													<option value="3">Rejected</option>
+													<option value="4">Started</option>
+													<option value="5">Completed</option>
+												</select>
+											</div>					
 										</div>
-									</div>
+
+										<div class="form-group">
+											<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
+											<div class="col-md-4 col-sm-4 col-xs-6">
+												<input type="checkbox" id="pub_status" name="pub_status" class="form-control col-lg-12"/>
+											</div>
+										</div>
+									@endif
 									<br/>
-									
-									
-									
+								
 									
 								</div>
 								
@@ -185,6 +204,37 @@
                         </div>
                     </div>
                     <!-- END PANEL FOR CHANGE PASSWORD -->
+
+                    <div id="course_view" class="tab-pane in">
+                        <div class="row no-margin-row">
+							<div class="col-md-12">
+								<div class="col-md-12">
+									<div class="col-md-9" style="padding-left:0px">
+										<span id="c_title"></span>
+									</div>
+									<div class="col-md-3" style="text-align: right;padding-right:0px;">
+										<span id="status_btn"></span>
+									</div>
+								</div>
+								<div class="col-md-12" style="padding-left: 0px;">
+									<div id="left_sub" class="col-md-6"></div>
+									<div id="right_sub" class="col-md-6"></div>
+								</div>
+								<div class="col-md-12" id="description">
+									
+								</div>
+							</div>
+
+							<div class="col-md-12"><br>
+								<span id="p_mess"></span>
+								<div id="participant_table">
+									
+								</div>
+							</div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -194,11 +244,9 @@
 
 @endsection
 
-
 @section('JScript')
-
+	<script>
+		var select_perticipant_permisiion = "<?php echo $actions['select_perticipant_permisiion']; ?>";
+	</script>
 	<script src="{{ asset('assets/js/bils/course/course.js')}}"></script>
-
 @endsection
-
-

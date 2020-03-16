@@ -3,7 +3,7 @@ $(document).ready(function () {
 	
 	// for get site url
 	var url = $('.site_url').val();
-
+	var number_of_msg = 10;
 	
 	//Load App User Group Using Notice Controller
 	$.ajax({
@@ -179,8 +179,261 @@ $(document).ready(function () {
 	}*/
 
 
+	loadAppUser = function loadAppUser(){
+
+		$.ajax({
+			url: url+'/message/load-app-user',
+			success: function(response){
+				var response = JSON.parse(response);
+				var app_user = response['app_user_info'];
+				//Load App user who are chated 
+				if(!jQuery.isEmptyObject(app_user)){
+					var html = "";
+					//var active_chat_class = "active";
+					$.each(app_user, function(i,row){
+						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact">';
+						html+='<div class="wrap">';
+						html+='<span class="contact-status online"></span>';
+						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+						html+='<div class="meta">';
+						html+='<p class="name">'+row["name"]+'</p>';
+						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+						html+='</div>';
+						html+='</div>';
+						html+='</li>';
+						//active_chat_class = "";
+					});
+				}
+				$("#app_user_show").html(html);
+
+			}
+		});
+	}
+	loadAppUser();
+
+
+	loadMessage = function loadMessage(app_user_id, number_of_msg){//
+		$("#search_app_user").val("");
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		var app_user_id_load_msg = app_user_id;
+		var msg_no = number_of_msg;
+
+		$.ajax({
+			url: url+'/message/load-message',
+			type:'POST',
+				data:{
+					app_user_id_load_msg:app_user_id_load_msg,
+					msg_no:msg_no
+				},
+				async:false,
+			success: function(response){
+				var response = JSON.parse(response);
+				
+				var message = response['message'];
+				var app_user_name = response['app_user_name'];
+				var img_id="";
+				//Messages
+
+				var message_body = "";
+				if(!jQuery.isEmptyObject(message)){
+
+					$.each(message, function(i,message){
+						html = "";
+
+						if((message["admin_message"]!=null && message["admin_message"]!="") || ( message["is_attachment"]!=""&& message["is_attachment"]!=null ) ){
+							html += '<li class="sent_msg">';
+							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							
+							if (message["admin_message"]!=null && message["admin_message"]!="") {html += '<p>'+message["admin_message"]+'</p>';}
+
+							if(message["is_attachment"]==1){
+								if(message["attachment_type"]==1){
+									//Image
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
+								 //onclick="zoomImg()"
+								}
+								else if(message["attachment_type"]==2){
+									//Video
+									html +='<video style="float:right" width="280" controls><source src="'+msg_image_url+'/'+message["admin_atachment"]+'" type="video/mp4"></video>';
+								}
+								else if(message["attachment_type"]==3){
+									//Audio
+									html +='<audio controls><source src="'+msg_image_url+'/'+message["admin_atachment"]+'" type="audio/mpeg"></audio>';
+								}
+								else{
+									//Other Files
+									html += '<a href="'+msg_image_url+'/'+message["admin_atachment"]+'" download><p style="word-wrap: break-word;">'+message["admin_atachment"]+'</p></a>';
+								}
+							}
+							
+							html += '</li>';
+							html += '<span class="time_date_sent"> '+message["msg_date"]+'</span>';
+							
+							
+						}
+						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
+							
+
+							html += '<li class="receive_msg">';
+							html += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
+							html += '<p>'+message["app_user_message"]+'</p>';
+							html += '<span class="time_date">'+message["msg_date"]+'</span>';
+							html += '</li>';
+							// 11:01 AM    |    June 9
+							
+						}
+						message_body = html+message_body;
+						
+					});
+					
+				}
+				loadAppUser();
+				$(".message_body").html(message_body);
+				$("#app_user_name").html(app_user_name['name']);
+				$("#load_more_message").html('<button onclick="limitIncrease('+app_user_name["id"]+');" style="margin-right: 10px;" type="button" class="btn btn-xs btn-warning">Load Old Message</button>');
+				$("#app_user_id").val(app_user_name['id']);
+				if (number_of_msg==10) {
+					$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+				}
+			}
+		});
+
+		$(".zoomImg").click(function(){
+			var image_src = $(this).attr('src');
+			$("#modalIMG").modal();
+			$("#load_zoom_img").attr('src',image_src);
+		});
+	}
+
+	
+
+
+
+	searchAppUsers = function searchAppUsers(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		var name = $("#search_app_user").val();
+		if(name!=""){
+			$.ajax({
+				url: url+"/message/search-app-users",
+				type:'POST',
+				data:{name:name},
+				async:false,
+				success: function(data){
+					var app_users = JSON.parse(data);
+					
+					if(!jQuery.isEmptyObject(app_users)){
+						var html = "";
+						$.each(app_users, function(i,row){
+							html+='<li class="contact">';
+							html+='<div class="wrap">';
+							//html+='<span class="contact-status busy"></span>';
+							html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							html+='<div class="meta">';
+							html+='<p onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="name">'+row["name"]+'</p>';
+							//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+							html+='</div>';
+							html+='</div>';
+							html+='</li>';
+							
+						});
+					}
+				$("#app_user_show").html(html);
+
+				}	
+			});
+		
+
+		}
+		else {
+			loadAppUser();
+		}
+	}
+
+	$("#search_app_user").keyup(function(){
+		searchAppUsers();
+	});
+
+
+	
+
+	$("#message_sent_to_user").click(function(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		newMsgSent();
+	});
+
+	newMsgSent = function newMsgSent(){
+        	
+    	
+		var formData = new FormData($('#sent_message_to_user')[0]);
+		if(( $.trim($('#admin_message').val()) != "" || $.trim($('#attachment').val()) != "" ) && $.trim($('#app_user_id').val()) != ""){
+			
+			$.ajax({
+				url: url+"/message/admin-message-sent-to-user",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,
+				processData:false,
+				success: function(data){
+					$("#attachment").val('');
+					loadMessage($('#app_user_id').val(),number_of_msg);
+					$('#admin_message').val("");
+					$(".messages").animate({ scrollTop: $(document).height() }, "fast");
+					loadAppUser();
+				 }	
+			});
+		}
+	}
+
+	$(window).on('keydown', function(e) {
+		if (e.which == 13) {
+			newMsgSent();
+			return false;
+		}
+	});
+
+	
+        
+      
+	
+
+		  
+		 
+
+
+			
+			  
+			  
+
+
+
+
+
+	
+
+	limitIncrease = function limitIncrease(id){
+		number_of_msg = number_of_msg+10;
+		loadMessage(id,number_of_msg);
+	}
+
 	//autosuggest
-	$.ajaxSetup({
+	/*$.ajaxSetup({
 		headers:{
 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 		}
@@ -206,10 +459,21 @@ $(document).ready(function () {
 		minLength: 2,
 		select: function(event, ui) { 
 			var id = ui.item.id;
+			
 			$(this).next().val(id);
 			$("#app_user_id").val(id);
+			
 		}
-	});
+	});*/
+
+
+	
+
+
+
+
+
+	
 
 
 
