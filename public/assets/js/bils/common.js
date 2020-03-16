@@ -15,3 +15,5 @@ function success_or_error_msg(div_to_show, class_name, message, field_id){
 function clear_form(){
 	$('.form')[0].reset();
 }
+
+
