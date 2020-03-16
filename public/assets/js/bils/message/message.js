@@ -236,20 +236,44 @@ $(document).ready(function () {
 				
 				var message = response['message'];
 				var app_user_name = response['app_user_name'];
-				
+				var img_id="";
 				//Messages
+
+				var message_body = "";
 				if(!jQuery.isEmptyObject(message)){
 
-					var message_body = "";
-					
 					$.each(message, function(i,message){
 						html = "";
-						if(message["admin_message"]!=null && message["admin_message"]!=""){
+
+						if((message["admin_message"]!=null && message["admin_message"]!="") || ( message["is_attachment"]!=""&& message["is_attachment"]!=null ) ){
 							html += '<li class="sent_msg">';
 							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
-							html += '<p>'+message["admin_message"]+'</p>';
+							
+							if (message["admin_message"]!=null && message["admin_message"]!="") {html += '<p>'+message["admin_message"]+'</p>';}
+
+							if(message["is_attachment"]==1){
+								if(message["attachment_type"]==1){
+									//Image
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
+								 //onclick="zoomImg()"
+								}
+								else if(message["attachment_type"]==2){
+									//Video
+									html +='<video style="float:right" width="280" controls><source src="'+msg_image_url+'/'+message["admin_atachment"]+'" type="video/mp4"></video>';
+								}
+								else if(message["attachment_type"]==3){
+									//Audio
+									html +='<audio controls><source src="'+msg_image_url+'/'+message["admin_atachment"]+'" type="audio/mpeg"></audio>';
+								}
+								else{
+									//Other Files
+									html += '<a href="'+msg_image_url+'/'+message["admin_atachment"]+'" download><p style="word-wrap: break-word;">'+message["admin_atachment"]+'</p></a>';
+								}
+							}
+							
 							html += '</li>';
 							html += '<span class="time_date_sent"> '+message["msg_date"]+'</span>';
+							
 							
 						}
 						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
@@ -278,7 +302,16 @@ $(document).ready(function () {
 				}
 			}
 		});
+
+		$(".zoomImg").click(function(){
+			var image_src = $(this).attr('src');
+			$("#modalIMG").modal();
+			$("#load_zoom_img").attr('src',image_src);
+		});
 	}
+
+	
+
 
 
 	searchAppUsers = function searchAppUsers(){
@@ -344,8 +377,11 @@ $(document).ready(function () {
 	});
 
 	newMsgSent = function newMsgSent(){
+        	
+    	
 		var formData = new FormData($('#sent_message_to_user')[0]);
-		if($.trim($('#admin_message').val()) != "" && $.trim($('#app_user_id').val()) != ""){
+		if(( $.trim($('#admin_message').val()) != "" || $.trim($('#attachment').val()) != "" ) && $.trim($('#app_user_id').val()) != ""){
+			
 			$.ajax({
 				url: url+"/message/admin-message-sent-to-user",
 				type:'POST',
@@ -355,6 +391,7 @@ $(document).ready(function () {
 				contentType:false,
 				processData:false,
 				success: function(data){
+					$("#attachment").val('');
 					loadMessage($('#app_user_id').val(),number_of_msg);
 					$('#admin_message').val("");
 					$(".messages").animate({ scrollTop: $(document).height() }, "fast");
@@ -428,6 +465,15 @@ $(document).ready(function () {
 			
 		}
 	});*/
+
+
+	
+
+
+
+
+
+	
 
 
 
