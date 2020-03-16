@@ -12,7 +12,7 @@ $(document).ready(function () {
 		"serverSide": false,
 		"ajax": url+"/app-user/app-user-list",
 		"aoColumns": [
-			{ mData: 'user_profile_image', className: "text-center"}, 
+			{ mData: 'app_user_profile_image', className: "text-center"}, 
 			{ mData: 'id'},
 			{ mData: 'name' },
 			{ mData: 'email'},
@@ -168,6 +168,7 @@ $(document).ready(function () {
 				$("#email").val(app_user_info['email']);
 				$("#address").val(app_user_info['address']);
 				$("#remarks").val(app_user_info['remarks']);
+				$("#app_user_img").attr("src", profile_image_url+"/"+app_user_info["user_profile_image"]);
 				(app_user_info['status']=='0')?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
 				// console.log(user_group_member_details);
 
@@ -225,23 +226,46 @@ $(document).ready(function () {
 		$.ajax({
 			url: url+'/app-user/app-user-view/'+user_id,
 			success: function(response){
+
 				var data = JSON.parse(response);
-				$("#admin_user_view").modal();
-				$("#modal_title").html("App User Info");
-				var status,user_type;
-				(data['status']=='0')?status='In-active':status='Active';
-				(data['user_type']=='2')?user_type='App User':user_type='Admin';
-				var app_user_info = "";
-				app_user_info+="<h3>ID: <small>"+data['id']+"</small></h3>";
-				app_user_info+="<h3>Name: <small>"+data['name']+"</small></h3>";
-				app_user_info+="<h3>NID NO: <small>"+data['nid_no']+"</small></h3>";
-				app_user_info+="<h3>Contact NO: <small>"+data['contact_no']+"</small></h3>";
-				app_user_info+="<h3>Email: <small>"+data['email']+"</small></h3>";
-				app_user_info+="<h3>Address: <small>"+data['address']+"</small></h3>";
-				app_user_info+="<h3>Remarks: <small>"+data['remarks']+"</small></h3>";
-				app_user_info+="<h3>Status: <small>"+status+"</small></h3>";
-				app_user_info+="<h3>User Type: <small>"+user_type+"</small></h3>";
-				$("#modal_body").html(app_user_info);
+
+				$("#profile_modal").modal();
+				$("#name_div").html('<h2>'+data['name']+'</h2>');
+				$("#contact_div").html(data['contact_no']);
+				$("#email_div").html(data['email']);
+				$("#nid_div").html(data['nid_no']);
+				$("#address_div").html(data['address']);
+				$("#remarks_div").html('<h2>Remarks</h2>');
+				$("#remarks_details").html(data['remarks']);
+				$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
+				
+				if(data['status']==1){
+					$("#status_div").html('<span class="badge badge-success">Active</span>');
+				}
+				else{
+					$("#status_div").html('<span class="badge badge-danger">In-active</span>');
+				} 
+			
+
+
+
+				// var data = JSON.parse(response);
+				// $("#admin_user_view").modal();
+				// $("#modal_title").html("App User Info");
+				// var status,user_type;
+				// (data['status']=='0')?status='In-active':status='Active';
+				// (data['user_type']=='2')?user_type='App User':user_type='Admin';
+				// var app_user_info = "";
+				// app_user_info+="<h3>ID: <small>"+data['id']+"</small></h3>";
+				// app_user_info+="<h3>Name: <small>"+data['name']+"</small></h3>";
+				// app_user_info+="<h3>NID NO: <small>"+data['nid_no']+"</small></h3>";
+				// app_user_info+="<h3>Contact NO: <small>"+data['contact_no']+"</small></h3>";
+				// app_user_info+="<h3>Email: <small>"+data['email']+"</small></h3>";
+				// app_user_info+="<h3>Address: <small>"+data['address']+"</small></h3>";
+				// app_user_info+="<h3>Remarks: <small>"+data['remarks']+"</small></h3>";
+				// app_user_info+="<h3>Status: <small>"+status+"</small></h3>";
+				// app_user_info+="<h3>User Type: <small>"+user_type+"</small></h3>";
+				// $("#modal_body").html(app_user_info);
 			}
 		});
 	}

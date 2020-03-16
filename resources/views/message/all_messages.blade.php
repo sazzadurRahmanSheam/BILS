@@ -2,6 +2,53 @@
 
 @section('style')
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bils/messages.css') }}">
+
+
+	<style>
+
+		h4 { font-family: 'Open Sans'; margin: 0;}
+
+.modal,body.modal-open {
+    padding-right: 0!important
+}
+
+body.modal-open {
+    overflow: auto
+}
+
+body.scrollable {
+    overflow-y: auto
+}
+
+.modal-footer {
+	display: flex;
+	justify-content: flex-start;
+	.btn {
+		position: absolute;
+		right: 10px;
+	}
+}
+
+.modal {
+	/*height:500px;*/
+	left: 35%;
+	bottom: auto;
+	right: auto;
+	padding: 0;
+	width: 62%;
+	margin-left: -250px;
+	background-color: #ffffff;
+	border: 1px solid #999999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box;
+}
+
+</style>
+
+
 @endsection
 
 @section('content')
@@ -43,16 +90,50 @@
 		<div class="message-input">
 
 			<div class="wrap">
+				
 				<form id="sent_message_to_user" name="sent_message_to_user" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 					@csrf
 					<input type="hidden" name="app_user_id" id="app_user_id">
 					<input type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
-					<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+					<label for="attachment" class="custom-file-upload">
+    					<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+					</label>
+					<input multiple id="attachment" name="attachment[]" type="file"/>
+
 					<button type="submit" class="submit" id="message_sent_to_user"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 				</form>
 			</div>
 		</div>
 	</div>
+
+
+	{{-- <label for="file-upload" class="custom-file-upload">
+    Custom Upload
+</label>
+<input id="file-upload" type="file"/> --}}
+		
+
+		{{-- <input type="file" id="file" />
+		<label for="file" class="btn-3"><span>select</span></label> --}}
+
+	
+
+   
+ 
+    {{-- <div class="input-group">
+      <input type="text" class="form-control" aria-label="...">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+    </div> --}}
+  
 
 
 
@@ -106,7 +187,10 @@
 
 
 @section('JScript')
-
+	<script>
+		var msg_image_url = "<?php echo asset('assets/images/message'); ?>";
+	</script>
+	
 	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
 
 @endsection

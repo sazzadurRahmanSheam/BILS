@@ -488,6 +488,33 @@ class CoursesController extends Controller
         return json_encode($data);
     }
 
+    /* ----- Report ----- */
+    public function courseSummery(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Course Summary";
+
+        return view('reports.course_summary', $data);
+    }
+
+    public function getCourseSummery(Request $request){
+        
+        $summary_data = CourseMaster::whereBetween('appx_start_time',[$request->date_from, $request->date_to])->get();
+
+        $data=[];
+        foreach ( $summary_data as $key=>$value){
+            $interested = CoursePerticipant::where('course_id','=',$value->id)
+                        ->whereIn('is_interested',[1,3])
+                        ->count();
+            $value['interested']=$interested;
+           
+            $data[]=$value;
+        }
+        $userName = Auth::User()->name;
+        $data['user']=$userName;
+
+        return json_encode($data);
+    }
 
 
 

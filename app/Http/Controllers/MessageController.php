@@ -15,6 +15,7 @@ use App\Menu;
 use App\MessageMaster;
 use App\AppUserGroupMember;
 use App\AppUser;
+use App\MessageAttachment;
 
 class MessageController extends Controller
 {
@@ -227,8 +228,9 @@ class MessageController extends Controller
         $number_of_msg = $_POST['msg_no'];
         $message = DB::table('message_masters as mm')
                             ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+                            ->leftJoin('message_attachments as ma', 'mm.id', '=', 'ma.message_master_id')
                             ->where('mm.app_user_id',$app_user_id_load_msg)
-                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date')
+                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date', 'ma.admin_atachment as admin_atachment', 'mm.is_attachment as is_attachment', 'ma.attachment_type as attachment_type')
                             ->orderBy('mm.message_date_time', 'desc')
                             ->limit($number_of_msg)
                             ->get();
@@ -259,12 +261,59 @@ class MessageController extends Controller
         $app_user_id = $r->app_user_id;
         $admin_message = $r->admin_message;
         $admin_id = Auth::user()->id;
+        ## Image
+        $attachment = $r->file('attachment');
+
+        if($r->hasFile('attachment')){
+            $new_msg = new MessageMaster();
+            $new_msg->admin_id = $admin_id;
+            $new_msg->admin_message = $admin_message;
+            $new_msg->app_user_id = $app_user_id;
+            $new_msg->is_attachment = 1;
+            $new_msg->save();
+            $mm_id = $new_msg->id;
+
+            foreach ($attachment as $attachment) {
+                $attachment_name = rand().time().$attachment->getClientOriginalName();
+                $ext = strtoupper($attachment->getClientOriginalExtension());
+                echo $ext;
+                if ($ext=="JPG" || $ext=="JPEG" || $ext=="PNG" || $ext=="GIF" || $ext=="WEBP" || $ext=="TIFF" || $ext=="PSD" || $ext=="RAW" || $ext=="INDD" || $ext=="SVG") {
+                    $attachment_type = 1;
+                }
+                else if ($ext=="MP4" || $ext=="3GP") {
+                    $attachment_type = 2;
+                }
+                else if ($ext=="MP3") {
+                    $attachment_type = 3;
+                }
+                else{
+                    $attachment_type = 4;
+                }
+                //$attachment_full_name = $attachment_name.'.'.$ext;
+                $upload_path = 'assets/images/message/';
+                    
+                $success=$attachment->move($upload_path,$attachment_name);
+                ##Save image to the message attachment table
+                $msg_attachment = new MessageAttachment();
+                $msg_attachment->message_master_id = $mm_id;
+                $msg_attachment->admin_atachment = $attachment_name;
+                $msg_attachment->attachment_type = $attachment_type;
+                $msg_attachment->save();
+
+                
+            }
+        }
+        else{
+            $new_msg = new MessageMaster();
+            $new_msg->admin_id = $admin_id;
+            $new_msg->admin_message = $admin_message;
+            $new_msg->app_user_id = $app_user_id;
+            $new_msg->save();
+        }
         
-        $new_msg = new MessageMaster();
-        $new_msg->admin_id = $admin_id;
-        $new_msg->admin_message = $admin_message;
-        $new_msg->app_user_id = $app_user_id;
-        $new_msg->save();
+        
+
+
     }
 
 

@@ -13,6 +13,16 @@
   -webkit-font-smoothing: antialiased;
 } */
 
+input[type="file"] {
+      display: none;
+    }
+      .custom-file-upload {
+      /*border: 1px solid #ccc;*/
+      display: inline-block;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
 .time_date {
   color: #747474;
   display: block;
@@ -651,12 +661,12 @@
 }
 #frame .content .message-input .wrap .attachment {
   position: absolute;
-  right: 60px;
+  /* right: 60px; */
   z-index: 4;
-  margin-top: 10px;
-  font-size: 1.1em;
-  color: #435f7a;
-  opacity: .5;
+  margin-top: 1px;
+  font-size: 1.5em;
+  /* color: #435f7a; */
+  /* opacity: .5; */
   cursor: pointer;
 }
 @media screen and (max-width: 735px) {
