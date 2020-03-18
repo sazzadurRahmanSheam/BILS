@@ -110,6 +110,7 @@ $(document).ready(function () {
 		$("#admin_user_list_button").trigger('click');
 		$("#admin_user_add_button").html('Add Admin User');
 		$("#cancle_admin_update").addClass('hidden');
+		$("#clear_button").removeClass('hidden');
 		$("#emp_img").attr("src", "src");
 	});
 
@@ -126,6 +127,8 @@ $(document).ready(function () {
 				var data = JSON.parse(response);
 				var emp_data = data['data'];
 				var user_group_member_details = data['user_group_member_details'];
+
+				$("#clear_button").addClass('hidden');
 
 				$("#admin_user_add_button").trigger('click');
 				$("#admin_user_add_button").html('Update Admin User');
