@@ -7,6 +7,10 @@ Route::get('/auth',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLog
 Route::get('auth/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authLogin'));
 Route::post('auth/post/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authPostLogin'));
 
+##App User Message 
+Route::get('/app-user/{id}',array('as'=>'App User Message', 'uses' =>'AppUserController@appUserMessage'));
+Route::post('app-user-message-save',array('as'=>'App User Message Save', 'uses' =>'AppUserController@appUserMessageSave'));
+
 
 #ForgetPassword
 Route::get('auth/forget/password',array('as'=>'Forgot Password' , 'uses' =>'SystemAuthController@forgetPasswordAuthPage'));
@@ -210,6 +214,8 @@ Route::group(['middleware' => ['permission']], function () {
     ## Siam Start
     Route::get('report/course-summary',array('as'=>'Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@courseSummery'));
     Route::post('/report/course/get-course-summary',array('as'=>'Get Course Summary Report' , 'action_id'=>'25', 'uses' =>'CoursesController@getCourseSummery'));
+    Route::get('/report/course-details',array('as'=>'Get Course Details' , 'action_id'=>'25', 'uses' =>'CoursesController@getCourseDetails'));
+    Route::post('/report/course/course-name',array('as'=>'Get Course Name' , 'action_id'=>'25', 'uses' =>'CoursesController@getCourseNameAutoComplete'));
     ## Siam End
 
     /*--------Report End--------*/

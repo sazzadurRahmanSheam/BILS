@@ -54,6 +54,9 @@ $(document).ready(function () {
         if($.trim($('#course_title').val()) == ""){
             success_or_error_msg('#form_submit_error','danger',"Please Insert Course Title","#course_title");
         }
+        // else if($.trim($('#course_code').val()) == ""){
+        //     success_or_error_msg('#form_submit_error','danger',"Please Insert Course Code","#course_code");
+        // }
 
 
         else{
@@ -346,9 +349,23 @@ $(document).ready(function () {
                 $("#course_status").val(data['course_status']).change();
                 $("#course_teacher").val(data['course_teacher']).change();
 
+                $("#clear_button").addClass('hidden');
+                $("#course_cancel_btn").removeClass('hidden');
+
             }
         });
     }
+
+    //Cancel course update
+    $("#course_cancel_btn").click(function(){
+        clear_form();
+        $("#courses_add_button").html('Open Course');
+        $(".save").html('Save');
+        $("#courses_list_button").trigger('click');
+        $("#clear_button").removeClass('hidden');
+        $("#course_cancel_btn").addClass('hidden');
+    });
+    
 
     // Get Course Category
     $.ajax({
