@@ -1,4 +1,7 @@
 @extends('layout.master')
+@section('style')
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"><link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+@endsection
 @section('content')
     <!--MESSAGE-->
     <div class="row ">
@@ -14,7 +17,7 @@
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
                         <a id="survey_list_button" data-toggle="tab" href="#survey_list_div">
-                            <b> Surveys Summary</b>
+                            <b> Surveys Details</b>
                         </a>
                     </li>
                 </ul>
@@ -46,17 +49,21 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-12">
-                                        <form id="survey_search" name="survey_search" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
-                                            <div class="col-md-5">
-                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Start Date<span class="required">*</span></label>
-                                                <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="date" id="date_from" name="date_from"  class="form-control col-lg-12"/>
+                                        <form id="survey_details" name="survey_details" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
+                                            <div class="col-md-10">
+                                                <div class="col-md-6">
+                                                    <label class="control-label col-md-2 col-sm-2 col-xs-12">Survey<span class="required">*</span></label>
+                                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                                        <input type="text" id="survey_name_code" name="survey_name_code"  class="form-control col-lg-12"/>
+                                                        <input type="hidden" id="survey_id" name="survey_id" value="">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">End Date<span class="required">*</span></label>
-                                                <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="date" id="date_to" name="date_to"  class="form-control col-lg-12"/>
+                                                <div class="col-md-6">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Participant<span class="required">*</span></label>
+                                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        <input type="text" id="survey_participant" name="survey_participant" disabled  itemid="survey_participant" class="form-control col-lg-12"/>
+                                                        <input type="hidden" id="survey_participant_id" name="survey_participant_id" value="">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
@@ -74,53 +81,6 @@
 
                 </div>
 
-                <div>
-                    <div style="alignment: center; text-align: center">
-                        <img src="http://bils.test/assets/images/logo.jpg" style=" height: 100px; width: auto;">
-                        <h2 style="text-align: center; color: #5897fb; size: 24px;">Survey Grid Summary</h2>
-                    </div>
-                    <div style="padding: 5px">
-                        <table style="width:100%; border: 1px solid grey; border-collapse: collapse">
-                            <thead>
-                            <tr style="padding: 5px; border: 1px solid gray; text-align: center ">
-                                <th style="padding: 5px; border: 1px solid grey">Survey Name</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center">Start Date</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >End Date</th>
-                                <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Status</th>
-                                <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Question</th>
-                                <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Participants</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td style="border: 1px solid grey; padding: 5px">Survey Name</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">Start Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">End Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> Status</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">5</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> 234</td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid grey; padding: 5px">Survey Name</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">Start Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">End Date</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> Status</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center">5</td>
-                                <td style="border: 1px solid grey; padding: 5px; text-align: center"> 234</td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-
-
-                    </div>
-
-                    <div style="alignment: left; bottom: 0; position: fixed">
-                        <label>Printed By: kajol</label><br>
-                        <label>Print Date: kajol</label>
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -132,7 +92,8 @@
 
 @section('JScript')
 
-    <script src="{{ asset('assets/js/bils/reports/survey_summary.js')}}"></script>
+    <script src="{{ asset('assets/js/bils/reports/survey_participants_answers.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 @endsection
 

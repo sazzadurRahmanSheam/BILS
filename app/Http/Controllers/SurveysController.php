@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AppUser;
 use Illuminate\Http\Request;
 use Validator;
 use Session;
@@ -536,6 +537,26 @@ class SurveysController extends Controller
         if($data_count>0){
             foreach ($data as $row) {
                 $json[] = array('id' => $row["id"],'label' => $row["survey_code"].'->'.$row["survey_name"]);
+            }
+        }
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+        return json_encode($json);
+    }
+
+    public function ParticipantNameAutoComplete(){
+        $survey_name_code = $_REQUEST['term'];
+
+        $data = AppUser::select('id', 'name')
+            ->where('name','like','%'.$survey_name_code.'%')
+            ->orwhere('id','like','%'.$survey_name_code.'%')
+            ->get();
+        $data_count = $data->count();
+
+        if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["name"]);
             }
         }
         else {

@@ -51,7 +51,7 @@
                                     <div class="col-md-12">
                                         <form id="survey_details" name="survey_details" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
                                             <div class="col-md-10">
-                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Survey Title With or Code<span class="required">*</span></label>
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Survey Title or Survey Code<span class="required">*</span></label>
                                                 <div class="col-md-8 col-sm-8 col-xs-8">
                                                     <input type="text" id="survey_name_code" name="survey_name_code"  class="form-control col-lg-12"/>
                                                     <input type="hidden" id="survey_id" name="survey_id" value="">

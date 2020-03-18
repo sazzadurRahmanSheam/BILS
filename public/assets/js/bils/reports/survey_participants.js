@@ -37,29 +37,36 @@ $(document).ready(function () {
         event.preventDefault();
 
         id= $('#survey_id').val()
+
+
         $.ajax({
-            url: url+'/survey/survey-view/'+id,
+            url: url+'/survey/survey-participant_view/'+id,
             success: function(response){
-                var data = JSON.parse(response);
-                console.log(data)
+                var datas = JSON.parse(response);
+                //console.log(data)
+
+                // $("#survey_view_li").css('display','block');
+                $("#survey_participants_button").trigger('click');
+                console.log(datas)
+
 
                 var html_head = '<div class="col-md-12" style="margin-top: 20px">\n' +
                     '           <div class="col-md-12" style="text-align: center">\n' +
                     '           <img src="'+url+'/assets/images/logo.jpg" style=" height: 100px; width: auto; margin-top: 30px">\n'+
-                    '           <h3>'+data['survey']['survey_name']+'</h3>\n' +
-                    '           <p>'+data['survey']['details']+'</p>\n' +
+                    '           <h3>'+datas['survey']['survey_name']+'</h3>\n' +
+                    '           <p>'+datas['survey']['details']+'</p>\n' +
                     '           </div>\n' +
                     '           </div>'
 
                 var left_sub = "";
-                left_sub += "<br><b>Start Date: </b>"+data['survey']['start_date'];
-                left_sub += "<br><b>End Date: </b>"+data['survey']['end_date'];
-                left_sub += "<br><b>Survey Category: </b>"+data['survey']['survey_category'];
+                left_sub += "<br><b>Start Date: </b>"+datas['survey']['start_date'];
+                left_sub += "<br><b>End Date: </b>"+datas['survey']['end_date'];
+                left_sub += "<br><b>Survey Category: </b>"+datas['survey']['survey_category'];
 
                 var right_sub = "";
 
-                right_sub += "<br><b>Created By: </b>"+data['survey']['created_by'];
-                right_sub += "<br><b>Last Updated By: </b>"+data['survey']['updated_by'];
+                right_sub += "<br><b>Created By: </b>"+datas['survey']['created_by'];
+                right_sub += "<br><b>Last Updated By: </b>"+datas['survey']['updated_by'];
 
                 var html_details = '<div style="margin-left: 5px; width: 98%">\n' +
                     '         <table style="border: 0px; width: 100%;"><tr style="width: 100%"><td style="width: 50%">'+left_sub+'</td><td style="text-align: right;width: 50%">'+right_sub+'</td></tr></table>'
@@ -67,121 +74,39 @@ $(document).ready(function () {
 
 
                 var description = "</br>";
-                $.each(data['question'], function (key, value) {
-                    //console.log(value)
 
-                    description+='<div style="margin-bottom: 10px; width: 100%">\n'
-                    description+=' <h5>'+value['serial']+'. '+value['question_details']+'</h5>\n'
 
-                    if(value['question_type']==1 || value['question_type']==2){
-                        description+= '<br><hr style="margin-bottom: 0px; border: .5px dashed ">'
-                    }
-                    else {
-                        var sl = 'A'
-                        if(value['display_option']==1){
-                            $.each(value['answer'],function (key2, answer) {
-                                description+='<span style="margin: 10px">('+sl+'): '+answer['answer_option']+'</span>\n';
-                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
-                            })
-                        }
-                        else if(value['display_option']==2){
-                            $.each(value['answer'],function (key2, answer) {
-                                description+='<p style="margin: 10px">('+sl+'): '+answer['answer_option']+'</p>\n';
-                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
-                            })
-                        }
-                        else if(value['display_option']==3){
-                            $.each(value['answer'],function (key2, answer) {
-                                description+='<div class="col-md-5" style="margin: 10px">('+sl+'): '+answer['answer_option']+'</div>\n';
-                                sl = String.fromCharCode(sl.charCodeAt() + 1) // Returns B
-                            })
-                        }
-                    }
-                    description+='</div>'
+                var html='';
+                $.each(datas.surveyParticipant, function (key, data) {
+                    html+='<tr ><td style="border: 1px solid grey; padding: 5px">'+data['name']+'</td>' +
+                        '<td style="border: 1px solid grey; padding: 5px; text-align: center">'+datas.surveyQuestion+'</td>' +
+                        '<td style="border: 1px solid grey; padding: 5px; text-align: center">'+data['question_answered']+'</td>' +
+                        '<td style="border: 1px solid grey; padding: 5px; text-align: center">'+data['created_at']+'</td></tr>'
                 })
+
+                description +='<table style="width:100%; border: 1px solid grey ;border-collapse: collapse">\n' +
+                    '         <thead>\n' +
+                    '         <tr style="padding: 5px">\n' +
+                    '         <th style="padding: 5px; border: 1px solid grey; text-align: left">Participant Name</th>\n' +
+                    '          <th style="max-width: 80px; padding: 5px; border: 1px solid grey; text-align: center">Question Total</th>\n' +
+                    '          <th style="max-width: 80px; padding: 5px; border: 1px solid grey; text-align: center" >Question Answered</th>\n' +
+                    '          <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Date</th>\n' +
+                    '          </tr>\n' +
+                    '         </thead>\n' +
+                    '         <tbody>\n' +html+
+                    '        </tbody>\n' +
+                    '        </table>'
 
                 var html_body = '<div style="width: 98%" id="survey_body_view">'+description+'</div>'
 
-                var html= '<div style="width: 610px; border: solid 1px; padding-left: 20px">'+html_head+'<br>'+html_details+'<br>'+html_body+'</div>\n'
+                var html2= '<div style="width: 610px; min-height: 800px; border: solid 1px; padding-left: 20px">'+html_head+'<br>'+html_details+'<br>'+html_body+'</div>\n'
 
-
-                openWin(html)
-            }
-        })
-        /*
-        var formData = new FormData($('#survey_details')[0]);
-        $.ajax({
-            url: url+"/survey/survey-delete/"+,
-            type:'POST',
-            data:formData,
-            async:false,
-            cache:false,
-            contentType:false,processData:false,
-            success: function(data){
-                var response = JSON.parse(data);
-
-                var html = '<button style="text-align: right; background-color: #FFCC00 ; font-size: 20px; top: 0; float: right" id="printDiv" onclick="printDiv()">Print</button>\n' +
-                    '<div id="order_summary_view">\n' +
-                    '        <div style="alignment: center; text-align: center">\n' +
-                    '            <img src="http://bils.test/assets/images/logo.jpg" style=" height: 100px; width: auto;">' +
-                    '             <h2 style="text-align: center; color: #5897fb; size: 24px;">Survey Grid Summary</h2>\n' +
-                    '        </div>\n' +
-                    '        <div style="padding: 5px">\n' +
-                    '           <table style="width:100%; border: 1px solid grey ;border-collapse: collapse">\n' +
-                    '              <thead>\n' +
-                    '                <tr style="padding: 5px">\n' +
-                    '                 <th style="padding: 5px; border: 1px solid grey; text-align: left">Survey Name</th>\n' +
-                    '                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center">Start Date</th>\n' +
-                    '                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >End Date</th>\n' +
-                    '                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Status</th>\n' +
-                    '                 <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Question</th>\n' +
-                    '                 <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Participants</th>\n' +
-                    '                </tr>\n' +
-                    '              </thead>\n' +
-                    '              <tbody>'
-
-
-
-                $.each(response, function (key, value) {
-                    if(key!='user'){
-                        if(value['status']==1){
-                            status = 'Active'
-                        }
-                        else {
-                            status = 'Inactive'
-                        }
-
-                        //console.log(value)
-                        html+='<tr>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px">'+value['survey_name']+'</td>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['start_date']+'</td>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['end_date']+'</td>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+status+'</td>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['question']+'</td>\n' +
-                            '     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['participant']+'</td>\n' +
-                            '   </tr>'
-                    }
-
-                })
-
-                html += '  </tbody>\n' +
-                    '        </table>\n' +
-                    '        </div></div>'
-
-
-                html+='<div style="alignment: left; bottom: 0; position: fixed">\n' +
-                    '      <label>Printed By: '+response['user']+'</label><br>\n' +
-                    '      <label>Print Date: '+Date()+'</label>\n' +
-                    '   </div>'
-                openWin(html)
-                //printDiv('order_summary_view')
-
-
+                openWin(html2)
+                // $('#survey_participant_view tbody').html(html)
 
             }
         });
 
-        */
 
 
     })
