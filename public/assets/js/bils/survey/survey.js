@@ -583,11 +583,29 @@ $(document).ready(function () {
         url: url+'/survey/get-user-group',
         success: function(response){
             var data = JSON.parse(response);
-            var option = "";
+            var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >App User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+            html += '<tr><td colspan="2">';
             $.each(data,function (k,row) {
-                option += '<option value="'+row['id']+'">'+row['group_name']+'</option>';
+                html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox" name="app_user_group[]"  class="tableflat check_permission"  value="'+row["id"]+'"/> '+row["group_name"]+'</div>';
             });
-            $("#user_group").append(option);
+            html += '</td></tr>';
+            html +='</table>';  
+            $("#app_user_group").html(html);
+
+            $('#survey_body').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+            });                                 
+            
+            $('#survey_body input#check-all').on('ifChecked', function () {
+                
+                $("#survey_body .tableflat").iCheck('check');
+            });
+            $('#survey_body input#check-all').on('ifUnchecked', function () {
+                
+                $("#survey_body .tableflat").iCheck('uncheck');
+            });
+            
         }
     });
 

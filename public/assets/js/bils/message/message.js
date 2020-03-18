@@ -245,11 +245,14 @@ $(document).ready(function () {
 					$.each(message, function(i,message){
 						html = "";
 
-						if((message["admin_message"]!=null && message["admin_message"]!="") || ( message["is_attachment"]!=""&& message["is_attachment"]!=null ) ){
+						if( (message["admin_id"] != null && message["admin_id"] != "" ) && ((message["admin_message"]!=null && message["admin_message"]!="") || ( message["is_attachment"]!=""&& message["is_attachment"]!=null )) ){
 							html += '<li class="sent_msg">';
+							
 							html += '<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
 							
-							if (message["admin_message"]!=null && message["admin_message"]!="") {html += '<p>'+message["admin_message"]+'</p>';}
+							if (message["admin_message"]!=null && message["admin_message"]!="") {
+								html += '<p>'+message["admin_message"]+'</p><br><br><br>';
+							}
 
 							if(message["is_attachment"]==1){
 								if(message["attachment_type"]==1){
@@ -276,14 +279,47 @@ $(document).ready(function () {
 							
 							
 						}
-						else if(message["app_user_message"]!=null && message["app_user_message"]!=""){
+						else if( (message["app_user_message"]!=null && message["app_user_message"]!="") || ( message["is_attachment_app_user"]!=""&& message["is_attachment_app_user"]!=null ) ){
 							
 
 							html += '<li class="receive_msg">';
 							html += '<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />';
-							html += '<p>'+message["app_user_message"]+'</p>';
-							html += '<span class="time_date">'+message["msg_date"]+'</span>';
+							
+							if (message["app_user_message"]!=null && message["app_user_message"]!="") {
+								html += '<p>'+message["app_user_message"]+'</p>';
+							}
+							if( (message["app_user_message"]!=null && message["app_user_message"]!="")&& (message["is_attachment_app_user"]==1) ){
+								html+="<br>";
+							}
+
+							if(message["is_attachment_app_user"]==1){
+								if(message["attachment_type"]==1){
+									//Image
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["app_user_attachment"]+'" alt="">';
+								 //onclick="zoomImg()"
+								}
+								else if(message["attachment_type"]==2){
+									//Video
+									html +='<video style="float:right" width="280" controls><source src="'+msg_image_url+'/'+message["app_user_attachment"]+'" type="video/mp4"></video>';
+								}
+								else if(message["attachment_type"]==3){
+									//Audio
+									html +='<audio controls><source src="'+msg_image_url+'/'+message["app_user_attachment"]+'" type="audio/mpeg"></audio>';
+								}
+								else{
+									//Other Files
+									html += '<a href="'+msg_image_url+'/'+message["app_user_attachment"]+'" download><p style="word-wrap: break-word;">'+message["app_user_attachment"]+'</p></a>';
+								}
+
+							}
+							
+
+
+
+
+							
 							html += '</li>';
+							html += '<span class="time_date">'+message["msg_date"]+'</span>';
 							// 11:01 AM    |    June 9
 							
 						}

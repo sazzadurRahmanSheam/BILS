@@ -62,9 +62,6 @@
 									</div>
 								</div>
 								<div class="panel-body">
-									<div class="text-center">
-										<h2 class="text-info">Survey Grid Summary</h2>
-									</div>
 									<table class="table table-bordered table-hover admin_user_table" id="survey_data_table" style="width:100% !important">
 										<thead>
 											<tr>
@@ -120,16 +117,17 @@
 									</div>
 
 
-									<div class="form-group">
+									{{-- <div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Survey People</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<select name="user_group" id="user_group" class="form-control col-lg-12">
 												<option value="" disabled selected>Select Survey People</option>
 											</select>
 										</div>
-									</div>
+									</div> --}}
+
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Active</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Is Published</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<input type="checkbox" id="is_active" name="is_active" checked="checked" class="form-control col-lg-12"/>
 										</div>
@@ -141,6 +139,16 @@
 											<textarea rows="4" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea>
 										</div>
 									</div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2 col-sm-2 col-xs-6" >Survey People</label>
+                                        <div class="col-md-10 col-sm-10 col-xs-6">
+                                            <div id="app_user_group">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 </div>

@@ -10,6 +10,8 @@ use \App\System;
 use App\AppUser;
 use App\UserGroup;
 use App\AppUserGroupMember;
+use App\MessageMaster;
+use App\MessageAttachment;
 use Auth;
 use App\Traits\HasPermission;
 
@@ -314,6 +316,71 @@ class AppUserController extends Controller
 		return json_encode(array('data'=>$user_groups));
     }
     /*----- Get App User Group List End -----*/
+
+
+
+
+
+
+    ############ Frontend App user message ##########
+    public function appUserMessage($id){
+    	$data = AppUser::where('id',$id)->get();
+    	//return $data;
+
+    	return view('frontend.message.app_user_message',compact('data'));
+    }
+
+    public function appUserMessageSave(Request $r){
+    	$app_user_id = $r->app_user_id;
+    	$app_user_message = $r->app_user_message;
+    	$attachment = $r->file('app_user_attachment');
+
+    	if($r->hasFile('app_user_attachment')){
+			$app_user_msg_save = new MessageMaster();
+			$app_user_msg_save->app_user_message = $app_user_message;
+			$app_user_msg_save->app_user_id = $app_user_id;
+			$app_user_msg_save->is_attachment_app_user = 1;
+			$app_user_msg_save->save();
+			$mm_id = $app_user_msg_save->id;
+			
+            foreach ($attachment as $attachment) {
+                $attachment_name = rand().time().$attachment->getClientOriginalName();
+                $ext = strtoupper($attachment->getClientOriginalExtension());
+               
+                if ($ext=="JPG" || $ext=="JPEG" || $ext=="PNG" || $ext=="GIF" || $ext=="WEBP" || $ext=="TIFF" || $ext=="PSD" || $ext=="RAW" || $ext=="INDD" || $ext=="SVG") {
+                    $attachment_type = 1;
+                }
+                else if ($ext=="MP4" || $ext=="3GP") {
+                    $attachment_type = 2;
+                }
+                else if ($ext=="MP3") {
+                    $attachment_type = 3;
+                }
+                else{
+                    $attachment_type = 4;
+                }
+                //$attachment_full_name = $attachment_name.'.'.$ext;
+                $upload_path = 'assets/images/message/';
+                    
+                $success=$attachment->move($upload_path,$attachment_name);
+                ##Save image to the message attachment table
+                $msg_attachment = new MessageAttachment();
+                $msg_attachment->message_master_id = $mm_id;
+                $msg_attachment->app_user_attachment = $attachment_name;
+                $msg_attachment->attachment_type = $attachment_type;
+                $msg_attachment->save();
+            }
+         }
+
+    	else{
+    		$app_user_msg_save = new MessageMaster();
+	    	$app_user_msg_save->app_user_id = $app_user_id;
+	    	$app_user_msg_save->app_user_message = $app_user_message;
+	    	$app_user_msg_save->save();
+    	}
+    	return redirect()->back();
+
+    }
 
 
    
