@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('style')
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"><link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	
 @endsection
 @section('content')
 	<!--MESSAGE-->
@@ -153,7 +153,6 @@
 
 @section('JScript')
 	<script src="{{ asset('assets/js/bils/message/message.js')}}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	
 {{-- <script src=" {{ asset('ckeditor/ckeditor.js') }} "></script>
 	<script>
