@@ -146,7 +146,7 @@ class SurveysController extends Controller
 
     public function getUserGroup()
     {
-        $data = UserGroup::select('id', 'group_name')->get();
+        $data = UserGroup::select('id', 'group_name')->where('type',2)->get();
         return json_encode($data);
     }
 

@@ -94,6 +94,12 @@
 											<input type="text" id="course_title" name="course_title" class="form-control col-lg-12"/>
 										</div>
 									</div>
+									{{-- <div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Code<span class="required">*</span></label>
+										<div class="col-md-10 col-sm-10 col-xs-10">
+											<input type="text" id="course_code" name="course_code" class="form-control col-lg-12"/>
+										</div>
+									</div> --}}
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Description</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
@@ -195,6 +201,7 @@
 								<div class="col-md-3 col-sm-3 col-xs-12"> 
 									<button type="submit" id="save_course" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+									<button type="button" id="course_cancel_btn" class="btn btn-danger hidden">Cancel</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>

@@ -516,6 +516,34 @@ class CoursesController extends Controller
         return json_encode($data);
     }
 
+    public function getCourseDetails(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name'] = "Reports";
+        $data['sub_module'] = "Course Details";
+
+        return view('reports.course_details', $data);
+    }
+
+    public function getCourseNameAutoComplete(){
+        $course_name_code = $_REQUEST['term'];
+
+        $data = CourseMaster::select('id', 'course_code', 'course_title')
+            ->where('course_title','like','%'.$course_name_code.'%')
+            ->orwhere('course_code','like','%'.$course_name_code.'%')
+            ->get();
+        $data_count = $data->count();
+
+        if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["course_code"].'->'.$row["course_title"]);
+            }
+        }
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+        return json_encode($json);
+    }
+
 
 
 

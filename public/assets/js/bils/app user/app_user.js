@@ -159,7 +159,8 @@ $(document).ready(function () {
 				$("#app_user_button").trigger('click');
 				$("#app_user_button").html('Update App User');
 				$("#save_app_user_info").html('Update');
-				$("#cancle_app_user_update").removeClass('hide');
+				$("#cancle_app_user_update").removeClass('hidden');
+				$("#clear_button").addClass('hidden');
 
 				$("#app_user_edit_id").val(app_user_info['id']);
 				$("#app_user_name").val(app_user_info['name']);
@@ -215,7 +216,7 @@ $(document).ready(function () {
 		$("#app_user_button").html('Add App User');
 		$("#save_app_user_info").html('Save');
 		$("#cancle_app_user_update").addClass('hide');
-
+		$("#app_user_img").attr("src", "src");
 	});
 	/*-------- Cancle App Users Update End --------*/
 
