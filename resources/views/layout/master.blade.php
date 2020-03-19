@@ -58,6 +58,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/image-uploader.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/jquery-editable.css') }}"/>
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+    {{-- Auto Load css --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}" rel="stylesheet">
+
 {{--    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">--}}
     <link rel="shortcut icon" href="favicon.ico" />
     @yield('style')
@@ -360,6 +363,7 @@
 <input type="hidden" class="site_url" value="{{url('/')}}">
 {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 <script src="{{ asset('assets/js/sweetalert.min.js')}}"></script>
+<script src="{{ asset('assets/js/jquery-ui.min.js')}}"></script>
 @yield('JScript')
 <script>
    /* // Enable pusher logging - don't include this in production
