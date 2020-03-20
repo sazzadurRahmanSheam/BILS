@@ -101,8 +101,8 @@ $(document).ready(function () {
 		"ajax": url+"/message/sent-message-list",
 		"aoColumns": [
 			{ mData: 'id'},
-			{ mData: 'message_id' },
-			{ mData: 'admin_id'},
+			//{ mData: 'message_id' },
+			//{ mData: 'admin_id'},
 			{ mData: 'admin_message'},
 			{ mData: 'app_user_id'},
 			{ mData: 'is_seen', className: "text-center"},
@@ -257,7 +257,7 @@ $(document).ready(function () {
 							if(message["is_attachment"]==1){
 								if(message["attachment_type"]==1){
 									//Image
-									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-top-left-radius: 25px !important; border-top-right-radius: 0px !important; border-bottom-left-radius: 20px !important; border-bottom-right-radius: 20px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
 								 //onclick="zoomImg()"
 								}
 								else if(message["attachment_type"]==2){
@@ -295,7 +295,7 @@ $(document).ready(function () {
 							if(message["is_attachment_app_user"]==1){
 								if(message["attachment_type"]==1){
 									//Image
-									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-radius:0px !important;" src="'+msg_image_url+'/'+message["app_user_attachment"]+'" alt="">';
+									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important;border-top-left-radius: 25px !important; border-top-right-radius: 0px !important; border-bottom-left-radius: 20px !important; border-bottom-right-radius: 20px !important;" src="'+msg_image_url+'/'+message["app_user_attachment"]+'" alt="">';
 								 //onclick="zoomImg()"
 								}
 								else if(message["attachment_type"]==2){
@@ -312,14 +312,9 @@ $(document).ready(function () {
 								}
 
 							}
-							
-
-
-
-
-							
-							html += '</li>';
 							html += '<span class="time_date">'+message["msg_date"]+'</span>';
+							html += '</li>';
+							
 							// 11:01 AM    |    June 9
 							
 						}

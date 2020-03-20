@@ -17,7 +17,7 @@
                            <b> Admin User List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="admin_user_add_button">
 	                           <b> Add Admin User</b>
@@ -55,12 +55,12 @@
 									<table class="table table-bordered table-hover admin_user_table" id="admin_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th width="100px">Photo</th>
-												<th>User ID</th>
-												<th>Name</th>
-												<th>Email </th>
-												<th class="hidden-xs">Status</th>
-												<th>Actions</th>
+												<th width="10%">Photo</th>
+												<th width="5%">ID</th>
+												<th width="25%">Name</th>
+												<th width="30%">Email </th>
+												<th class="hidden-xs" width="15%">Status</th>
+												<th width="15%">Actions</th>
 											</tr>
 										</thead>
 										<tbody>

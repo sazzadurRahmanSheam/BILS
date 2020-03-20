@@ -1,8 +1,0 @@
-
-
-3.End date shwould less than start date.
-4.In control panel active status caan't change.
-5.In settings course category can't delete or update.
-6.Multiple notice don't show.Only ne notice show 
-7. Maximum 2 publication show in publication list. When add 3rd item then one item automatically delete.
-8. In settings App user group can't delete a item.

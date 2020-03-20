@@ -82,7 +82,7 @@ $(document).ready(function () {
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						//load_data("");
-						clear_form();
+						// clear_form();
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
@@ -92,6 +92,8 @@ $(document).ready(function () {
 						$("#save_admin_info").html("save");
 						$("#admin_user_add_button").html('Add Admin User');
 						$("#cancle_admin_update").addClass('hidden');
+						$("#emp_img").attr("src", "src");
+						$("#id").val('');
 					}
 					$(window).scrollTop();
 				 }	
@@ -112,6 +114,7 @@ $(document).ready(function () {
 		$("#cancle_admin_update").addClass('hidden');
 		$("#clear_button").removeClass('hidden');
 		$("#emp_img").attr("src", "src");
+		$("#id").val('');
 	});
 
 	
@@ -286,9 +289,9 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						
-						admin_group.ajax.reload();
 						clear_form();
+						admin_group.ajax.reload();
+						$("#edit_id").val('');
 						$("#cancle_admin_user_group_button").addClass('hidden');
 						$(".save").html('Save');
 
@@ -346,6 +349,7 @@ $(document).ready(function () {
 			clear_form();
 			$("#cancle_admin_user_group_button").addClass('hidden');
 			$(".save").html('Save');
+			$("#edit_id").val('');
 			
 		});
 	}

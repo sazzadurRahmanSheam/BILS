@@ -20,7 +20,7 @@
                            <b> Teacher List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="teacher_add_button">
 	                           <b> Teacher Entry</b>

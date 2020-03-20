@@ -85,7 +85,7 @@ class SurveysController extends Controller
 */
             $data['actions']=" <button title='View' onclick='survey_view(".$data->id.",0)' id='view_" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
 
-            $data['actions'].=" <button title='Result' onclick='survey_participant(".$data->id.")' id='view_result" . $data->id . "' class='btn btn-xs btn-primary' ><i class='clip-zoom-in'></i></button>";
+            $data['actions'].=" <button title='Result' onclick='survey_participant(".$data->id.")' id='view_result" . $data->id . "' class='btn btn-xs btn-warning' ><i class='clip-star-5'></i></button>";
 
             if($edit_permisiion>0){
                 $data['actions'] .=" <button title='Serial' onclick='survey_view(".$data->id.",1)' id=edit_serial" . $data->id . "  class='btn btn-xs btn-green' ><i class='clip-list-3'></i></button>";

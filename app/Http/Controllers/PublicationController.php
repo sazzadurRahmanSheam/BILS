@@ -82,6 +82,8 @@ class PublicationController extends Controller
 						'created_by'=>$created_by,	
 					];
 					$response = Publication::create($column_value);
+					$publication_id = $response->id;
+					$view_url = 'publication/'.$publication_id;
 
 					## Insert Into Notification 
 					
@@ -94,17 +96,26 @@ class PublicationController extends Controller
 											->get();
 
 							foreach ($to_user_id as $k) {
-								
 								$to_id = $k['app_user_id'];
-								$column_value = [
-									'from_id'=>$from_id,
-									'from_user_type'=>$from_user_type,
-									'to_id'=>$to_id,	
-									'to_user_type'=>$to_user_type,	
-									'notification_title'=>$notification_title,	
-									'message'=>$message,	
-								];
-								$response = Notification::create($column_value);
+
+								$old_noti = Notification::select('id')
+											->where('to_id', $to_id)
+											->where('view_url', $view_url)
+											->count();
+								
+								if ($old_noti==0) {
+									$column_value = [
+										'from_id'=>$from_id,
+										'from_user_type'=>$from_user_type,
+										'to_id'=>$to_id,	
+										'to_user_type'=>$to_user_type,	
+										'notification_title'=>$notification_title,	
+										'message'=>$message,
+										'view_url'=>$view_url,	
+									];
+									$response = Notification::create($column_value);
+								}
+								
 							}
 						}
 					}

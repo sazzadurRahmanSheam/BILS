@@ -62,7 +62,7 @@
 								<div class="col-md-4 col-sm-4 col-xs-12">
 									
 									<input type="hidden" name="id" id="id">
-									@if($actions['add_permisiion']==1)
+									@if($actions['add_permisiion']>0)
 										<button type="submit" id="save_module" class="btn btn-success">Save</button>                    
 										<button type="button" id="clear_button" class="btn btn-primary">Clear</button>
 									@endif                         

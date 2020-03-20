@@ -20,7 +20,7 @@
                            <b> Publication List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="publication_entry">
 	                           <b> Add Publication</b>

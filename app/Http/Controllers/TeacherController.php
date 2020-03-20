@@ -18,6 +18,7 @@ use App\AppUser;
 use App\CoursePerticipant;
 use App\Notification;
 use App\Teacher;
+use App\UserGroupMember;
 
 class TeacherController extends Controller
 {
@@ -117,8 +118,28 @@ class TeacherController extends Controller
 								'user_type'=>3,
 							];
 							$response = User::create($column_value1);
+							
+							$t_id = $response->id;
+							$group_id=37;
+							$status = 1;
+							
+							$data_for_group_entry = new UserGroupMember();
+							$data_for_group_entry->group_id=$group_id;
+							$data_for_group_entry->emp_id=$t_id;
+							$data_for_group_entry->status=$status;
+							$data_for_group_entry->save();
+
+							$get_group_id = UserGroup::select('id')->where('type',1)->where('id','!=',$group_id)->get();
+							foreach ($get_group_id as $get_group_id ){
+								$group_entry = new UserGroupMember();
+								$group_entry->group_id=$get_group_id['id'];
+								$group_entry->emp_id=$t_id;
+								$group_entry->status=0;
+								$group_entry->save();
+						}
 						
 					}
+
 				}
 				else if($request->teacher_edit_id != ''){
 					$data = Teacher::find($request->teacher_edit_id);
