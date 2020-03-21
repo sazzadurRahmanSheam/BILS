@@ -57,9 +57,10 @@
 											<tr>
 												<th width="10%">Photo</th>
 												<th width="5%">ID</th>
-												<th width="25%">Name</th>
-												<th width="30%">Email </th>
-												<th class="hidden-xs" width="15%">Status</th>
+												<th width="20%">Name</th>
+												<th width="20%">Email </th>
+												<th width="20%">Groups </th>
+												<th class="hidden-xs" width="10%">Status</th>
 												<th width="15%">Actions</th>
 											</tr>
 										</thead>

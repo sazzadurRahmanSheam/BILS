@@ -178,12 +178,14 @@ class TeacherController extends Controller
 		
 		$data = User::select('id', 'name', 'nid_no', 'contact_no', 'email', 'address')
 				->where('name','like','%'.$name.'%')
+				->orwhere('email','like','%'.$name.'%')
+				->orwhere('contact_no','like','%'.$name.'%')
 				->get();
 		$data_count = $data->count();
 
 		 if($data_count>0){
             foreach ($data as $row) {
-                $json[] = array('id' => $row["id"],'label' => $row["name"], 'email' => $row["email"], 'nid_no' => $row["nid_no"], 'contact_no' => $row["contact_no"], 'address' => $row["address"] );
+                $json[] = array('id' => $row["id"],'label' => $row["name"]." (".$row["contact_no"].")", 'email' => $row["email"], 'nid_no' => $row["nid_no"], 'contact_no' => $row["contact_no"], 'address' => $row["address"] );
             }
         } 
         else {

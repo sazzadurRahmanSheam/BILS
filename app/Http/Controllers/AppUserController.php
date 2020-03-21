@@ -123,23 +123,21 @@ class AppUserController extends Controller
 					$response = AppUser::create($column_value);
 					$app_user_id = $response->id;
 					$group = $request->input('group');
-					$status = 1;
-					if ($group!="") {
-						foreach ($group as $group ) {
-							$data_for_group_entry = new AppUserGroupMember();
-							$data_for_group_entry->group_id=$group;
-							$data_for_group_entry->app_user_id=$app_user_id;
-							$data_for_group_entry->status=$status;
-							$data_for_group_entry->save();
-						}
-					}
-					else{
+					
+					$app_user_group = UserGroup::select('id')->where('type',2)->get();
+					foreach ($app_user_group as $app_user_group ) {
 						$data_for_group_entry = new AppUserGroupMember();
-						$data_for_group_entry->group_id=39;
+						$data_for_group_entry->group_id=$app_user_group['id'];
 						$data_for_group_entry->app_user_id=$app_user_id;
-						$data_for_group_entry->status=$status;
+						$data_for_group_entry->status=0;
 						$data_for_group_entry->save();
 					}
+					if ($group != "") {
+						foreach ($group as $group ) {
+							$a=	DB::table('app_user_group_members')->where('app_user_id',$app_user_id)->where('group_id',$group)->update(['status'=>1]);
+						}
+					}
+					
 				}
 				#Update
 				else if($request->app_user_edit_id != ''){
@@ -203,7 +201,15 @@ class AppUserController extends Controller
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
     	$app_user_details = AppUser::Select('id',  'name',  'email', 'status')->orderBy('id', 'desc')->get();		
 		$return_arr = array();
-		foreach($app_user_details as $user){	
+		foreach($app_user_details as $user){
+
+			$groups =  DB::table('app_user_group_members as augm')
+					->leftJoin('user_groups as ug', 'augm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('augm.app_user_id', $user->id)
+					->where('augm.status', 1)
+					->get();
+			$user['groups_name'] = $groups[0]->group_name;	
 			
 
 			if($user->status == 0){
@@ -388,6 +394,51 @@ class AppUserController extends Controller
     	return redirect()->back();
 
     }
+
+    ##App user report here
+
+    public function appUserReport(){
+    	$data['page_title'] = $this->page_title;
+		$data['module_name']= "Reports";
+		$data['sub_module']= "App User";
+
+        return view('reports.app_user', $data);
+    }
+
+    public function appUserNameAutoComplete(){
+		$name = $_REQUEST['term'];
+		
+		$data = AppUser::select('id', 'name', 'email', 'contact_no')
+				->where('name','like','%'.$name.'%')
+				->orwhere('email','like','%'.$name.'%')
+				->orwhere('contact_no','like','%'.$name.'%')
+				->get();
+		$data_count = $data->count();
+
+		 if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["name"]." (".$row["email"].", ".$row["contact_no"].")" );
+            }
+        } 
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+		return json_encode($json);
+	}
+
+	public function getAppUserReport($id){
+		$app_user_report = AppUser::where('id', $id)->get();
+
+		$group_name = DB::table('app_user_group_members as augm')
+					->leftJoin('user_groups as ug', 'augm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('augm.app_user_id', $id)
+					->get();
+		return json_encode(array(
+			'app_user_report'=>$app_user_report,
+			'group_name'=>$group_name,
+		));
+	}
 
 
    

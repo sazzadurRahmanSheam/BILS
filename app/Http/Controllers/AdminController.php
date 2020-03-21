@@ -63,6 +63,15 @@ class AdminController extends Controller
 			->get();
 		$return_arr = array();
 		foreach($adminUser as $user){
+
+			$groups =  DB::table('user_group_members as ugm')
+					->leftJoin('user_groups as ug', 'ugm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('ugm.emp_id', $user->id)
+					->where('ugm.status', 1)
+					->get();
+			$user['groups_name'] = $groups[0]->group_name;
+
 			if ($user->user_profile_image!="" || $user->user_profile_image!=null) {
 				$user['user_profile_image'] = '<img height="50" width="70" src="'.$a.'/'.$user->user_profile_image.'" alt="image" />';
 			}else{

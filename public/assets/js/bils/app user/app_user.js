@@ -16,6 +16,7 @@ $(document).ready(function () {
 			{ mData: 'id', className: "text-center"},
 			{ mData: 'name' },
 			{ mData: 'email'},
+			{ mData: 'groups_name'},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
@@ -90,6 +91,7 @@ $(document).ready(function () {
 						$("#cancle_app_user_update").addClass('hide');
 						$("#app_user_edit_id").val('');
 						$("#app_user_img").attr("src", "src");
+						app_user_group_load();
 					}
 					$(window).scrollTop();
 				 }	
@@ -161,8 +163,8 @@ $(document).ready(function () {
 				$("#app_user_button").trigger('click');
 				$("#app_user_button").html('Update App User');
 				$("#save_app_user_info").html('Update');
-				$("#cancle_app_user_update").removeClass('hidden');
-				$("#clear_button").addClass('hidden');
+				$("#cancle_app_user_update").removeClass('hide');
+				$("#clear_button").addClass('hide');
 
 				$("#app_user_edit_id").val(app_user_info['id']);
 				$("#app_user_name").val(app_user_info['name']);
@@ -220,6 +222,8 @@ $(document).ready(function () {
 		$("#cancle_app_user_update").addClass('hide');
 		$("#app_user_img").attr("src", "src");
 		$("#app_user_edit_id").val('');
+		$("#clear_button").removeClass('hide');
+		app_user_group_load();
 	});
 	/*-------- Cancle App Users Update End --------*/
 
@@ -347,36 +351,39 @@ $(document).ready(function () {
 
 	
 	/*------ Get Group Name For App User Entry Start ------*/
-	$.ajax({
-		url: url+"/app-user/load-app-user-groups",
-		dataType: 'json',
-		success: function(response) {
-		var data = response.data;	
-			if(!jQuery.isEmptyObject(data)){
-				var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input checked type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
-					html += '<tr><td colspan="2">';
-					$.each(data, function(i,data){
-						html += '<div class="col-md-3" style="margin-top:5px;"><input checked type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
-					});
-					html += '</td></tr>';
-				html +='</table>';	
+	app_user_group_load = function app_user_group_load(){
+		$.ajax({
+			url: url+"/app-user/load-app-user-groups",
+			dataType: 'json',
+			success: function(response) {
+			var data = response.data;	
+				if(!jQuery.isEmptyObject(data)){
+					var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >User Groups</th><th class="col-md-2 col-sm-2 col-xs-12"> <input  type="checkbox" id="check-all" class="tableflat">Select All</th></tr></thead>';
+						html += '<tr><td colspan="2">';
+						$.each(data, function(i,data){
+							html += '<div class="col-md-3" style="margin-top:5px;"><input  type="checkbox" name="group[]"  class="tableflat check_permission"  value="'+data["id"]+'"/> '+data["group_name"]+'</div>';
+						});
+						html += '</td></tr>';
+					html +='</table>';	
+				}
+				$('#select_app_user_group').html(html);
+				$('#app_user_form').iCheck({
+						checkboxClass: 'icheckbox_flat-green',
+						radioClass: 'iradio_flat-green'
+				});									
+				
+				$('#app_user_form input#check-all').on('ifChecked', function () {
+					
+					$("#app_user_form .tableflat").iCheck('check');
+				});
+				$('#app_user_form input#check-all').on('ifUnchecked', function () {
+					
+					$("#app_user_form .tableflat").iCheck('uncheck');
+				});
 			}
-			$('#select_app_user_group').html(html);
-			$('#app_user_form').iCheck({
-					checkboxClass: 'icheckbox_flat-green',
-					radioClass: 'iradio_flat-green'
-			});									
-			
-			$('#app_user_form input#check-all').on('ifChecked', function () {
-				
-				$("#app_user_form .tableflat").iCheck('check');
-			});
-			$('#app_user_form input#check-all').on('ifUnchecked', function () {
-				
-				$("#app_user_form .tableflat").iCheck('uncheck');
-			});
-		}
-	});
+		});
+	}
+	app_user_group_load();
 	/*------ Get Group Name For App User Entry End ------*/
 	
 

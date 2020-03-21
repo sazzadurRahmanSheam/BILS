@@ -15,6 +15,7 @@ $(document).ready(function () {
 			{ mData: 'id'},
 			{ mData: 'name' },
 			{ mData: 'email'},
+			{ mData: 'groups_name'},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],

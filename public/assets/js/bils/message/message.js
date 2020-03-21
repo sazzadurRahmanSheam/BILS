@@ -104,7 +104,7 @@ $(document).ready(function () {
 			//{ mData: 'message_id' },
 			//{ mData: 'admin_id'},
 			{ mData: 'admin_message'},
-			{ mData: 'app_user_id'},
+			{ mData: 'app_user_name'},
 			{ mData: 'is_seen', className: "text-center"},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
@@ -188,10 +188,10 @@ $(document).ready(function () {
 				var app_user = response['app_user_info'];
 				//Load App user who are chated 
 				if(!jQuery.isEmptyObject(app_user)){
-					var html = "";
+					var html = '<div class="">';
 					//var active_chat_class = "active";
 					$.each(app_user, function(i,row){
-						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact">';
+						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact msg_auto_load">';
 						html+='<div class="wrap">';
 						html+='<span class="contact-status online"></span>';
 						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
@@ -201,11 +201,15 @@ $(document).ready(function () {
 						html+='</div>';
 						html+='</div>';
 						html+='</li>';
+						html+='</div>';
 						//active_chat_class = "";
+
 					});
 				}
 				$("#app_user_show").html(html);
-
+				//$('.msg_auto_load:first-child').trigger('click');
+				//$('.msg_auto_load').trigger('click');
+				//$('.msg_auto_load').first().addClass('active');
 			}
 		});
 	}
@@ -467,7 +471,7 @@ $(document).ready(function () {
 	}
 
 	//autosuggest
-	/*$.ajaxSetup({
+	$.ajaxSetup({
 		headers:{
 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 		}
@@ -498,7 +502,7 @@ $(document).ready(function () {
 			$("#app_user_id").val(id);
 			
 		}
-	});*/
+	});
 
 
 	
