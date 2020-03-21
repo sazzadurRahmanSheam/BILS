@@ -24,7 +24,7 @@ $(document).ready(function () {
     function openWin( html) {
         //html+="<script>function printDiv(){alert('windo');window.print();alert('after');}</script>";
 
-        myWindow = window.open("", "myWindow", "width=200, height=100");
+        myWindow = window.open("", "myWindow", "height=400,width=800");
         myWindow.document.write(html);
     }
 

@@ -91,15 +91,18 @@ class MessageController extends Controller
                                             ->get();
                                             
                             foreach ($app_user_id as $k) {
-                                $app_user_id = $k['app_user_id'];
-                                $column_value = [
-                                    'admin_message'=>$request->admin_message,
-                                    'admin_id'=>$admin_id,
-                                    'app_user_id'=>$app_user_id,
-                                    'message_id'=>$message_id,
-                                    'status'=>$is_active,
-                                ];
-                                $response = MessageMaster::create($column_value);
+                                $old_msg = MessageMaster::select('id')->where('message_id', $message_id)->where('app_user_id', $k['app_user_id'])->count();
+                                if ($old_msg==0) {
+                                    $app_user_id = $k['app_user_id'];
+                                    $column_value = [
+                                        'admin_message'=>$request->admin_message,
+                                        'admin_id'=>$admin_id,
+                                        'app_user_id'=>$app_user_id,
+                                        'message_id'=>$message_id,
+                                        'status'=>$is_active,
+                                    ];
+                                    $response = MessageMaster::create($column_value);
+                                }
                             }
                         }
                         
@@ -149,7 +152,7 @@ class MessageController extends Controller
         $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
         $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-        $message_list = MessageMaster::Select('id', 'message_id', 'admin_id', 'admin_message', 'app_user_id', 'is_seen', 'status')
+        $message_list = MessageMaster::Select('id', 'admin_message', 'app_user_id', 'is_seen', 'status')
                         ->orderBy('id','desc')
                         ->get();
         $return_arr = array();

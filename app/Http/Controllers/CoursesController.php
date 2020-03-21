@@ -220,6 +220,7 @@ class CoursesController extends Controller
 
                             $Interested_user_id = CoursePerticipant::select('perticipant_id')
                                                 ->where('is_interested','1')
+                                                ->orWhere('is_interested','3')
                                                 ->get();
                             foreach($Interested_user_id as $Interested_user_id){
                                 ##Notification Entry
@@ -243,6 +244,7 @@ class CoursesController extends Controller
 
                             $Interested_user_id = CoursePerticipant::select('perticipant_id')
                                                 ->where('is_interested','1')
+                                                ->orWhere('is_interested','3')
                                                 ->get();
                             foreach($Interested_user_id as $Interested_user_id){
                                 ##Notification Entry
@@ -266,6 +268,7 @@ class CoursesController extends Controller
 
                             $Interested_user_id = CoursePerticipant::select('perticipant_id')
                                                 ->where('is_interested','1')
+                                                ->orWhere('is_interested','3')
                                                 ->get();
                             foreach($Interested_user_id as $Interested_user_id){
                                 ##Notification Entry
@@ -289,6 +292,7 @@ class CoursesController extends Controller
 
                             $Interested_user_id = CoursePerticipant::select('perticipant_id')
                                                 ->where('is_interested','1')
+                                                ->orWhere('is_interested','3')
                                                 ->get();
                             foreach($Interested_user_id as $Interested_user_id){
                                 ##Notification Entry

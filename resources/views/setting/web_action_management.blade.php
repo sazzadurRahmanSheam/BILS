@@ -15,7 +15,7 @@
             <div class="col-md-6 col-sm-12">
                 <h4 class="text-info">Web Action Management</h4><hr>
                 <div id="entry_form_div" class="tab-pane in">
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
                         <div class="row no-margin-row">
 
 							<form id="web_action_form" name="web_action_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">

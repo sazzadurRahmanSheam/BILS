@@ -17,7 +17,7 @@
                            <b> App User List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="app_user_button">
 	                           <b> Add App User</b>
@@ -55,8 +55,7 @@
 									<table class="table table-bordered table-hover admin_user_table" id="app_user_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th width="100">Photo</th>
-												<th>User ID</th>
+												<th>ID</th>
 												<th>Name</th>
 												<th>Email </th>
 												<th class="hidden-xs">Status</th>

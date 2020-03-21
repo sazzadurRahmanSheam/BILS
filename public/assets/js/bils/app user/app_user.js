@@ -12,8 +12,8 @@ $(document).ready(function () {
 		"serverSide": false,
 		"ajax": url+"/app-user/app-user-list",
 		"aoColumns": [
-			{ mData: 'app_user_profile_image', className: "text-center"}, 
-			{ mData: 'id'},
+			
+			{ mData: 'id', className: "text-center"},
 			{ mData: 'name' },
 			{ mData: 'email'},
 			{ mData: 'status', className: "text-center"},
@@ -78,7 +78,7 @@ $(document).ready(function () {
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						//load_data("");
-						clear_form();
+						//clear_form();
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
@@ -88,6 +88,8 @@ $(document).ready(function () {
 						$("#app_user_button").html('Add App User');
 						$("#save_app_user_info").html('Save');
 						$("#cancle_app_user_update").addClass('hide');
+						$("#app_user_edit_id").val('');
+						$("#app_user_img").attr("src", "src");
 					}
 					$(window).scrollTop();
 				 }	
@@ -217,6 +219,7 @@ $(document).ready(function () {
 		$("#save_app_user_info").html('Save');
 		$("#cancle_app_user_update").addClass('hide');
 		$("#app_user_img").attr("src", "src");
+		$("#app_user_edit_id").val('');
 	});
 	/*-------- Cancle App Users Update End --------*/
 

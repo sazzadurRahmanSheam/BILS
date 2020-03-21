@@ -133,6 +133,13 @@ class AppUserController extends Controller
 							$data_for_group_entry->save();
 						}
 					}
+					else{
+						$data_for_group_entry = new AppUserGroupMember();
+						$data_for_group_entry->group_id=39;
+						$data_for_group_entry->app_user_id=$app_user_id;
+						$data_for_group_entry->status=$status;
+						$data_for_group_entry->save();
+					}
 				}
 				#Update
 				else if($request->app_user_edit_id != ''){
@@ -194,10 +201,10 @@ class AppUserController extends Controller
 		$delete_action_id 	= 10;
 		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
-    	$app_user_details = AppUser::Select('user_profile_image', 'id',  'name',  'email', 'status')->orderBy('id', 'desc')->get();		
+    	$app_user_details = AppUser::Select('id',  'name',  'email', 'status')->orderBy('id', 'desc')->get();		
 		$return_arr = array();
 		foreach($app_user_details as $user){	
-			$user['app_user_profile_image'] = '<img height="70" max-width="100" src="'.$app_user_image_path.'/'.$user->user_profile_image.'" alt="image" />';
+			
 
 			if($user->status == 0){
 				$user['status']="<button class='btn btn-xs btn-warning' disabled>In-active</button>";

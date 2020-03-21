@@ -88,7 +88,7 @@ $(document).ready(function () {
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						
-						clear_form();
+						//clear_form();
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");

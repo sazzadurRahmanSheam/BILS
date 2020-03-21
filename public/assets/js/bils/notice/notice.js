@@ -1,4 +1,3 @@
-// All the user related js functions will be here
 $(document).ready(function () {	
 	
 	// for get site url
@@ -74,7 +73,6 @@ $(document).ready(function () {
 						resultHtml += '</ul>';
 						success_or_error_msg('#master_message_div',"danger",resultHtml);
 						
-						clear_form();
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
@@ -84,12 +82,20 @@ $(document).ready(function () {
 						$("#notice_entry").html('Add Notice');
 						$(".save").html('Save');
 						$("#notice_list").trigger('click');
-						$("#save_notice").html('Save');
+						//$("#save_notice").html('Save');
 					}
 					$(window).scrollTop();
 				 }	
 			});
 		}	
+	});
+
+	$("#cancel_notice").click(function(){
+		clear_form();
+		$("#notice_entry").html('Add Notice');
+		$(".save").html('Save');
+		$("#notice_list").trigger('click');
+		$("#cancel_notice").addClass('hidden');
 	});
 
 	//Notice Data Table
@@ -101,7 +107,7 @@ $(document).ready(function () {
 		"aoColumns": [
 			{ mData: 'id'},
 			{ mData: 'title' },
-			{ mData: 'details'},
+			// { mData: 'details'},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
 		],
@@ -163,6 +169,8 @@ $(document).ready(function () {
 			url: url+'/notice/notice-edit/'+edit_id,
 			success: function(response){
 				var data = JSON.parse(response);
+				$("#cancel_notice").removeClass('hidden');
+				$("#clear_button").addClass('hidden');
 				$("#notice_entry").trigger('click');
 				$("#notice_entry").html('Notice Update');
 				$("#save_notice").html('Update');

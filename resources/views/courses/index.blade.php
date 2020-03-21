@@ -17,7 +17,7 @@
                            <b> Courses List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="courses_add_button">
 	                           <b> Open Courses</b>
@@ -27,6 +27,12 @@
 	                <li style="display: none;" id="course_view_li">
                         <a data-toggle="tab" href="#course_view" id="course_view_button">
                            <b>Courses View</b>
+                        </a>
+	                </li>
+	                <li style="float:right; display: none; cursor:pointer;
+	                " id="back_li">
+                        <a  id="back_btn">
+                           <b>Back</b>
                         </a>
 	                </li>
                 </ul>
@@ -60,12 +66,12 @@
 									<table class="table table-bordered table-hover course_table" id="course_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>ID</th>
-												<th>Course Title</th>
-												<th>Duration </th>
-												<th class="hidden-xs">Publish Status</th>
-												<th class="hidden-xs">Course Status</th>
-												<th>Actions</th>
+												<th width="5%">ID</th>
+												<th width="40%">Course Title</th>
+												<th width="10">Duration </th>
+												<th width="10%" class="hidden-xs">Publish Status</th>
+												<th width="10*" class="hidden-xs">Course Status</th>
+												<th width="15%">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -94,12 +100,12 @@
 											<input type="text" id="course_title" name="course_title" class="form-control col-lg-12"/>
 										</div>
 									</div>
-									{{-- <div class="form-group">
+									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Code<span class="required">*</span></label>
 										<div class="col-md-10 col-sm-10 col-xs-10">
 											<input type="text" id="course_code" name="course_code" class="form-control col-lg-12"/>
 										</div>
-									</div> --}}
+									</div>
 									<div class="form-group">
 										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Description</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
@@ -168,7 +174,7 @@
 										</div>						
 									</div>
 
-									@if($actions['publish_course_permisiion']==1)
+									@if($actions['publish_course_permisiion']>0)
 										<div style="display:none;" id="edit_course_status" class="form-group">
 											<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Status</label>
 											<div class="col-md-4 col-sm-4 col-xs-6">

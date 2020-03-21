@@ -1,7 +1,4 @@
 @extends('layout.master')
-@section('style')
-	
-@endsection
 @section('content')
 	<!--MESSAGE-->
 	<div class="row ">
@@ -20,7 +17,7 @@
                            <b> Notice List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="notice_entry">
 	                           <b> Add notice</b>
@@ -58,11 +55,11 @@
 									<table class="table table-bordered table-hover notice_table" id="notice_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>Notice ID</th>
-												<th>Title</th>
-												<th>Details </th>
-												<th class="hidden-xs">Status</th>
-												<th>Actions</th>
+												<th width="10%"> ID</th>
+												<th width="50%">Title</th>
+												{{-- <th>Details </th> --}}
+												<th width="20%" class="hidden-xs">Status</th>
+												<th width="20%">Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -141,8 +138,9 @@
 								<div class="form-group">
 								<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 								<div class="col-md-3 col-sm-3 col-xs-12"> 
-									<button type="submit" id="save_notice" class="btn btn-success">Save</button>                    
+									<button type="submit" id="save_notice" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>                         
+									<button type="button" id="cancel_notice" class="btn btn-danger hidden">Cancel</button>                         
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>
