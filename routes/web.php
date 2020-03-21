@@ -8,7 +8,7 @@ Route::get('auth/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@au
 Route::post('auth/post/login',array('as'=>'Sign in', 'uses' =>'SystemAuthController@authPostLogin'));
 
 ##App User Message 
-Route::get('/app-user/{id}',array('as'=>'App User Message', 'uses' =>'AppUserController@appUserMessage'));
+Route::get('/message/app-user/{id}',array('as'=>'App User Message', 'uses' =>'AppUserController@appUserMessage'));
 Route::post('app-user-message-save',array('as'=>'App User Message Save', 'uses' =>'AppUserController@appUserMessageSave'));
 
 

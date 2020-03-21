@@ -51,7 +51,7 @@
 							<div class="form-group">
 							<label class="control-label col-md-2 col-sm-2 col-xs-6"></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								@if($actions['add_permisiion']==1)
+								@if($actions['add_permisiion']>0)
 									<button type="submit" id="save_app_user_group" class="btn btn-success save">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
 								@endif                       

@@ -528,7 +528,7 @@ class SettingController extends Controller
 				$row['actions'] .="<button onclick='course_category_edit(".$row->id.")' id=edit_" . $row->id . "  class='btn btn-xs btn-green edit' ><i class='clip-pencil-3'></i></button>";
 			}
 			if ($delete_permisiion>0) {
-				$row['actions'] .=" <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>>";
+				$row['actions'] .=" <button onclick='course_category_delete(".$row->id.")' id='delete_" . $row->id . "' class='btn btn-xs btn-danger' ><i class='clip-remove'></i></button>";
 			}
 
 
@@ -539,7 +539,7 @@ class SettingController extends Controller
 
 	#Course Categories Edit
 	public function course_category_edit($id){
-		$data = CoursCategory::Select('id','category_name','details','status')->where('id',$id)->first();
+		$data = CourseCategory::Select('id','category_name','details','status')->where('id',$id)->first();
 		return json_encode($data);
 	}
 

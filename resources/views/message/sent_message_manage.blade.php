@@ -20,7 +20,7 @@
                            <b> Message List</b>
                         </a>
                     </li>
-                    @if($actions['add_permisiion']==1)
+                    @if($actions['add_permisiion']>0)
 	                    <li class="">
 	                        <a data-toggle="tab" href="#entry_form_div" id="message_entry">
 	                           <b> Add Message</b>
@@ -59,9 +59,8 @@
 										<thead>
 											<tr>
 												<th>ID</th>
-												<th>Mess Id</th>
-												<th>Admin ID </th>
-												<th>Admin Mess </th>
+												
+												<th>Admin Message </th>
 												<th>App User ID </th>
 												<th>Seen Status </th>
 												<th class="hidden-xs">Status</th>

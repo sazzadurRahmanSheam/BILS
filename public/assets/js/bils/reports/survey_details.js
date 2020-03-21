@@ -27,7 +27,7 @@ $(document).ready(function () {
 
     function openWin( html) {
         html+="<script>function printDiv(){alert('windo');window.print();alert('after');}</script>";
-        myWindow = window.open("", "myWindow", "width=600, height=100");
+        myWindow = window.open("", "myWindow", "height=800,width=600");
         myWindow.document.write(html);
     }
 
@@ -102,7 +102,7 @@ $(document).ready(function () {
 
                 var html_body = '<div style="width: 98%" id="survey_body_view">'+description+'</div>'
 
-                var html= '<div style="width: 610px; border: solid 1px; padding-left: 20px">'+html_head+'<br>'+html_details+'<br>'+html_body+'</div>\n'
+                var html= '<div style="width: 610px;  padding-left: 20px">'+html_head+'<br>'+html_details+'<br>'+html_body+'</div>\n'
 
 
                 openWin(html)

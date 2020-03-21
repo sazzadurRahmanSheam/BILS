@@ -1,9 +1,6 @@
 // All the user related js functions will be here
 
 $(document).ready(function () {
-
-
-
     // for get site url
     var url = $('.site_url').val();
     var global_id ;
@@ -166,9 +163,17 @@ $(document).ready(function () {
                 global_id = id;
                 perticipant_manage();
 
+                $("#back_li").css('display','block');
+
             }
         });
     }
+
+    $("#back_btn").click(function(){
+        $("#back_li").css('display','none');
+        $("#course_view_li").css('display','none');
+        $("#courses_list_button").trigger('click');
+    });
 
 
 
@@ -192,9 +197,11 @@ $(document).ready(function () {
                     var html='';
                     html +='<br><div class="tabbable">';
                     html +='<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">';
+                    
                     html +='<li class="active"><a id="interested_list_button" data-toggle="tab" href="#interested_div"><b>Interested List <span class="badge badge-pill badge-warning">'+perticipantTotal+'</span></b></a></li>';
                     if(registerTotal>0){html +='<li><a id="registered_list_button" data-toggle="tab" href="#registered_div"><b>Registered List <span class="badge badge-pill badge-warning">'+registerTotal+'</span></b></a></li>';}
                     if(selectedTotal>0){html +='<li><a id="selected_list_button" data-toggle="tab" href="#selected_div"><b>Selected List <span class="badge badge-pill badge-warning">'+selectedTotal+'</span></b></a></li>';}
+
                     html +='</ul>';
                     html +='<div class="tab-content">';
 
@@ -228,7 +235,7 @@ $(document).ready(function () {
                         html += '<td>'+register_row["mobile"]+'</td>';
                         html += '<td>';
                        
-                        if(select_perticipant_permisiion==1){
+                        if(select_perticipant_permisiion>0){
                             html +=(register_row["is_selected"]=="1")?'<input class="form-control" checked value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">':'<input class="form-control" value="'+register_row["cp_id"]+'"  type="checkbox" name="selected_person[]">';
                         }
                         html += '</td></tr>';
@@ -236,7 +243,7 @@ $(document).ready(function () {
                     });
                     html +='<tr><td class="text-center" colspan="4"></td>';
                     html +='<td>'
-                    if(select_perticipant_permisiion==1){
+                    if(select_perticipant_permisiion>0){
                         html +='<button onclick="saveSelect()" class="btn btn-sam btn-success">Submit Selection</button></td></tr>'
                     }
                     html +='</td></tr>'
@@ -255,7 +262,7 @@ $(document).ready(function () {
                         html += '<td>'+selected_row["email"]+'</td>';
                         html += '<td>'+selected_row["mobile"]+'</td>';
                         html += '<td class="rem_input" >';
-                        if(select_perticipant_permisiion==1){
+                        if(select_perticipant_permisiion>0){
                             html += '<input class="form-control" value="'+selected_row["cp_id"]+'" type="checkbox" name="remove_person[]">';
                         }
                         html +='</td>;'
@@ -264,7 +271,7 @@ $(document).ready(function () {
                     });
                     html +='<tr><td class="text-center" colspan="4"></td>';
                     html +='<td>';
-                    if(select_perticipant_permisiion==1){
+                    if(select_perticipant_permisiion>0){
                         html +='<button onclick="save_remove_person()" class="btn btn-sm btn-danger" >Remove</button>';
                     }
                     html +='</td>';
