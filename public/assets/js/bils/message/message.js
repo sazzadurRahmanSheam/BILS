@@ -188,10 +188,10 @@ $(document).ready(function () {
 				var app_user = response['app_user_info'];
 				//Load App user who are chated 
 				if(!jQuery.isEmptyObject(app_user)){
-					var html = '<div class="">';
+					var html = '<div class="msg_auto_load">';
 					//var active_chat_class = "active";
 					$.each(app_user, function(i,row){
-						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact msg_auto_load">';
+						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact ">';
 						html+='<div class="wrap">';
 						html+='<span class="contact-status online"></span>';
 						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
@@ -214,7 +214,7 @@ $(document).ready(function () {
 		});
 	}
 	loadAppUser();
-
+$('.msg_auto_load').first().trigger('click');
 
 	loadMessage = function loadMessage(app_user_id, number_of_msg){//
 		$("#search_app_user").val("");
