@@ -14,6 +14,8 @@ use App\UserGroupMember;
 use App\Menu;
 use App\UserGroupPermission;
 use App\WebAction;
+use App\AppUser;
+use App\AppUserGroupMember;
 use App\Traits\HasPermission;
 
 class AdminController extends Controller
@@ -348,6 +350,21 @@ class AdminController extends Controller
 							$user_group_permissions->save();
 						}
 					}
+					else{
+						## Get Admin User
+						$app_user = AppUser::Select('id')->orderBy('id')->get();
+						
+						## Assign Admin user Group for all Admin user with status 0
+						foreach($app_user as $app_user){
+							$app_user_group_member = new AppUserGroupMember();
+							$app_user_group_member->app_user_id = $app_user['id'];
+							$app_user_group_member->group_id = $group_id;
+							$app_user_group_member->status = '0';
+							$app_user_group_member->save();
+							//echo $admin_emp_id;
+						}
+					}
+
 				}
 				else{
 					
