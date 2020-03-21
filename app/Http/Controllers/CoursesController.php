@@ -85,6 +85,7 @@ class CoursesController extends Controller
                     $created_by = Auth::user()->name;
                     $column_value = [
                         'course_title'=>$request->course_title,
+                        'course_code'=>$request->course_code,
                         'details'=>$request->details,
                         'duration'=>$request->duration,  
                         'course_type'=>$request->course_type,   
@@ -158,6 +159,7 @@ class CoursesController extends Controller
                     $updated_by = Auth::user()->name;
                     $column_value = [
                         'course_title'=>$request->course_title,
+                        'course_code'=>$request->course_code,
                         'details'=>$request->details,
                         'duration'=>$request->duration,  
                         'course_type'=>$request->course_type,   
@@ -511,9 +513,19 @@ class CoursesController extends Controller
                         ->whereIn('is_interested',[1,3])
                         ->count();
             $value['interested']=$interested;
+            $registered = CoursePerticipant::where('course_id','=',$value->id)
+                        ->where('is_interested',3)
+                        ->count();
+            $value['registered']=$registered;
+            $selected = CoursePerticipant::where('course_id','=',$value->id)
+                        ->where('is_selected',1)
+                        ->count();
+
+            $value['selected']=$selected;
            
             $data[]=$value;
         }
+
         $userName = Auth::User()->name;
         $data['user']=$userName;
 
@@ -528,24 +540,60 @@ class CoursesController extends Controller
         return view('reports.course_details', $data);
     }
 
-    public function getCourseNameAutoComplete(){
-        $course_name_code = $_REQUEST['term'];
+    // public function getCourseNameAutoComplete(){
+    //     $course_name_code = $_REQUEST['term'];
 
-        $data = CourseMaster::select('id', 'course_code', 'course_title')
-            ->where('course_title','like','%'.$course_name_code.'%')
-            ->orwhere('course_code','like','%'.$course_name_code.'%')
-            ->get();
-        $data_count = $data->count();
+    //     $data = CourseMaster::select('id', 'course_code', 'course_title')
+    //         ->where('course_title','like','%'.$course_name_code.'%')
+    //         ->orwhere('course_code','like','%'.$course_name_code.'%')
+    //         ->get();
+    //     $data_count = $data->count();
 
-        if($data_count>0){
-            foreach ($data as $row) {
-                $json[] = array('id' => $row["id"],'label' => $row["course_code"].'->'.$row["course_title"]);
-            }
-        }
-        else {
-            $json[] = array('id' => "0",'label' => "Not Found !!!");
-        }
-        return json_encode($json);
+    //     if($data_count>0){
+    //         foreach ($data as $row) {
+    //             $json[] = array('id' => $row["id"],'label' => $row["course_code"].'->'.$row["course_title"]);
+    //         }
+    //     }
+    //     else {
+    //         $json[] = array('id' => "0",'label' => "Not Found !!!");
+    //     }
+    //     return json_encode($json);
+    // }
+
+    public function getCourseTitle(){
+        $data = CourseMaster::select('id','course_title', 'course_code')->get();
+        return json_encode($data);
+    }
+
+    public function getCourseDetailsReport(){
+        $c_id = $_POST['id'];
+        $data = CourseMaster::where('id',$c_id)->first();
+        $interested_list = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->whereIn('cp.is_interested', ['1','3'])
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+         $registeredList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_interested', '3')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+
+        $selectedList = DB::table('course_perticipants as cp')
+                            ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
+                            ->where('cp.course_id', $c_id)
+                            ->where('cp.is_selected', '1')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile')
+                            ->get();
+
+        return json_encode(array(
+            'course_details'=>$data,
+            'interested_list'=>$interested_list,
+            'registeredList'=>$registeredList,
+            'selectedList'=>$selectedList,
+        ));
     }
 
 

@@ -252,9 +252,12 @@ $(document).ready(function () {
 							
 							if (message["admin_message"]!=null && message["admin_message"]!="") {
 								html += '<p>'+message["admin_message"]+'</p><br><br><br>';
+							}else{
+								html+="<br><br>";
 							}
 
 							if(message["is_attachment"]==1){
+
 								if(message["attachment_type"]==1){
 									//Image
 									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-top-left-radius: 25px !important; border-top-right-radius: 0px !important; border-bottom-left-radius: 20px !important; border-bottom-right-radius: 20px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';

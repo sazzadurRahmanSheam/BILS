@@ -166,6 +166,9 @@ Route::group(['middleware' => ['auth']], function () {
 	##Sent message to user
 	Route::post('/message/admin-message-sent-to-user',array('as'=>'Admin message Sent', 'uses' =>'MessageController@newMsgSent'));
 
+	Route::get('/report/course/get-course-title',array('as'=>'Get course Title', 'uses' =>'CoursesController@getCourseTitle'));
+	Route::post('/report/course/course-details',array('as'=>'Get course Title', 'uses' =>'CoursesController@getCourseDetailsReport'));
+
 
 
 

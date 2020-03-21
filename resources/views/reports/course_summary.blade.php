@@ -50,13 +50,13 @@
                                             <div class="col-md-5">
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">Start Date<span class="required">*</span></label>
                                                 <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="date" id="date_from" name="date_from"  class="form-control col-lg-12"/>
+                                                    <input  type="date" id="date_from" name="date_from"  class="form-control col-lg-12"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">End Date<span class="required">*</span></label>
                                                 <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="date" id="date_to" name="date_to"  class="form-control col-lg-12"/>
+                                                    <input  type="date" id="date_to" name="date_to"  class="form-control col-lg-12"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
