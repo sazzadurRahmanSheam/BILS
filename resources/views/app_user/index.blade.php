@@ -58,6 +58,7 @@
 												<th>ID</th>
 												<th>Name</th>
 												<th>Email </th>
+												<th>Groups </th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>
 											</tr>
@@ -144,7 +145,7 @@
 								<div class="col-md-3 col-sm-3 col-xs-12">
 									<button type="submit" id="save_app_user_info" class="btn btn-success">Save</button>                    
 									<button type="button" id="clear_button" class="btn btn-warning">Clear</button>
-									<button type="button" id="cancle_app_user_update" class="btn btn-danger hidden">Cancle</button>                    
+									<button type="button" id="cancle_app_user_update" class="btn btn-danger hide">Cancle</button>                    
 								</div>
 								 <div class="col-md-7 col-sm-7 col-xs-12">
 									<div id="form_submit_error" class="text-center" style="display:none"></div>

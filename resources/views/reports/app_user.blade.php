@@ -1,4 +1,7 @@
 @extends('layout.master')
+@section('style')
+    
+@endsection
 @section('content')
     <!--MESSAGE-->
     <div class="row ">
@@ -13,14 +16,14 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab4">
                     <li class="active">
-                        <a id="" data-toggle="tab" href="#course_sumarry_div">
-                            <b> Course Summary</b>
+                        <a id="survey_list_button" data-toggle="tab" href="#survey_list_div">
+                            <b> App User Report</b>
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     <!-- PANEL FOR OVERVIEW-->
-                    <div id="course_sumarry_div" class="tab-pane in active">
+                    <div id="survey_list_div" class="tab-pane in active">
                         <div class="row no-margin-row">
                             <!-- List of Categories -->
                             <div class="panel panel-default">
@@ -46,21 +49,16 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="col-md-12">
-                                        <form id="course_search" name="survey_search" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
-                                            <div class="col-md-5">
-                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">Start Date<span class="required">*</span></label>
+                                        <form id="survey_details" name="survey_details" enctype="multipart/form-data" class="form form-horizontal form-label-left" >
+                                            <div class="col-md-10">
+                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">App User Name or (Phone, Email)<span class="required">*</span></label>
                                                 <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input  type="date" id="date_from" name="date_from"  class="form-control col-lg-12"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <label class="control-label col-md-4 col-sm-4 col-xs-12">End Date<span class="required">*</span></label>
-                                                <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input  type="date" id="date_to" name="date_to"  class="form-control col-lg-12"/>
+                                                    <input type="text" id="app_user_name_search" name="app_user_name_search"  class="form-control col-lg-12"/>
+                                                    <input type="hidden" id="app_user_id_id" name="app_user_id_id" value="">
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <button type="button" class="btn btn-primary" id="search_course_summary">Search</button>
+                                                <button type="button" class=" btn btn-primary " id="app_user_search">Search</button>
                                             </div>
                                         </form>
                                     </div>
@@ -73,6 +71,7 @@
                     <!--END PANEL FOR OVERVIEW -->
 
                 </div>
+
             </div>
         </div>
     </div>
@@ -84,7 +83,8 @@
 
 @section('JScript')
 
-    <script src="{{ asset('assets/js/bils/reports/course_summary.js')}}"></script>
-
+    <script src="{{ asset('assets/js/bils/reports/app_user.js')}}"></script>
+    
 @endsection
+
 

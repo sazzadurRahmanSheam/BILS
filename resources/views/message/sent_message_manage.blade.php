@@ -61,7 +61,7 @@
 												<th>ID</th>
 												
 												<th>Admin Message </th>
-												<th>App User ID </th>
+												<th>App User Name </th>
 												<th>Seen Status </th>
 												<th class="hidden-xs">Status</th>
 												<th>Actions</th>

@@ -104,7 +104,7 @@ $(document).ready(function () {
 			//{ mData: 'message_id' },
 			//{ mData: 'admin_id'},
 			{ mData: 'admin_message'},
-			{ mData: 'app_user_id'},
+			{ mData: 'app_user_name'},
 			{ mData: 'is_seen', className: "text-center"},
 			{ mData: 'status', className: "text-center"},
 			{ mData: 'actions' , className: "text-center"},
@@ -188,10 +188,10 @@ $(document).ready(function () {
 				var app_user = response['app_user_info'];
 				//Load App user who are chated 
 				if(!jQuery.isEmptyObject(app_user)){
-					var html = "";
+					var html = '<div class="msg_auto_load">';
 					//var active_chat_class = "active";
 					$.each(app_user, function(i,row){
-						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact">';
+						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact ">';
 						html+='<div class="wrap">';
 						html+='<span class="contact-status online"></span>';
 						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
@@ -201,16 +201,20 @@ $(document).ready(function () {
 						html+='</div>';
 						html+='</div>';
 						html+='</li>';
+						html+='</div>';
 						//active_chat_class = "";
+
 					});
 				}
 				$("#app_user_show").html(html);
-
+				//$('.msg_auto_load:first-child').trigger('click');
+				//$('.msg_auto_load').trigger('click');
+				//$('.msg_auto_load').first().addClass('active');
 			}
 		});
 	}
 	loadAppUser();
-
+$('.msg_auto_load').first().trigger('click');
 
 	loadMessage = function loadMessage(app_user_id, number_of_msg){//
 		$("#search_app_user").val("");
@@ -252,9 +256,12 @@ $(document).ready(function () {
 							
 							if (message["admin_message"]!=null && message["admin_message"]!="") {
 								html += '<p>'+message["admin_message"]+'</p><br><br><br>';
+							}else{
+								html+="<br><br>";
 							}
 
 							if(message["is_attachment"]==1){
+
 								if(message["attachment_type"]==1){
 									//Image
 									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-top-left-radius: 25px !important; border-top-right-radius: 0px !important; border-bottom-left-radius: 20px !important; border-bottom-right-radius: 20px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
@@ -464,7 +471,7 @@ $(document).ready(function () {
 	}
 
 	//autosuggest
-	/*$.ajaxSetup({
+	$.ajaxSetup({
 		headers:{
 			'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
 		}
@@ -495,7 +502,7 @@ $(document).ready(function () {
 			$("#app_user_id").val(id);
 			
 		}
-	});*/
+	});
 
 
 	

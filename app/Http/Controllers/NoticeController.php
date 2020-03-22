@@ -219,17 +219,19 @@ class NoticeController extends Controller
 		return json_encode($data);
 	}
 
-	public function appUserNameAutoComplete(){
+	 public function appUserNameAutoComplete(){
 		$name = $_REQUEST['term'];
 		
-		$data = AppUser::select('id', 'name')
+		$data = AppUser::select('id', 'name', 'email', 'contact_no')
 				->where('name','like','%'.$name.'%')
+				->orwhere('email','like','%'.$name.'%')
+				->orwhere('contact_no','like','%'.$name.'%')
 				->get();
 		$data_count = $data->count();
 
 		 if($data_count>0){
             foreach ($data as $row) {
-                $json[] = array('id' => $row["id"],'label' => $row["name"]);
+                $json[] = array('id' => $row["id"],'label' => $row["name"]." (".$row["email"].", ".$row["contact_no"].")" );
             }
         } 
         else {

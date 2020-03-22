@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 		});
 		
 		view()->composer('layout.sidebar', function($view){
-			$menus = Menu::where('parent_id',0)->where('status',1)->orderBy('status','asc')->get();
+			$menus = Menu::where('parent_id',0)->where('status',1)->orderBy('serial_no')->get();
 			$menu_n_submenu_array = array();
 			foreach($menus as $parent_menu){
 				$submenus = Menu::where('parent_id',$parent_menu['id'])->where('status',1)->orderBy('status','asc')->get();
