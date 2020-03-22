@@ -53,8 +53,10 @@
                                             <div class="col-md-10">
                                                 <label class="control-label col-md-4 col-sm-4 col-xs-12">course Title or course Code<span class="required">*</span></label>
                                                 <div class="col-md-8 col-sm-8 col-xs-8">
-                                                    <input type="text" id="course_name_code" name="course_name_code"  class="form-control col-lg-12"/>
-                                                    <input type="hidden" id="course_id" name="course_id" value="">
+                                                    <select name="course_title_code" id="course_title_code" class="form-control">
+                                                        <option disabled="" selected="" value="">Select Course</option>
+                                                        
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">

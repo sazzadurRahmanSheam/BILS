@@ -155,8 +155,12 @@ class MessageController extends Controller
         $message_list = MessageMaster::Select('id', 'admin_message', 'app_user_id', 'is_seen', 'status')
                         ->orderBy('id','desc')
                         ->get();
+
         $return_arr = array();
         foreach($message_list as $data){ 
+            $app_user_name = AppUser::select('name')->where('id', $data->app_user_id)->first();
+            $data['app_user_name'] = $app_user_name['name'];
+            
             $data['is_seen']=($data->is_seen == 1)?"<button class='btn btn-xs btn-success' disabled>Seen</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-seen</button>";       
             
             if ($data->status==0) {
@@ -210,13 +214,6 @@ class MessageController extends Controller
                             //->orderBy('mm.message_date_time', 'desc')
                             ->orderBy('mm.id', 'desc')
                             ->get();
-        // $message = DB::table('message_masters as mm')
-        //                     ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
-        //                     ->where('mm.app_user_id',5)
-        //                     ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message')
-        //                     ->orderBy('mm.created_at')
-        //                     ->get();
-        
 
         return json_encode(array(
             "app_user_info"=>$app_user_info,
@@ -255,6 +252,8 @@ class MessageController extends Controller
         $search_app_user_name = $_POST['name'];
         $app_users = AppUser::select('id', 'name')
                     ->where('name','like', '%'.$search_app_user_name.'%')
+                    ->orwhere('contact_no','like', '%'.$search_app_user_name.'%')
+                    ->orwhere('email','like', '%'.$search_app_user_name.'%')
                     ->get();
         return json_encode($app_users);
     }

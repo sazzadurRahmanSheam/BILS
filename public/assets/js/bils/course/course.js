@@ -339,6 +339,7 @@ $(document).ready(function () {
                 $(".save").html('Update');
 
                 $("#course_edit_id").val(data['id']);
+                $("#course_code").val(data['course_code']);
                 $("#course_title").val(data['course_title']);
                 $("#details").val(data['details']);
                 $("#duration").val(data['duration']);

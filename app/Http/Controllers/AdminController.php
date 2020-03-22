@@ -14,6 +14,8 @@ use App\UserGroupMember;
 use App\Menu;
 use App\UserGroupPermission;
 use App\WebAction;
+use App\AppUser;
+use App\AppUserGroupMember;
 use App\Traits\HasPermission;
 
 class AdminController extends Controller
@@ -63,6 +65,15 @@ class AdminController extends Controller
 			->get();
 		$return_arr = array();
 		foreach($adminUser as $user){
+
+			$groups =  DB::table('user_group_members as ugm')
+					->leftJoin('user_groups as ug', 'ugm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('ugm.emp_id', $user->id)
+					->where('ugm.status', 1)
+					->get();
+			$user['groups_name'] = $groups[0]->group_name;
+
 			if ($user->user_profile_image!="" || $user->user_profile_image!=null) {
 				$user['user_profile_image'] = '<img height="50" width="70" src="'.$a.'/'.$user->user_profile_image.'" alt="image" />';
 			}else{
@@ -339,6 +350,21 @@ class AdminController extends Controller
 							$user_group_permissions->save();
 						}
 					}
+					else{
+						## Get Admin User
+						$app_user = AppUser::Select('id')->orderBy('id')->get();
+						
+						## Assign Admin user Group for all Admin user with status 0
+						foreach($app_user as $app_user){
+							$app_user_group_member = new AppUserGroupMember();
+							$app_user_group_member->app_user_id = $app_user['id'];
+							$app_user_group_member->group_id = $group_id;
+							$app_user_group_member->status = '0';
+							$app_user_group_member->save();
+							//echo $admin_emp_id;
+						}
+					}
+
 				}
 				else{
 					

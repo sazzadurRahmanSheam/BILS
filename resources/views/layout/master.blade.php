@@ -118,7 +118,7 @@
                 <div class="done_registration ">                                
                     <div class="doc_content">
                         <div class="col-md-12">
-                            <div class="col-md-10" style="text-align:left">
+                            <div class="" style="text-align:left;">
                                 <div class="byline">
                                     <span id="modal_body"></span>
                                 </div>

@@ -166,6 +166,13 @@ Route::group(['middleware' => ['auth']], function () {
 	##Sent message to user
 	Route::post('/message/admin-message-sent-to-user',array('as'=>'Admin message Sent', 'uses' =>'MessageController@newMsgSent'));
 
+	Route::get('/report/course/get-course-title',array('as'=>'Get course Title', 'uses' =>'CoursesController@getCourseTitle'));
+	Route::post('/report/course/course-details',array('as'=>'Get course Title', 'uses' =>'CoursesController@getCourseDetailsReport'));
+	## App user Report
+	Route::get('/report/app-user',array('as'=>'App user report', 'uses' =>'AppUserController@appUserReport'));
+	Route::post('/report/app-user-auto-suggest',array('as'=>'App user name auto-suggest', 'uses' =>'AppUserController@appUserNameAutoComplete'));
+	Route::get('/report/app-user-report/{id}',array('as'=>'Get App user Report', 'uses' =>'AppUserController@getAppUserReport'));
+
 
 
 

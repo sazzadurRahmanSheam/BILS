@@ -30,6 +30,7 @@ $(document).ready(function () {
 
 	$('#search_course_summary').on('click', function () {
 		event.preventDefault();
+		
 
 		$.ajaxSetup({
 			headers:{
@@ -52,41 +53,58 @@ $(document).ready(function () {
 					'<div id="order_summary_view">\n' +
 					'        <div style="alignment: center; text-align: center">\n' +
 					'            <img src="'+url+'/assets/images/logo.jpg" style=" height: 100px; width: auto;">' +
-					'             <h2 style="text-align: center; color: #5897fb; size: 24px;">Course Grid Summary</h2>\n' +
+					'             <h2 style="text-align: center; size: 24px;">Course Summary Report</h2>\n' +
 					'        </div>\n' +
 					'        <div style="padding: 5px">\n' +
 					'           <table style="width:100%; border: 1px solid grey ;border-collapse: collapse">\n' +
 					'              <thead>\n' +
 					'                <tr style="padding: 5px">\n' +
 					'                 <th style="padding: 5px; border: 1px solid grey; text-align: left">Course Name</th>\n' +
-					'                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center">Teacher</th>\n' +
-					'                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Paypemt Method</th>\n' +
-					'                 <th style="max-width: 120px; padding: 5px; border: 1px solid grey; text-align: center" >Payment Fee</th>\n' +
-					'                 <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Starus</th>\n' +
-					'                 <th style="max-width: 40px; padding: 5px; border: 1px solid grey; text-align: center" >Interested</th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center"> Teacher </th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Status</th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Publish Status</th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Interested</th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Registered</th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Seleccted</th>\n' +
 					'                </tr>\n' +
 					'              </thead>\n' +
 					'              <tbody>'
 
 
-
+					var pub_status;
 				$.each(response, function (key, value) {
 					if(key!='user'){
-						if(value['status']==1){
-							status = 'Active'
+						if(value['course_status']==1){
+							status = 'Initiate'
 						}
-						else {
-							status = 'Removed'
+						else if(value['course_status']==2){
+							status = 'Approved'
+						}
+						else if(value['course_status']==3){
+							status = 'Rejected'
+						}
+						else if(value['course_status']==4){
+							status = 'Started'
+						}
+						else if(value['course_status']==5){
+							status = 'Completed'
+						}
+
+						if(value['pub_status']==1){
+							pub_status = 'Published';
+						}else{
+							pub_status = 'Not-Published';
 						}
 
 						//console.log(value)
 						html+='<tr>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px">'+value['course_title']+'</td>\n' +
-							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['start_date']+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['course_teacher']+'</td>\n' +
-							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['payment_fee']+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+status+'</td>\n' +
+							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+pub_status+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['interested']+'</td>\n' +
+							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['registered']+'</td>\n' +
+							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['selected']+'</td>\n' +
 							'   </tr>'
 					}
 
