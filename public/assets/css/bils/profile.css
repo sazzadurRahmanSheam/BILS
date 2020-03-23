@@ -27,7 +27,7 @@ body{
 		text-align:center;
 	}
 	.bio-image img{
-		border-radius:50%;
+		/*border-radius:50%;*/
 	}
 	.bio-content{
 		text-align:left;

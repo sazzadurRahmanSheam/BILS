@@ -60,8 +60,13 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
     {{-- Auto Load css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}" rel="stylesheet">
-
-{{--    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">--}}
+    <style type="text/css" media="screen">
+        .jumbotron p {
+            /*margin-bottom: 15px;*/
+            font-size: 20px !important;
+            /*font-weight: 200;*/
+        }
+    </style>
     <link rel="shortcut icon" href="favicon.ico" />
     @yield('style')
 </head>
