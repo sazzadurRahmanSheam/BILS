@@ -186,6 +186,7 @@
                                                   <div class="" style="border-bottom:1px solid black">
                                                     <span id="name_div"></span>
                                                     <p><div id="status_div"></div></p>
+                                                    <div id="group_div"></div></p>
                                                   </div>
                                                     <hr>
                                                   <div class="col-md-6">  
@@ -205,7 +206,7 @@
                                               </div>
                                             </div>
                     <div class="row">
-                      <div class="form-group row">
+                      <div class="row">
                         <div class="col-md-12">
                         <div class="form-group" style="border-bottom:1px solid black">
                             <div id="remarks_div"></div>

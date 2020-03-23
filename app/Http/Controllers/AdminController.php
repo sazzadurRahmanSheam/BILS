@@ -260,7 +260,16 @@ class AdminController extends Controller
 	//Admin User View
 	public function adminUserView($id){
 		$data = User::find($id);
-		return json_encode($data);
+		$groups =  DB::table('user_group_members as ugm')
+					->leftJoin('user_groups as ug', 'ugm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('ugm.emp_id', $id)
+					->where('ugm.status', 1)
+					->get();
+		return json_encode(array(
+			'data'=>$data,
+			'groups'=>$groups,
+		));
 	}
 
 
@@ -396,7 +405,7 @@ class AdminController extends Controller
 		$delete_permisiion = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 		$give_permission = $this->PermissionHasOrNot($admin_user_id,$give_permission_action_id);
 
-		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->get();
+		$admin_group_list = UserGroup::Select('id', 'group_name', 'type','status')->where('type','1')->orderBy('group_name')->get();
 		$return_arr = array();
 		foreach($admin_group_list as $admin_group_list){
 			$admin_group_list['type']=($admin_group_list->type == 1)?"Admin User":"App User";
@@ -438,6 +447,7 @@ class AdminController extends Controller
 		$user_groups = UserGroup::Select('id','group_name')
 			->where('status','1')
 			->where('type','1')
+			->orderBy('group_name')
 			->get();
 		return json_encode(array('data'=>$user_groups));
     }
