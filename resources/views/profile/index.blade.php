@@ -1,6 +1,11 @@
 @extends('layout.master')
 @section('style')
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bils/profile.css') }}">
+	<style type="text/css" media="screen">
+		hr{
+			margin:0;
+		}
+	</style>
 @endsection
 @section('content')
 

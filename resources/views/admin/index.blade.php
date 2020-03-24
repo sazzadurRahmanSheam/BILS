@@ -133,7 +133,7 @@
 									</div>
 									<br/>
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Remarks</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Profile Details</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
 											<textarea rows="2" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea> 
 										</div>

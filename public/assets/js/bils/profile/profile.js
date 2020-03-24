@@ -15,16 +15,18 @@ $(document).ready(function () {
 					var data = response[0];
 					var html = "";
 					html +="<h1>"+data['name']+"</h1><hr>";
-					html +="<h4>NID NO: "+data['nid_no']+"</h4><hr>";
-					html +="<h4>Contact NO: "+data['contact_no']+"</h4><hr>";
-					html +="<h4>Email: "+data['email']+"</h4><hr>";
-					html +="<h4>Address: "+data['address']+"</h4><hr>";
-					html +="<h4>Remarks: "+data['remarks']+"</h4><hr>";
+					
+					html +="<h4><i class='fa fa-phone'></i>  "+data['contact_no']+"</h4><hr>";
+					html +="<h4><i class='fa fa-envelope'></i> "+data['email']+"</h4><hr>";
+					html +="<h4><i  class='clip-location'></i> "+data['address']+"</h4><hr>";
+					html +="<h4><b>NID NO: </b>"+data['nid_no']+"</h4><hr>";
+					
+					html +="<h4><b>Profile Details: </b>"+data['remarks']+"</h4><hr>";
 					html +="<button class='btn btn-info' onclick='edit_profile()'>Edit Profile</button>";
 					html +=" <button class='btn btn-danger' onclick='change_password()'>Change Password</button>";
 					$("#profile_info").html(html);
 				}
-			});
+			}); 	
 		}
 		profile_info();
 

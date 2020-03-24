@@ -107,7 +107,7 @@
 										</div>
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Author</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<input type="text" id="authors" name="authors" class="form-control col-lg-12"/>
+											<input type="text" id="authors" name="authors" class="form-control col-lg-12" value="Bangladesh Institute of Labour Studies" />
 										</div>
 									</div>
 

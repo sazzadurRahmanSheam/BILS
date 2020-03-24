@@ -235,7 +235,9 @@ $(document).ready(function () {
 			url: url+'/app-user/app-user-view/'+user_id,
 			success: function(response){
 
-				var data = JSON.parse(response);
+				var response = JSON.parse(response);
+				var data = response['data'];
+				var groups = response['groups'];
 
 				$("#profile_modal").modal();
 				$("#name_div").html('<h2>'+data['name']+'</h2>');
@@ -243,15 +245,26 @@ $(document).ready(function () {
 				$("#email_div").html(data['email']);
 				$("#nid_div").html(data['nid_no']);
 				$("#address_div").html(data['address']);
-				$("#remarks_div").html('<h2>Remarks</h2>');
-				$("#remarks_details").html(data['remarks']);
-				$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
 				
-				if(data['status']==1){
-					$("#status_div").html('<span class="badge badge-success">Active</span>');
+				$("#group_div").html('<b>Groups: </b><span class="badge badge-warning">'+groups[0]["group_name"]+'</span>');
+
+				if (data['remarks']!=null && data['remarks']!="") {
+					$("#remarks_div").html('<h2>Profile Details</h2>');
+					$("#remarks_details").html(data['remarks']);
+				}
+
+				if (data["user_profile_image"]!=null && data["user_profile_image"]!="") {
+					$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
 				}
 				else{
-					$("#status_div").html('<span class="badge badge-danger">In-active</span>');
+					$(".profile_image").html('<img src="'+profile_image_url+'/no-user-image.png" alt="User Image" class="img img-responsive">');
+				}
+
+				if(data['status']==1){
+					$("#status_div").html('<b>Status: </b><span class="badge badge-success">Active</span>');
+				}
+				else{
+					$("#status_div").html('<b>Status: </b><span class="badge badge-danger">In-active</span>');
 				} 
 			
 

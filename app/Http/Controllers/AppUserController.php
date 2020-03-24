@@ -270,7 +270,17 @@ class AppUserController extends Controller
     /*----- App User View Start -----*/
     public function app_user_view($id){
     	$data = AppUser::find($id);
-		return json_encode($data);
+    	$groups =  DB::table('app_user_group_members as augm')
+					->leftJoin('user_groups as ug', 'augm.group_id', '=', 'ug.id')
+					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+					->where('augm.app_user_id', $id)
+					->where('augm.status', 1)
+					->get();
+
+		return json_encode(array(
+			'data'=>$data,
+			'groups'=>$groups,
+		));
     }
     /*----- App User View End -----*/
 
