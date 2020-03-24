@@ -60,8 +60,13 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
     {{-- Auto Load css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}" rel="stylesheet">
-
-{{--    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">--}}
+    <style type="text/css" media="screen">
+        .jumbotron p {
+            /*margin-bottom: 15px;*/
+            font-size: 20px !important;
+            /*font-weight: 200;*/
+        }
+    </style>
     <link rel="shortcut icon" href="favicon.ico" />
     @yield('style')
 </head>
@@ -186,6 +191,7 @@
                                                   <div class="" style="border-bottom:1px solid black">
                                                     <span id="name_div"></span>
                                                     <p><div id="status_div"></div></p>
+                                                    <div id="group_div"></div></p>
                                                   </div>
                                                     <hr>
                                                   <div class="col-md-6">  
@@ -205,7 +211,7 @@
                                               </div>
                                             </div>
                     <div class="row">
-                      <div class="form-group row">
+                      <div class="row">
                         <div class="col-md-12">
                         <div class="form-group" style="border-bottom:1px solid black">
                             <div id="remarks_div"></div>

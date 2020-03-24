@@ -40,7 +40,7 @@ class NoticeController extends Controller
     }
 
     public function load_app_user_groups(){
-    	$app_user_group = UserGroup::where('type','2')->get();
+    	$app_user_group = UserGroup::where('type','2')->orderBy('group_name')->get();
     	return json_encode($app_user_group);
     }
 
