@@ -166,7 +166,7 @@
 
 
 @section('JScript')
-<script>
+	<script>
 		var profile_image_url = "<?php echo asset('assets/images/user/app_user'); ?>";
 	</script>
 

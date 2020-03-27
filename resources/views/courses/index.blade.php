@@ -161,17 +161,26 @@
 									</div>
 
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Course Teacher</label>
+										
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Course coordinator</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
-											<select name="course_teacher" id="course_teacher" class="form-control col-lg-12">
-												<option  selected="" disabled="" value="">Select Teacher</option>
-											</select>
-											
+											<input type="text" id="teacher_name" name="teacher_name" class="form-control col-lg-12"/>
 										</div>
+										<input type="hidden" name="course_teacher" id="course_teacher">
+									
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Discount Message</label>
 										<div class="col-md-4 col-sm-4 col-xs-4">
 											<input type="text" id="discount_message" name="discount_message" class="form-control col-lg-12"/>
 										</div>						
+									</div>
+									<div class="form-group">
+										
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" >Perticipants Limit</label>
+										<div class="col-md-4 col-sm-4 col-xs-6">
+											<input type="number" id="perticipants_limit" name="perticipants_limit" class="form-control col-lg-12"/>
+										</div>
+										
+															
 									</div>
 
 									@if($actions['publish_course_permisiion']>0)

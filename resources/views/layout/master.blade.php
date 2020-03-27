@@ -185,7 +185,9 @@
                                                   <div class="profile_image">
                                                       
                                                   </div>
+
                                                 </div>
+                                                <button id="status_btn" type="button" class="btn hide">Status</button>
                                               </div>
                                               <div class="col-md-9 col-xs-12 col-sm-6 col-lg-9">
                                                   <div class="" style="border-bottom:1px solid black">
@@ -259,10 +261,6 @@
                     
                 </div>
             </div>
-
-
-
-
 
                                 </div>
                             </div>

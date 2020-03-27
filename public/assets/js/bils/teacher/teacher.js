@@ -59,7 +59,7 @@ $(document).ready(function () {
 						$("#teacher_add_button").html('Teacher Entry');
 						$(".save").html('Save');
 						$("#teacher_list_button").trigger('click');
-						
+						$("#teacher_img").attr("src", "");
 					}
 					$(window).scrollTop();
 				 }	
@@ -107,6 +107,7 @@ $(document).ready(function () {
 			$("#nid").val(nid);
 			$("#contact_no").val(contact_no);
 			$("#address").val(address);
+			
 
 		}
 	});
@@ -148,6 +149,8 @@ $(document).ready(function () {
 				$("#contact_no").val(data['contact_no']);
 				$("#nid").val(data['nid']);
 				$("#address").val(data['address']);
+				$("#remarks").val(data['remarks']);
+				$("#teacher_img").attr("src", profile_image_url+"/"+data["user_profile_image"]);
 				(data['status']=='0')?$("#is_active").iCheck('uncheck'):$("#is_active").iCheck('check');
 			}
 		});
@@ -198,6 +201,15 @@ $(document).ready(function () {
 				$("#nid_div").html(data['nid']);
 				$("#address_div").html(data['address']);
 				
+				if (data['remarks']!=null && data['remarks']!="") {
+					$("#remarks_div").html('<h2>Profile Details</h2>');
+					$("#remarks_details").html(data['remarks']);
+				}
+				else{
+					$("#remarks_div").html('');
+					$("#remarks_details").html("");
+				}
+
 				if(data['status']==0){
 					$("#status_div").html('<span class="badge badge-warning">In-active</span>');
 				}
@@ -206,6 +218,13 @@ $(document).ready(function () {
 				}
 				else{
 					$("#status_div").html('<span class="badge badge-danger">Deleted</span>');
+				}
+
+				if (data["user_profile_image"]!=null && data["user_profile_image"]!="") {
+					$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
+				}
+				else{
+					$(".profile_image").html('<img src="'+profile_image_url+'/no-user-image.png" alt="User Image" class="img img-responsive">');
 				}
 			}
 		});

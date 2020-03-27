@@ -219,17 +219,18 @@ class CoursesController extends Controller
                     if($data_check['course_status']!='2'){
 
                         if ($request->course_status=='2') {     ##Approve Course
-
-                            $Interested_user_id = CoursePerticipant::select('perticipant_id')
-                                                ->where('is_interested','1')
-                                                ->orWhere('is_interested','3')
-                                                ->get();
+ 
+                            $Interested_user_id = AppUser::select('id')->get();
+                            // CoursePerticipant::select('perticipant_id')
+                            //                     ->where('is_interested','1')
+                            //                     ->orWhere('is_interested','3')
+                            //                     ->get();
                             foreach($Interested_user_id as $Interested_user_id){
                                 ##Notification Entry
                                 $column_value4 = [
                                     'from_id'=>$from_id,
                                     'from_user_type'=>$from_user_type,
-                                    'to_id'=>$Interested_user_id['perticipant_id'],
+                                    'to_id'=>$Interested_user_id['id'],
                                     'to_user_type'=>$to_user_type,
                                     'notification_title'=>'BILS Approved '.$request->course_title.' Course',
                                     'view_url'=>'course/'.$request->course_edit_id,
@@ -375,7 +376,14 @@ class CoursesController extends Controller
 
     //Course view
     public function courseView($id){
-        $data = CourseMaster::find($id);
+        $data = DB::table('course_masters as a')
+                ->leftJoin('teachers as t', 'a.course_teacher', '=', 't.id')
+                ->leftJoin('course_categories as cc', 'a.course_type', '=', 'cc.id')
+                ->select('a.*', 't.name as t_name', 't.remarks as remarks', 'cc.category_name as category_name')
+                ->where('a.id', $id)
+                ->first();
+
+        //$data = CourseMaster::find($id);
         return json_encode($data);
     }
 
@@ -594,6 +602,29 @@ class CoursesController extends Controller
             'registeredList'=>$registeredList,
             'selectedList'=>$selectedList,
         ));
+    }
+
+
+    ## Auto complete
+    public function loadTeacherName(){
+        $name = $_REQUEST['term'];
+        
+        $data = Teacher::select('id', 'name', 'email', 'contact_no')
+                ->where('name','like','%'.$name.'%')
+                ->orwhere('email','like','%'.$name.'%')
+                ->orwhere('contact_no','like','%'.$name.'%')
+                ->get();
+        $data_count = $data->count();
+
+         if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["name"]." (".$row["email"].", ".$row["contact_no"].")",'name'=>$row["name"] );
+            }
+        } 
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+        return json_encode($json);
     }
 
 

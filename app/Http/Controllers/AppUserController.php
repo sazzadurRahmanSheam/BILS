@@ -450,7 +450,16 @@ class AppUserController extends Controller
 		));
 	}
 
-
+	public function changeAppUserStatus($id){
+		$data = AppUser::where('id', $id)->first();
+		if ($data->status==1) {
+			AppUser::where('id', $id)->update(['status'=>0]);
+		}
+		else if ($data->status==0) {
+			AppUser::where('id', $id)->update(['status'=>1]);
+		}
+		
+	}
    
 
 

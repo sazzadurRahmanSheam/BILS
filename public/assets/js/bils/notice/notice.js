@@ -82,7 +82,7 @@ $(document).ready(function () {
 						$("#notice_entry").html('Add Notice');
 						$(".save").html('Save');
 						$("#notice_list").trigger('click');
-						//$("#save_notice").html('Save');
+						$("#notice_edit_id").val("");
 					}
 					$(window).scrollTop();
 				 }	
@@ -96,6 +96,8 @@ $(document).ready(function () {
 		$(".save").html('Save');
 		$("#notice_list").trigger('click');
 		$("#cancel_notice").addClass('hidden');
+		$("#notice_edit_id").val("");
+		$("#clear_button").removeClass('hidden');
 	});
 
 	//Notice Data Table
@@ -126,7 +128,7 @@ $(document).ready(function () {
 				notice_info += "<h3>"+data['title']+"</h3><hr>";
 				notice_info += "<p>"+data['details']+"</p>";
 				$("#modal_body").html(notice_info);
-				$("#save_notice").html('Update');
+				
 			}
 		});
 	}
