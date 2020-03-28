@@ -61,18 +61,45 @@ class ProfileController extends Controller
 			}		
 			try{
 				DB::beginTransaction();
+				$admin_image = $request->file('emp_image_upload');
+
+				if (isset($admin_image)) {
+					
+					$image_name = time();
+					$ext = $admin_image->getClientOriginalExtension();
+					$image_full_name = $image_name.'.'.$ext;
+					$upload_path = 'assets/images/user/admin/';
+					
+					$success=$admin_image->move($upload_path,$image_full_name);
+
+					$column_value = [
+						'name'=>$request->name,
+						'nid_no'=>$request->nid_no,
+						'contact_no'=>$request->contact_no,
+						'email'=>$request->email,
+						'address'=>$request->address,
+						'remarks'=>$request->remarks,
+						'user_profile_image'=>$image_full_name,	
+					];
+				}
+				else{
+					$column_value = [
+						'name'=>$request->name,
+						'nid_no'=>$request->nid_no,
+						'contact_no'=>$request->contact_no,
+						'email'=>$request->email,
+						'address'=>$request->address,
+						'remarks'=>$request->remarks
+					];
+				}
 				
-				$column_value = [
-					'name'=>$request->name,
-					'nid_no'=>$request->nid_no,
-					'contact_no'=>$request->contact_no,
-					'email'=>$request->email,
-					'address'=>$request->address,
-					'remarks'=>$request->remarks
-					//'user_profile_image'=>$image_name,	
-				];
 				
 				$data = User::find($request->edit_profile_id);
+				$old_image = $data->user_profile_image;
+				if (isset($admin_image) && $old_image!="") {
+					$delete_img = $upload_path.$old_image;
+					unlink($delete_img);
+				}
 				$data->update($column_value);
 				DB::commit();
 				$return['result'] = "1";

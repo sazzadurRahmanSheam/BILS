@@ -50,7 +50,7 @@
 											<div class="row">
 												<div class="col-md-12">
 													<div class="bio-image">
-														<img class="img-thumbnail" src="{{ asset('assets/images/user/admin') }}/{{ Auth::user()->user_profile_image }}" alt="image" />
+														<img class="user_profile_img img-thumbnail" src="src" alt="image" />
 													</div>			
 												</div>
 											</div>	
@@ -103,7 +103,7 @@
 										</div>
 									</div>	
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Remarks</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Profile Details</label>
 										<div class="col-md-10 col-sm-10 col-xs-12">
 											<textarea rows="2" cols="100" id="remarks" name="remarks" class="form-control col-lg-12"></textarea> 
 										</div>
@@ -186,6 +186,10 @@
 
 
 @section('JScript')
+
+	<script>
+		var profile_image_url = "<?php echo asset('assets/images/user/admin'); ?>";
+	</script>
 
 	<script src="{{ asset('assets/js/bils/profile/profile.js')}}"></script>
 

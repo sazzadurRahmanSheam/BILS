@@ -161,12 +161,12 @@
 
 
 @section('JScript')
-	<script src="{{ asset('assets/js/bils/notice/notice.js')}}"></script>
-	
-{{-- <script src=" {{ asset('ckeditor/ckeditor.js') }} "></script>
+
 	<script>
-    	CKEDITOR.replace( 'details' );
-	</script> --}}
+		var notice_attachment_url = "<?php echo asset('assets/images/notice'); ?>";
+	</script>
+
+	<script src="{{ asset('assets/js/bils/notice/notice.js')}}"></script>
 
 @endsection
 

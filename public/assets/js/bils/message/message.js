@@ -79,13 +79,13 @@ $(document).ready(function () {
 					}
 					else{				
 						success_or_error_msg('#master_message_div',"success","Save Successfully");
-						$("#message_form .tableflat").iCheck('uncheck');
+						
 						message_table.ajax.reload();
 						clear_form();
-						// $("#publication_entry").html('Add Publication');
-						// $(".save").html('Save');
-						// $("#publication_list").trigger('click');
-						
+						$("#message_entry").html(' Add Message');
+						$(".save").html('Save');
+						$("#message_list").trigger('click');
+						$("#message_form .tableflat").iCheck('uncheck');
 					}
 					$(window).scrollTop();
 				 }	
@@ -194,7 +194,12 @@ $(document).ready(function () {
 						html+='<li onclick="loadMessage('+row["app_user_id"]+','+number_of_msg+')" class="contact ">';
 						html+='<div class="wrap">';
 						html+='<span class="contact-status online"></span>';
-						html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+						if (row["user_profile_image"]!=null && row["user_profile_image"]!="") {
+							html+='<img src="'+app_user_profile_url+'/'+row["user_profile_image"]+'" alt="" />';
+						}
+						else{
+							html+='<img src="'+app_user_profile_url+'/no-user-image.png" alt="" />';
+						}
 						html+='<div class="meta">';
 						html+='<p class="name">'+row["name"]+'</p>';
 						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
@@ -333,6 +338,14 @@ $('.msg_auto_load').first().trigger('click');
 				loadAppUser();
 				$(".message_body").html(message_body);
 				$("#app_user_name").html(app_user_name['name']);
+
+				if (app_user_name['user_profile_image']!=null && app_user_name['user_profile_image']!="") {
+					$("#app_user_image").attr('src', app_user_profile_url+"/"+app_user_name['user_profile_image']);
+				}
+				else{
+					$("#app_user_image").attr('src', app_user_profile_url+"/no-user-image.png");
+				}
+				
 				$("#load_more_message").html('<button onclick="limitIncrease('+app_user_name["id"]+');" style="margin-right: 10px;" type="button" class="btn btn-xs btn-warning">Load Old Message</button>');
 				$("#app_user_id").val(app_user_name['id']);
 				if (number_of_msg==10) {
@@ -505,14 +518,139 @@ $('.msg_auto_load').first().trigger('click');
 	});
 
 
+	showProfile = function showProfile(){
+		var id = $("#app_user_id").val();
+		$.ajax({
+			url: url+"/message/view-app-user/"+id,
+			success: function(response){
+				var response = JSON.parse(response);
+				var data = response['data'];
+				var groups = response['groups'];
+
+				$("#profile_modal").modal();
+				$("#name_div").html('<h2>'+data['name']+'</h2>');
+				$("#contact_div").html(data['contact_no']);
+				$("#email_div").html(data['email']);
+				$("#nid_div").html(data['nid_no']);
+				$("#address_div").html(data['address']);
+				
+				$("#group_div").html('<b>Groups: </b><span class="badge badge-warning">'+groups[0]["group_name"]+'</span>');
+
+				if (data['remarks']!=null && data['remarks']!="") {
+					$("#remarks_div").html('<h2>Profile Details</h2>');
+					$("#remarks_details").html(data['remarks']);
+				}
+
+				if (data["user_profile_image"]!=null && data["user_profile_image"]!="") {
+					$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
+				}
+				else{
+					$(".profile_image").html('<img src="'+profile_image_url+'/no-user-image.png" alt="User Image" class="img img-responsive">');
+				}
+
+				$("#status_btn").removeClass('hide');
+				//var class_name = "";
+				if(data['status']==1){
+					$("#status_div").html('<b>Status: </b><span class="badge badge-success">Active</span>');
+					//class_name = "btn-success";
+					$("#status_btn").addClass('btn-success');
+					$("#status_btn").removeClass('btn-danger');
+					$("#status_btn").html('Active');
+				}
+				else{
+					$("#status_div").html('<b>Status: </b><span class="badge badge-danger">In-active</span>');
+					//class_name = "btn-danger";
+					$("#status_btn").addClass('btn-danger');
+					$("#status_btn").removeClass('btn-success');
+					$("#status_btn").html('In-active');
+				}
+
+				
+				//$("#status_btn").addClass(class_name);
+
+			}	
+		});
+	}
+
+
+	//From profile status change
+	$("#status_btn").click(function(){
+		var id = $("#app_user_id").val();
+		$.ajax({
+			url: url+"/message/change-app-user-status/"+id,
+			success: function(response){
+				showProfile();
+			}
+		});
+	});
+
+
+
+	//load Message Category
+	$.ajax({
+			url: url+"/message/get-message-category",
+			success: function(response){
+				var data = JSON.parse(response);
+				var option = "";
+				$.each(data, function(i,data){
+					option += "<option value='"+data['id']+"'>"+data['category_name']+"</option>";
+				});
+				$("#message_category").append(option)
+			}
+		});
+
+	//App User Group Member
+	//Message Entry And update
+	$('#load_app_user_from_group ').click(function(event){		
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		
+		var formData = new FormData($('#message_form')[0]);
+		
+		
+			$.ajax({
+				url: url+"/message/load-app-user-from-group",
+				type:'POST',
+				data:formData,
+				async:false,
+				cache:false,
+				contentType:false,
+				processData:false,
+				success: function(data){
+					var response = JSON.parse(data);
+					var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >App Users</th><th class="col-md-2 col-sm-2 col-xs-12"> </th></tr></thead>';
+					html += '<tr><td colspan="2">';
+					$.each(response, function(i,row){
+						$.each(row, function(j,k){
+							html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox"  name="app_users[]"  class=""  value="'+k["app_user_id"]+'"/> '+k["name"]+'</div>';
+						});
+					});
+					html += '</td></tr>';
+					html +='</table>';
+					$("#app_user_group_members").html(html);
+					$('.form').iCheck({
+						checkboxClass: 'icheckbox_flat-green',
+						radioClass: 'iradio_flat-green'
+					});	
+
+					$('.flat_radio').iCheck({
+						radioClass: 'iradio_flat-green'
+					});
+				 }	
+			});
+		
+	});
+
+
+
+
 	
-
-
-
-
-
-	
-
+				
+					
 
 
 	

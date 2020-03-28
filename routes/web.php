@@ -172,6 +172,15 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/report/app-user',array('as'=>'App user report', 'uses' =>'AppUserController@appUserReport'));
 	Route::post('/report/app-user-auto-suggest',array('as'=>'App user name auto-suggest', 'uses' =>'AppUserController@appUserNameAutoComplete'));
 	Route::get('/report/app-user-report/{id}',array('as'=>'Get App user Report', 'uses' =>'AppUserController@getAppUserReport'));
+	
+	Route::get('/message/view-app-user/{id}',array('as'=>'Get App user View', 'uses' =>'AppUserController@app_user_view'));
+	Route::get('/message/change-app-user-status/{id}',array('as'=>'Change App User Status', 'uses' =>'AppUserController@changeAppUserStatus'));
+	##Get Message Category
+	Route::get('/message/get-message-category',array('as'=>'Get Message Caategory', 'uses' =>'MessageController@getMessageCategory'));
+	##Load App User From Group
+	Route::post('/message/load-app-user-from-group',array('as'=>'Load App User From Group', 'uses' =>'MessageController@loadAppUserFromGroup'));
+	
+	Route::post('/course/teacher-name',array('as'=>'Load Teacher Name', 'uses' =>'CoursesController@loadTeacherName'));
 
 
 

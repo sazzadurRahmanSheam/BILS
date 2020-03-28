@@ -113,6 +113,7 @@ input[type="file"] {
 }
 #frame #sidepanel #profile .wrap img {
   width: 50px;
+  height: 50px !important;
   border-radius: 50%;
   padding: 3px;
   border: 2px solid #e74c3c;
@@ -428,9 +429,11 @@ input[type="file"] {
 }
 #frame #sidepanel #contacts ul li.contact .wrap img {
   width: 35px;
+  height: 35px !important;
   border-radius: 50%;
   float: left;
   margin-right: 10px;
+  border: 1px solid #6a92b5;
 }
 @media screen and (max-width: 735px) {
   #frame #sidepanel #contacts ul li.contact .wrap img {
@@ -548,6 +551,7 @@ input[type="file"] {
 }
 #frame .content .contact-profile img {
   width: 40px;
+  height: 40px !important;
   border-radius: 50%;
   float: left;
   margin: 9px 12px 0 9px;
