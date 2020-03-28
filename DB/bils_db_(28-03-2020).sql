@@ -41,10 +41,10 @@ INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address
 	(5, 'Sazzadur', '123', '01747083028', 'sazzadur@gmail.com', 'kalabagan,dhaka', '81dc9bdb52d04dc20036dbd8313ed055', '1584624907.jpg', 'he is good.', 0, 2, '2020-02-10 09:12:29', '2020-03-21 21:42:16'),
 	(14, 'Momit Hasan', '213123', '01980340482', 'momit@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', '1584625014.jpg', 'asfasfsfsfsdf', 1, 2, '2020-03-19 13:36:54', '2020-03-21 20:30:43'),
 	(15, 'Chaki', '1243124', '01757808214', 'chakddi@gmail.com', 'Dhaka', '81dc9bdb52d04dc20036dbd8313ed055', NULL, '234234234243', 1, 2, '2020-03-19 13:37:48', '2020-03-21 20:30:10'),
-	(16, 'chanchal', '017', '017371511252', 'chanchal@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', '1584625108.jpg', 'asdasdasdas', 1, 2, '2020-03-19 13:38:14', '2020-03-21 20:30:30'),
+	(16, 'chanchal', '017', '017371511252', 'chanchal@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', '1584625108.jpg', 'asdasdasdas', 1, 2, '2020-03-19 13:38:14', '2020-03-27 15:28:46'),
 	(20, 'Nishat', '1234', '01706077974', 'nishat@gmail.com', 'dhanmondi', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-21 22:29:02', '2020-03-21 22:29:02'),
 	(21, 'alif', '123', '01836', 'alif@gmail.com', 'asdasd', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-21 22:31:40', '2020-03-21 22:31:40'),
-	(23, 'mehedi', '111', '011', 'mehedi@gmail.com', 'bangla bazar', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-21 22:38:32', '2020-03-21 22:38:32');
+	(23, 'mehedi', '111', '011', 'mehedi@gmail.com', 'bangla bazar', '81dc9bdb52d04dc20036dbd8313ed055', NULL, NULL, 1, 2, '2020-03-21 22:38:32', '2020-03-27 15:28:55');
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.app_user_group_members
@@ -71,7 +71,7 @@ INSERT INTO `app_user_group_members` (`id`, `app_user_id`, `group_id`, `status`,
 	(4, 15, 41, 1, '2020-03-19 13:37:48', '2020-03-22 02:30:10'),
 	(5, 16, 41, 1, '2020-03-19 13:38:14', '2020-03-22 02:30:30'),
 	(7, 5, 39, 0, '2020-03-22 04:13:33', NULL),
-	(8, 5, 41, 0, '2020-03-22 04:14:14', NULL),
+	(8, 5, 41, 0, '2020-03-22 04:14:14', '2020-03-28 00:10:29'),
 	(9, 14, 40, 0, '2020-03-22 04:14:33', NULL),
 	(10, 14, 41, 0, '2020-03-22 04:15:18', NULL),
 	(11, 15, 39, 0, '2020-03-22 04:15:41', NULL),
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `act_start_time` date DEFAULT NULL,
   `act_end_time` date DEFAULT NULL,
   `course_type` int(11) DEFAULT NULL COMMENT 'from course categories table',
-  `course_teacher` varchar(50) DEFAULT NULL COMMENT 'form teacher table',
+  `course_teacher` int(11) DEFAULT NULL COMMENT 'form teacher table',
   `course_responsible_person` varchar(15) DEFAULT 'admin',
   `details` text DEFAULT NULL,
   `course_status` tinyint(1) DEFAULT NULL COMMENT '1: Initiate, 2: Approved, 3: Rejected, 4: Started, 5: Completed',
@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `discount_message` text DEFAULT NULL,
   `attachment` varchar(50) DEFAULT NULL,
   `pub_status` tinyint(1) DEFAULT NULL COMMENT '0: Not-published, 1: Published',
+  `perticipants_limit` int(11) DEFAULT NULL,
   `created_by` varchar(20) DEFAULT '',
   `updated_by` varchar(20) DEFAULT '',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
@@ -141,9 +142,9 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
 
 -- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
-INSERT INTO `course_masters` (`id`, `course_code`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'course-1', 'Basic First Aid Procedures', 20, '2020-03-20', '2020-04-20', NULL, NULL, 1, 'Teacher 1', 'admin', 'This quick primer on common basic first aid procedures can help get you through a minor crisis, at least until the paramedics arrive or you can get to medical treatment. These tips are based on the 2019 first aid procedures recommended by the American Heart Association and American Red Cross.1﻿ They are not a substitute for proper first aid training but can be an introduction to what you can do.', 2, 200, 'Bkash', 'No discount available', NULL, 1, 'Momit', 'Momit', '2020-03-20 11:59:15', '2020-03-20 19:38:40'),
-	(2, 'course-2', 'Bangladesh Labour Act 2006 – A complete Overview of Employee Rights & Labour Law in Bangladesh', 30, '2020-03-21', '2020-05-11', NULL, NULL, 2, 'Teacher 2', 'admin', 'The 2006 Bangladesh Labor Act is relatively sweeping and progressive. The Act consolidates and replaces the 25 existing acts. The comprehensive nature of the law can immediately be gleaned from its coverage — conditions of service and employment, youth employment, maternity benefit, health hygiene, safety, welfare, working hours and leave, wages and payment, workers’ compensation for injury, trade unions and industrial relations, disputes, labour court, workers’ participation in companies profits, regulation of employment and safety of dock workers, provident funds, apprenticeship, penalty and procedure, administration, inspection, etc.', 1, 500, 'Bkash', 'No discount available', NULL, 0, 'Momit', '', '2020-03-20 12:50:58', '2020-03-20 19:38:47');
+INSERT INTO `course_masters` (`id`, `course_code`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `perticipants_limit`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+	(1, 'course-1', 'Basic First Aid Procedures', 20, '2020-03-20', '2020-04-20', NULL, NULL, 1, 1, 'admin', 'This quick primer on common basic first aid procedures can help get you through a minor crisis, at least until the paramedics arrive or you can get to medical treatment. These tips are based on the 2019 first aid procedures recommended by the American Heart Association and American Red Cross.1﻿ They are not a substitute for proper first aid training but can be an introduction to what you can do.', 2, NULL, 'Bkash', NULL, NULL, 1, NULL, 'Momit', 'Momit', '2020-03-20 11:59:15', '2020-03-27 20:36:02'),
+	(2, 'course-2', 'Bangladesh Labour Act 2006 – A complete Overview of Employee Rights & Labour Law in Bangladesh', 30, '2020-03-21', '2020-05-11', NULL, NULL, 2, 2, 'admin', 'The 2006 Bangladesh Labor Act is relatively sweeping and progressive. The Act consolidates and replaces the 25 existing acts. The comprehensive nature of the law can immediately be gleaned from its coverage — conditions of service and employment, youth employment, maternity benefit, health hygiene, safety, welfare, working hours and leave, wages and payment, workers’ compensation for injury, trade unions and industrial relations, disputes, labour court, workers’ participation in companies profits, regulation of employment and safety of dock workers, provident funds, apprenticeship, penalty and procedure, administration, inspection, etc.', 1, 500, 'Bkash', '', NULL, 0, NULL, 'Momit', '', '2020-03-20 12:50:58', '2020-03-28 02:12:39');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -154,6 +155,11 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
   `is_interested` tinyint(1) DEFAULT NULL COMMENT '0: Not seen, 1: Interested, 2:NOt interested, 3:registered, 4:not-registered',
   `is_selected` tinyint(1) DEFAULT NULL COMMENT '0: Not-selected, 1: Selected',
   `status` tinyint(1) DEFAULT NULL COMMENT '1: Active, 2: Removed',
+  `payment` double DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `reference_no` varchar(50) DEFAULT NULL,
+  `is_payment_verified` tinyint(1) DEFAULT 0 COMMENT '0: Not-varified, 1: Varified',
+  `payment_status` tinyint(1) DEFAULT NULL COMMENT '0: Partial-paid, 1:Pais',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
@@ -161,15 +167,15 @@ CREATE TABLE IF NOT EXISTS `course_perticipants` (
 
 -- Dumping data for table bils_new_db.course_perticipants: ~8 rows (approximately)
 /*!40000 ALTER TABLE `course_perticipants` DISABLE KEYS */;
-INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 1, 15, 1, NULL, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:24'),
-	(2, 1, 16, 1, NULL, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:25'),
-	(3, 1, 14, 0, NULL, NULL, '2020-03-20 12:58:45', '2020-03-20 12:58:45'),
-	(4, 1, 5, 3, 1, NULL, '2020-03-20 12:58:45', '2020-03-20 13:06:10'),
-	(5, 1, 15, 0, NULL, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
-	(6, 1, 16, 0, NULL, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
-	(7, 1, 14, 0, NULL, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
-	(8, 1, 5, 0, NULL, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38');
+INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_interested`, `is_selected`, `status`, `payment`, `payment_method`, `reference_no`, `is_payment_verified`, `payment_status`, `created_at`, `updated_at`) VALUES
+	(1, 1, 15, 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:24'),
+	(2, 1, 16, 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:25'),
+	(3, 1, 14, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 12:58:45'),
+	(4, 1, 5, 3, 1, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-24 19:46:51'),
+	(5, 1, 15, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
+	(6, 1, 16, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
+	(7, 1, 14, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
+	(8, 1, 5, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38');
 /*!40000 ALTER TABLE `course_perticipants` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.failed_jobs
@@ -285,10 +291,12 @@ CREATE TABLE IF NOT EXISTS `message_categories` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_categories: ~0 rows (approximately)
+-- Dumping data for table bils_new_db.message_categories: ~1 rows (approximately)
 /*!40000 ALTER TABLE `message_categories` DISABLE KEYS */;
+INSERT INTO `message_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
+	(1, 'Test Msg', 'something for testing', 1, '2020-03-27 16:46:06', '2020-03-27 16:46:06');
 /*!40000 ALTER TABLE `message_categories` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.message_masters
@@ -312,9 +320,9 @@ CREATE TABLE IF NOT EXISTS `message_masters` (
   KEY `FK_message_masters_users` (`admin_id`),
   CONSTRAINT `FK_message_masters_app_users` FOREIGN KEY (`app_user_id`) REFERENCES `app_users` (`id`),
   CONSTRAINT `FK_message_masters_users` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_masters: ~14 rows (approximately)
+-- Dumping data for table bils_new_db.message_masters: ~23 rows (approximately)
 /*!40000 ALTER TABLE `message_masters` DISABLE KEYS */;
 INSERT INTO `message_masters` (`id`, `message_id`, `is_attachment`, `is_attachment_app_user`, `admin_id`, `admin_message`, `app_user_id`, `app_user_message`, `is_seen`, `message_category`, `message_date_time`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 1, 0, 0, 1, 'Attention Everyone. Please Be careful. corona virus is spreading our country', 14, NULL, 0, NULL, '2020-03-20 19:47:20', 1, '2020-03-20 13:47:20', '2020-03-20 13:47:20'),
@@ -332,7 +340,14 @@ INSERT INTO `message_masters` (`id`, `message_id`, `is_attachment`, `is_attachme
 	(17, NULL, 1, 0, 1, NULL, 5, NULL, 0, NULL, '2020-03-20 23:26:08', NULL, '2020-03-20 17:26:08', '2020-03-20 17:26:08'),
 	(18, NULL, 1, 0, 1, 'test', 5, NULL, 0, NULL, '2020-03-20 23:26:50', NULL, '2020-03-20 17:26:50', '2020-03-20 17:26:50'),
 	(19, NULL, 0, 0, 1, 'hi', 16, NULL, 0, NULL, '2020-03-22 05:14:53', NULL, '2020-03-21 23:14:53', '2020-03-21 23:14:53'),
-	(20, NULL, 0, 0, 1, 'hi', 5, NULL, 0, NULL, '2020-03-22 05:22:22', NULL, '2020-03-21 23:22:22', '2020-03-21 23:22:22');
+	(20, NULL, 0, 0, 1, 'hi', 5, NULL, 0, NULL, '2020-03-22 05:22:22', NULL, '2020-03-21 23:22:22', '2020-03-21 23:22:22'),
+	(21, NULL, 0, 0, 1, 'are you there...??', 16, NULL, 0, NULL, '2020-03-25 01:42:22', NULL, '2020-03-24 19:42:22', '2020-03-24 19:42:22'),
+	(22, NULL, 0, 0, NULL, NULL, 23, 'Hi..........', 0, NULL, '2020-03-25 01:44:46', NULL, '2020-03-24 19:44:46', '2020-03-24 19:44:46'),
+	(23, NULL, 0, 0, 1, 'hlw', 23, NULL, 0, NULL, '2020-03-25 01:45:05', NULL, '2020-03-24 19:45:05', '2020-03-24 19:45:05'),
+	(24, NULL, 0, 0, NULL, NULL, 23, 'whats going on..??', 0, NULL, '2020-03-25 01:45:21', NULL, '2020-03-24 19:45:21', '2020-03-24 19:45:21'),
+	(35, 2, 0, 0, 1, 'test', 15, NULL, 0, NULL, '2020-03-28 00:39:59', 1, '2020-03-27 18:39:59', '2020-03-28 00:41:15'),
+	(36, 3, 0, 0, 1, 'test', 14, NULL, 0, NULL, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-27 18:41:02'),
+	(37, 3, 0, 0, 1, 'test', 20, NULL, 0, NULL, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-27 18:41:02');
 /*!40000 ALTER TABLE `message_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.migrations
@@ -744,18 +759,21 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   `address` varchar(200) DEFAULT NULL,
   `user_type` tinyint(1) NOT NULL DEFAULT 3 COMMENT '1:admin, 2:app-use, 3: teaher',
   `status` tinyint(1) NOT NULL COMMENT '0:  In-active, 1: Active, 2: Deleted',
+  `remarks` text DEFAULT '',
+  `user_profile_image` text DEFAULT '',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.teachers: ~2 rows (approximately)
+-- Dumping data for table bils_new_db.teachers: ~3 rows (approximately)
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
-INSERT INTO `teachers` (`id`, `name`, `email`, `contact_no`, `nid`, `address`, `user_type`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 'Teacher 1', 'teacher1@gmail.com', '1234', '1234', 'address1', 3, 1, '2020-03-20 08:10:30', '2020-03-20 08:10:30'),
-	(4, 'Teacher 2', 'teacher2@gmail.com', '123', '1234', 'address 2', 3, 1, '2020-03-20 08:28:24', '2020-03-20 08:28:24'),
-	(5, 'Teacher 3', 'teacher3@gmail.com', '1111', '11111', NULL, 3, 1, '2020-03-20 11:12:26', '2020-03-20 11:12:26');
+INSERT INTO `teachers` (`id`, `name`, `email`, `contact_no`, `nid`, `address`, `user_type`, `status`, `remarks`, `user_profile_image`, `created_at`, `updated_at`) VALUES
+	(1, 'Teacher 1', 'teacher1@gmail.com', '1234', '1234', 'address1', 3, 1, 'This is teacher 1 profile details.', '', '2020-03-28 02:29:42', '2020-03-27 20:29:42'),
+	(4, 'Teacher 2', 'teacher2@gmail.com', '123', '1234', 'address 2', 3, 1, '', '', '2020-03-28 01:03:38', '2020-03-28 01:03:38'),
+	(5, 'Teacher 3', 'teacher3@gmail.com', '1111', '11111', NULL, 3, 1, '', '', '2020-03-28 01:03:41', '2020-03-28 01:03:41'),
+	(6, 'Tecer 4', 'teacher4@gmail.com', '444', '444', 'gabtali', 3, 1, 'asdfghjkl;', '1585338012.jpg', '2020-03-28 01:40:12', '2020-03-27 19:40:12');
 /*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.users
@@ -766,31 +784,32 @@ CREATE TABLE IF NOT EXISTS `users` (
   `contact_no` varchar(13) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `user_type` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1:admin user , 2:App user, 3: Teacher',
+  `user_type` tinyint(1) DEFAULT 1 COMMENT '1:admin user , 2:App user, 3: Teacher',
   `user_profile_image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `login_status` tinyint(1) DEFAULT NULL COMMENT '1:logged in, 0 not logged in',
   `status` tinyint(1) DEFAULT NULL COMMENT '1:active, 0:in-active, 2: Deteted',
-  `remarks` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `remarks` text COLLATE utf8_unicode_ci DEFAULT '',
   `last_login` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table bils_new_db.users: ~8 rows (approximately)
+-- Dumping data for table bils_new_db.users: ~9 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
-	(1, 'Momit', '12345', '01980340482', 'momit@bils.com', 'kalabagan', 1, '1584624265.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'good enough good enoughgood enoughgood enoughgood enoughgood enoughgood enoughgood enough', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-23 20:53:27'),
-	(39, 'SiaM', '1231', '01743691644', 'siam@gmail.com', 'asdasdas', 1, '1584702052.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'asdasd', NULL, '2020-03-19 13:16:15', '2020-03-21 20:35:24'),
+	(1, 'Momit', '12345', '01980340482', 'momit@bils.com', 'Mohammadpur,dhaka', 1, '1585081916.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'He is good enough', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-27 14:37:59'),
+	(39, 'SiaM', '1231', '01747083028', 'siam@gmail.com', 'asdasdas', 1, '1584702052.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'asdasd', NULL, '2020-03-19 13:16:15', '2020-03-24 19:50:52'),
 	(40, 'Mizanur Rahman', '1231231', '0123123', 'mizanur@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, 'asfsafsafasfas', NULL, '2020-03-19 13:29:16', '2020-03-21 20:35:38'),
 	(41, 'Mr Chaki', '2121', '01757808214', 'chaki@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, 'sgsdgsdgdsfg sdfgd f sg sdgsda', NULL, '2020-03-19 13:29:42', '2020-03-21 20:35:53'),
-	(42, 'Teacher 1', '1234', '1234', 'teacher1@gmail.com', 'address1', 1, '', NULL, NULL, NULL, 1, NULL, NULL, '2020-03-20 08:10:30', '2020-03-20 08:40:33'),
-	(45, 'Teacher 2', '1234', '123', 'teacher2@gmail.com', 'address 2', 1, '', NULL, NULL, NULL, 1, '', NULL, '2020-03-20 08:28:24', '2020-03-20 08:28:24'),
-	(60, 'admin 1', '111', '111', 'admin1@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, NULL, NULL, '2020-03-20 10:26:38', '2020-03-20 10:26:38'),
-	(61, 'Teacher 3', '11111', '1111', 'teacher3@gmail.com', NULL, 1, '', NULL, NULL, NULL, 0, NULL, NULL, '2020-03-20 11:12:26', '2020-03-20 11:25:27');
+	(42, 'Teacher 1', '1234', '1234', 'teacher1@gmail.com', 'address1', 1, '', NULL, NULL, NULL, 1, 'This is teacher 1 profile details.', NULL, '2020-03-20 08:10:30', '2020-03-27 20:29:42'),
+	(45, 'Teacher 2', '1234', '123', 'teacher2@gmail.com', 'address 2', 3, '', NULL, NULL, NULL, 1, '', NULL, '2020-03-20 08:28:24', '2020-03-28 01:42:19'),
+	(60, 'admin 1', '111', '111', 'admin1@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, '', NULL, '2020-03-20 10:26:38', '2020-03-28 01:04:17'),
+	(61, 'Teacher 3', '11111', '1111', 'teacher3@gmail.com', NULL, 3, '', NULL, NULL, NULL, 0, '', NULL, '2020-03-20 11:12:26', '2020-03-28 01:42:14'),
+	(62, 'Tecer 4', '444', '444', 'teacher4@gmail.com', 'gabtali', 3, '1585338012.jpg', NULL, NULL, NULL, 1, 'asdfghjkl;', NULL, '2020-03-27 19:23:46', '2020-03-28 01:42:11');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.user_groups
@@ -830,16 +849,16 @@ CREATE TABLE IF NOT EXISTS `user_group_members` (
   KEY `FK_user_group_members_user_groups` (`group_id`),
   CONSTRAINT `FK_user_group_members_user_groups` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`),
   CONSTRAINT `FK_user_group_members_users` FOREIGN KEY (`emp_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.user_group_members: ~26 rows (approximately)
+-- Dumping data for table bils_new_db.user_group_members: ~30 rows (approximately)
 /*!40000 ALTER TABLE `user_group_members` DISABLE KEYS */;
 INSERT INTO `user_group_members` (`id`, `emp_id`, `group_id`, `status`, `created_at`, `updated_at`) VALUES
 	(2, 1, 26, 1, '2020-02-09 13:27:08', '2020-03-22 02:35:06'),
 	(29, 1, 36, 0, '2020-03-19 13:00:12', '2020-03-19 13:00:12'),
 	(30, 1, 37, 0, '2020-03-19 13:00:20', '2020-03-19 19:05:23'),
 	(31, 1, 38, 0, '2020-03-19 13:00:27', '2020-03-19 13:00:27'),
-	(32, 39, 37, 1, '2020-03-19 13:16:15', '2020-03-22 02:35:24'),
+	(32, 39, 37, 1, '2020-03-19 13:16:15', '2020-03-25 01:50:52'),
 	(33, 40, 38, 1, '2020-03-19 13:29:16', '2020-03-22 02:35:38'),
 	(34, 41, 36, 1, '2020-03-19 13:29:42', '2020-03-22 03:22:05'),
 	(35, 45, 37, 1, '2020-03-20 08:28:24', '2020-03-20 08:28:24'),
@@ -862,7 +881,11 @@ INSERT INTO `user_group_members` (`id`, `emp_id`, `group_id`, `status`, `created
 	(60, 61, 37, 1, '2020-03-20 11:12:26', '2020-03-20 17:25:27'),
 	(61, 61, 26, 0, '2020-03-20 11:12:26', '2020-03-20 11:12:26'),
 	(62, 61, 36, 0, '2020-03-20 11:12:26', '2020-03-20 11:12:26'),
-	(63, 61, 38, 0, '2020-03-20 11:12:26', '2020-03-20 11:12:26');
+	(63, 61, 38, 0, '2020-03-20 11:12:26', '2020-03-20 11:12:26'),
+	(64, 62, 37, 1, '2020-03-27 19:23:46', '2020-03-27 19:23:46'),
+	(65, 62, 26, 0, '2020-03-27 19:23:46', '2020-03-27 19:23:46'),
+	(66, 62, 36, 0, '2020-03-27 19:23:46', '2020-03-27 19:23:46'),
+	(67, 62, 38, 0, '2020-03-27 19:23:46', '2020-03-27 19:23:46');
 /*!40000 ALTER TABLE `user_group_members` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.user_group_permissions

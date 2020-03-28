@@ -117,6 +117,7 @@ $(document).ready(function () {
             url: url+'/course/course-view/'+id,
             success: function(response){
                 var data = JSON.parse(response);
+
                 $("#course_view_li").css('display','block');
                 $("#course_view_button").trigger('click');
                 $("#c_title").html("<h2>"+data['course_title']+"</h2>");
@@ -139,10 +140,15 @@ $(document).ready(function () {
                 if(data['duration']!=null){left_sub += "<br><b>Duration: </b>"+data['duration']+" Hours";}
                 if(data['appx_start_time']!=null){left_sub += "<br><b>Approximate Start Time: </b>"+data['appx_start_time'];}
                 if(data['act_start_time']!=null){left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];}
-                if(data['course_type']!=null){left_sub += "<br><b>Course Type: </b>"+data['course_type'];}
-                left_sub += "<br><b>Created By: </b>"+data['created_by'];
-                if(data['payment_fee']!=null){left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];}
-                if(data['discount_message']!=null){left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];}
+                if(data['category_name']!=null){left_sub += "<br><b>Course Type: </b>"+data['category_name'];}
+                // left_sub += "<br><b>Created By: </b>"+data['created_by'];
+                if(data['payment_fee']!=null && data['payment_fee']!="" && data['payment_fee']!= 0){
+                    left_sub += "<br><b>Payment Fee: </b>"+data['payment_fee'];
+                }
+                else{
+                   left_sub += "<br><b>Payment Fee: </b> Free Course"; 
+                }
+                if(data['discount_message']!=null && data['discount_message']!=""){left_sub += "<br><b>Discount Message: </b>"+data['discount_message'];}
                 $("#left_sub").html(left_sub);
 
 
@@ -150,14 +156,20 @@ $(document).ready(function () {
 
                 if(data['appx_end_time']!=null){right_sub +="<br/><b>Approximate End Time: </b>"+data['appx_end_time'];}
                 if(data['act_end_time']!=null){right_sub +="<br/><b>Actual End Time: </b>"+data['act_end_time'];}
-                if(data['course_teacher']!=null){right_sub +="<br/><b>Course Teacher: </b>"+data['course_teacher'];}
-                right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
+                
+                // right_sub +="<br/><b>Updated By: </b>"+data['updated_by'];
                 if(data['payment_method']!=null){right_sub +="<br/><b>Payment Method: </b>"+data['payment_method'];}
                 right_sub +="<br/><b>Course Responsible Person: </b>"+data['course_responsible_person'];
 
                 $("#right_sub").html(right_sub);
-
-                var description = "";
+                 var description = "";
+                if(data['t_name']!=null){
+                    description +="<hr><b>Course Teacher: </b>"+data['t_name'];
+                    if (data['remarks']!=null && data['remarks']!="") {
+                        description +="<br><b>Teacher Profile: </b><br>"+data['remarks'];
+                    }
+                }
+               
                 description +="<hr>"+data['details']+"<hr>";
                 $("#description").html(description);
                 global_id = id;
@@ -458,6 +470,40 @@ $(document).ready(function () {
         });
 
     }
+
+
+    //autosuggest
+    $.ajaxSetup({
+        headers:{
+            'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $("#teacher_name").autocomplete({
+
+        search: function() {
+        },
+        source: function(request, response) {
+            $.ajax({
+                url: url+'/course/teacher-name',
+                dataType: "json",
+                type: "post",
+                async:false,
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data);
+                }
+            });
+        },
+        minLength: 1,
+        select: function(event, ui) { 
+            var id = ui.item.id;
+            var name = ui.item.name;
+            $(this).next().val(id);
+            $("#course_teacher").val(id);
+        }
+    });
 
 
 

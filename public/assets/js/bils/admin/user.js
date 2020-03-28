@@ -213,6 +213,11 @@ $(document).ready(function () {
 					$("#remarks_div").html('<h2>Profile Details</h2>');
 					$("#remarks_details").html(data['remarks']);
 				}
+				else{
+					$("#remarks_div").html('');
+					$("#remarks_details").html("");
+				}
+				
 				if (data["user_profile_image"]!=null && data["user_profile_image"]!="") {
 					$(".profile_image").html('<img src="'+profile_image_url+'/'+data["user_profile_image"]+'" alt="User Image" class="img img-responsive">');
 				}
