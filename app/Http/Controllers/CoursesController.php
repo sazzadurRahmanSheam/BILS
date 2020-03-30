@@ -100,6 +100,7 @@ class CoursesController extends Controller
                         'payment_method'=>$request->payment_method,
                         'course_teacher'=>$request->course_teacher,
                         'discount_message'=>$request->discount_message,
+                        'perticipants_limit'=>$request->perticipants_limit,
                     ];
                     $response = CourseMaster::create($column_value);
 
@@ -174,6 +175,7 @@ class CoursesController extends Controller
                         'payment_method'=>$request->payment_method,
                         'course_teacher'=>$request->course_teacher,
                         'discount_message'=>$request->discount_message,
+                        'perticipants_limit'=>$request->perticipants_limit,
                     ];
 
                    
@@ -339,11 +341,13 @@ class CoursesController extends Controller
         $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
         $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-        $message_list = CourseMaster::Select('id', 'course_title', 'duration', 'pub_status','course_status')
-                        ->orderBy('id','desc')
-                        ->get();
+        $message_list = CourseMaster::Select('id', 'course_title', 'duration', 'pub_status','course_status', 'course_teacher')->orderBy('id','desc')->get();
+
         $return_arr = array();
-        foreach($message_list as $data){ 
+        foreach($message_list as $data){
+            $teacher = Teacher::select('name')->where('id', $data->course_teacher)->first();
+            $data['course_teacher'] = $teacher['name'];
+
             $data['pub_status']=($data->pub_status == 1)?"<button class='btn btn-xs btn-success' disabled>Published</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-published</button>";       
             if($data->course_status==1){
                 $data['course_status'] = "<button class='btn btn-xs btn-warning' disabled>Initiate</button>";
@@ -417,7 +421,7 @@ class CoursesController extends Controller
                             ->leftJoin('app_users as au', 'cp.perticipant_id', '=', 'au.id')
                             ->where('cp.course_id', $c_id)
                             ->where('cp.is_interested', '3')
-                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected')
+                            ->select('au.name as name', 'au.email as email', 'au.contact_no as mobile', 'cp.id as cp_id', 'cp.is_selected as is_selected', 'cp.payment as payment', 'cp.payment_method as payment_method', 'cp.reference_no as reference_no', 'cp.is_payment_verified as is_payment_verified', 'cp.id as v_id')
                             ->get();
 
         $selectedList = DB::table('course_perticipants as cp')
@@ -517,6 +521,9 @@ class CoursesController extends Controller
 
         $data=[];
         foreach ( $summary_data as $key=>$value){
+            $teacher = Teacher::select('name')->where('id',$value->course_teacher)->first();
+            $value['teacher']=$teacher['name'];
+
             $interested = CoursePerticipant::where('course_id','=',$value->id)
                         ->whereIn('is_interested',[1,3])
                         ->count();
@@ -628,7 +635,10 @@ class CoursesController extends Controller
     }
 
 
-
+    public function paymentVerify($id){
+        $data = CoursePerticipant::find($id);
+        $data->update(['is_payment_verified' => 1]);
+    }
 
 
 
