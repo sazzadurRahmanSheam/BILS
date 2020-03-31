@@ -181,6 +181,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/message/load-app-user-from-group',array('as'=>'Load App User From Group', 'uses' =>'MessageController@loadAppUserFromGroup'));
 	
 	Route::post('/course/teacher-name',array('as'=>'Load Teacher Name', 'uses' =>'CoursesController@loadTeacherName'));
+	
+	Route::get('/course/verify-payment/{id}',array('as'=>'Payment Varify', 'uses' =>'CoursesController@paymentVerify'));
 
 
 

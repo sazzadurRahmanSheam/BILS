@@ -103,6 +103,7 @@ $(document).ready(function () {
         "aoColumns": [
             { mData: 'id'},
             { mData: 'course_title' },
+            { mData: 'course_teacher' },
             { mData: 'duration'},
             { mData: 'pub_status', className: "text-center"},
             { mData: 'course_status', className: "text-center"},
@@ -164,9 +165,9 @@ $(document).ready(function () {
                 $("#right_sub").html(right_sub);
                  var description = "";
                 if(data['t_name']!=null){
-                    description +="<hr><b>Course Teacher: </b>"+data['t_name'];
+                    description +="<hr><b>Course Coordinator: </b>"+data['t_name'];
                     if (data['remarks']!=null && data['remarks']!="") {
-                        description +="<br><b>Teacher Profile: </b><br>"+data['remarks'];
+                        description +="<br><b>Coordinator Profile: </b><br>"+data['remarks'];
                     }
                 }
                
@@ -202,7 +203,7 @@ $(document).ready(function () {
                 var perticipantTotal = perticipants['perticipantTotal'];
                 var registerTotal = perticipants['registerTotal'];
                 var selectedTotal = perticipants['selectedTotal'];
-
+                var status_btn;
                 
 	
                 if(!jQuery.isEmptyObject(perticipants)){
@@ -237,14 +238,26 @@ $(document).ready(function () {
 
                     //Registered Table Start
                     html +='<div id="registered_div" class="tab-pane">';
-                    html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left"><table class="table table-bordered"><thead><tr class="headings"><th style="width:10%">SL NO</th><th style="width:35%">Name</th><th style="width:20%">Email</th><th style="width:20%">Phone</th><th style="width:15%">Selection</th></tr></thead>';
+                    html += '<form id="select_form" name="courses_form" enctype="multipart/form-data" class="form form-horizontal form-label-left">';
+                    html += '<table class="table table-bordered">';
+                    html += '<thead><tr class="headings"><th>SL NO</th><th>Name</th><th>Email</th><th>Phone</th><th class="text-right">Payment</th><th>Payment Method</th><th>Reference No</th><th>Payment Status</th><th>Selection</th></tr></thead>';
                     var register_sl = 1;
-                    $.each(registeredList, function(i,register_row){
+                    $.each(registeredList, function(i,register_row){ //style="width:10%"  style="width:35%" style="width:20%" style="width:20%" style="width:15%" 
                         html += '<tr>';
                         html += '<td>'+register_sl+'</td>';
                         html += '<td>'+register_row["name"]+'</td>';
                         html += '<td>'+register_row["email"]+'</td>';
                         html += '<td>'+register_row["mobile"]+'</td>';
+                        html += '<td class="text-right">'+register_row["payment"]+'</td>';
+                        html += '<td>'+register_row["payment_method"]+'</td>';
+                        html += '<td>'+register_row["reference_no"]+'</td>';
+                        if (register_row["is_payment_verified"]==0) {
+                            status_btn = "<button onclick='paymentVerify("+register_row["v_id"]+")' type='button' title='Click For Verify' class='btn btn-xs btn-danger'>Not Varified</button>";
+                        }
+                        else{
+                            status_btn = "<button class='btn btn-xs btn-success' disabled>Varified</button>";
+                        }
+                        html += '<td>'+status_btn+'</td>';
                         html += '<td>';
                        
                         if(select_perticipant_permisiion>0){
@@ -253,7 +266,7 @@ $(document).ready(function () {
                         html += '</td></tr>';
                         register_sl++;
                     });
-                    html +='<tr><td class="text-center" colspan="4"></td>';
+                    html +='<tr><td class="text-center" colspan="8"></td>';
                     html +='<td>'
                     if(select_perticipant_permisiion>0){
                         html +='<button onclick="saveSelect()" class="btn btn-sam btn-success">Submit Selection</button></td></tr>'
@@ -302,6 +315,19 @@ $(document).ready(function () {
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+            }
+        });
+    }
+
+    paymentVerify = function paymentVerify(v_id){
+        var varify_id = v_id;
+        var course_id = global_id;
+         $.ajax({
+            url: url+'/course/verify-payment/'+varify_id,
+            
+            success: function(response){
+                perticipant_manage();
+                $("#registered_list_button").trigger('click');
             }
         });
     }
@@ -362,6 +388,7 @@ $(document).ready(function () {
                 $("#act_end_time").val(data['act_end_time']);
                 $("#payment_fee").val(data['payment_fee']);
                 $("#payment_method").val(data['payment_method']);
+                $("#perticipants_limit").val(data['perticipants_limit']);
                 
                 $("#discount_message").val(data['discount_message']);
                 (data['pub_status']=='0')?$("#pub_status").iCheck('uncheck'):$("#pub_status").iCheck('check');

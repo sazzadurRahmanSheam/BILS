@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `app_users` (
 -- Dumping data for table bils_new_db.app_users: ~6 rows (approximately)
 /*!40000 ALTER TABLE `app_users` DISABLE KEYS */;
 INSERT INTO `app_users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `password`, `user_profile_image`, `remarks`, `status`, `user_type`, `created_at`, `updated_at`) VALUES
-	(5, 'Sazzadur', '123', '01747083028', 'sazzadur@gmail.com', 'kalabagan,dhaka', '81dc9bdb52d04dc20036dbd8313ed055', '1584624907.jpg', 'he is good.', 0, 2, '2020-02-10 09:12:29', '2020-03-21 21:42:16'),
+	(5, 'Sazzadur', '123', '01747083028', 'sazzadur@gmail.com', 'kalabagan,dhaka', '81dc9bdb52d04dc20036dbd8313ed055', '1584624907.jpg', 'he is good.', 1, 2, '2020-02-10 09:12:29', '2020-03-30 19:19:26'),
 	(14, 'Momit Hasan', '213123', '01980340482', 'momit@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', '1584625014.jpg', 'asfasfsfsfsdf', 1, 2, '2020-03-19 13:36:54', '2020-03-21 20:30:43'),
 	(15, 'Chaki', '1243124', '01757808214', 'chakddi@gmail.com', 'Dhaka', '81dc9bdb52d04dc20036dbd8313ed055', NULL, '234234234243', 1, 2, '2020-03-19 13:37:48', '2020-03-21 20:30:10'),
 	(16, 'chanchal', '017', '017371511252', 'chanchal@gmail.com', NULL, '81dc9bdb52d04dc20036dbd8313ed055', '1584625108.jpg', 'asdasdasdas', 1, 2, '2020-03-19 13:38:14', '2020-03-27 15:28:46'),
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `course_code` varchar(100) DEFAULT NULL,
   `course_title` varchar(100) NOT NULL,
-  `duration` int(11) DEFAULT NULL,
+  `duration` varchar(50) DEFAULT NULL,
   `appx_start_time` date DEFAULT NULL,
   `appx_end_time` date DEFAULT NULL,
   `act_start_time` date DEFAULT NULL,
@@ -143,8 +143,8 @@ CREATE TABLE IF NOT EXISTS `course_masters` (
 -- Dumping data for table bils_new_db.course_masters: ~2 rows (approximately)
 /*!40000 ALTER TABLE `course_masters` DISABLE KEYS */;
 INSERT INTO `course_masters` (`id`, `course_code`, `course_title`, `duration`, `appx_start_time`, `appx_end_time`, `act_start_time`, `act_end_time`, `course_type`, `course_teacher`, `course_responsible_person`, `details`, `course_status`, `payment_fee`, `payment_method`, `discount_message`, `attachment`, `pub_status`, `perticipants_limit`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(1, 'course-1', 'Basic First Aid Procedures', 20, '2020-03-20', '2020-04-20', NULL, NULL, 1, 1, 'admin', 'This quick primer on common basic first aid procedures can help get you through a minor crisis, at least until the paramedics arrive or you can get to medical treatment. These tips are based on the 2019 first aid procedures recommended by the American Heart Association and American Red Cross.1﻿ They are not a substitute for proper first aid training but can be an introduction to what you can do.', 2, NULL, 'Bkash', NULL, NULL, 1, NULL, 'Momit', 'Momit', '2020-03-20 11:59:15', '2020-03-27 20:36:02'),
-	(2, 'course-2', 'Bangladesh Labour Act 2006 – A complete Overview of Employee Rights & Labour Law in Bangladesh', 30, '2020-03-21', '2020-05-11', NULL, NULL, 2, 2, 'admin', 'The 2006 Bangladesh Labor Act is relatively sweeping and progressive. The Act consolidates and replaces the 25 existing acts. The comprehensive nature of the law can immediately be gleaned from its coverage — conditions of service and employment, youth employment, maternity benefit, health hygiene, safety, welfare, working hours and leave, wages and payment, workers’ compensation for injury, trade unions and industrial relations, disputes, labour court, workers’ participation in companies profits, regulation of employment and safety of dock workers, provident funds, apprenticeship, penalty and procedure, administration, inspection, etc.', 1, 500, 'Bkash', '', NULL, 0, NULL, 'Momit', '', '2020-03-20 12:50:58', '2020-03-28 02:12:39');
+	(1, 'course-1', 'Basic First Aid Procedures', '20 H', '2020-03-20', '2020-04-20', NULL, NULL, 1, 1, 'admin', 'This quick primer on common basic first aid procedures can help get you through a minor crisis, at least until the paramedics arrive or you can get to medical treatment. These tips are based on the 2019 first aid procedures recommended by the American Heart Association and American Red Cross.1﻿ They are not a substitute for proper first aid training but can be an introduction to what you can do.', 2, 100, 'Bkash', NULL, NULL, 1, 20, 'Momit', 'Momit', '2020-03-20 11:59:15', '2020-03-31 03:33:52'),
+	(2, 'course-2', 'Bangladesh Labour Act 2006 – A complete Overview of Employee Rights & Labour Law in Bangladesh', '30 D', '2020-03-21', '2020-05-11', NULL, NULL, 2, 1, 'admin', 'The 2006 Bangladesh Labor Act is relatively sweeping and progressive. The Act consolidates and replaces the 25 existing acts. The comprehensive nature of the law can immediately be gleaned from its coverage — conditions of service and employment, youth employment, maternity benefit, health hygiene, safety, welfare, working hours and leave, wages and payment, workers’ compensation for injury, trade unions and industrial relations, disputes, labour court, workers’ participation in companies profits, regulation of employment and safety of dock workers, provident funds, apprenticeship, penalty and procedure, administration, inspection, etc.', 1, 500, 'Bkash', NULL, NULL, 0, 30, 'Momit', 'Momit', '2020-03-20 12:50:58', '2020-03-31 03:33:59');
 /*!40000 ALTER TABLE `course_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.course_perticipants
@@ -171,7 +171,7 @@ INSERT INTO `course_perticipants` (`id`, `course_id`, `perticipant_id`, `is_inte
 	(1, 1, 15, 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:24'),
 	(2, 1, 16, 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 19:05:25'),
 	(3, 1, 14, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-20 12:58:45'),
-	(4, 1, 5, 3, 1, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 12:58:45', '2020-03-24 19:46:51'),
+	(4, 1, 5, 3, 1, NULL, 100, 'bkash', '123', 1, NULL, '2020-03-20 12:58:45', '2020-03-30 21:36:08'),
 	(5, 1, 15, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
 	(6, 1, 16, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
 	(7, 1, 14, 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, '2020-03-20 13:33:38', '2020-03-20 13:33:38'),
@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS `message_categories` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_categories: ~1 rows (approximately)
+-- Dumping data for table bils_new_db.message_categories: ~0 rows (approximately)
 /*!40000 ALTER TABLE `message_categories` DISABLE KEYS */;
 INSERT INTO `message_categories` (`id`, `category_name`, `details`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 'Test Msg', 'something for testing', 1, '2020-03-27 16:46:06', '2020-03-27 16:46:06');
@@ -320,9 +320,9 @@ CREATE TABLE IF NOT EXISTS `message_masters` (
   KEY `FK_message_masters_users` (`admin_id`),
   CONSTRAINT `FK_message_masters_app_users` FOREIGN KEY (`app_user_id`) REFERENCES `app_users` (`id`),
   CONSTRAINT `FK_message_masters_users` FOREIGN KEY (`admin_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.message_masters: ~23 rows (approximately)
+-- Dumping data for table bils_new_db.message_masters: ~25 rows (approximately)
 /*!40000 ALTER TABLE `message_masters` DISABLE KEYS */;
 INSERT INTO `message_masters` (`id`, `message_id`, `is_attachment`, `is_attachment_app_user`, `admin_id`, `admin_message`, `app_user_id`, `app_user_message`, `is_seen`, `message_category`, `message_date_time`, `status`, `created_at`, `updated_at`) VALUES
 	(1, 1, 0, 0, 1, 'Attention Everyone. Please Be careful. corona virus is spreading our country', 14, NULL, 0, NULL, '2020-03-20 19:47:20', 1, '2020-03-20 13:47:20', '2020-03-20 13:47:20'),
@@ -346,8 +346,10 @@ INSERT INTO `message_masters` (`id`, `message_id`, `is_attachment`, `is_attachme
 	(23, NULL, 0, 0, 1, 'hlw', 23, NULL, 0, NULL, '2020-03-25 01:45:05', NULL, '2020-03-24 19:45:05', '2020-03-24 19:45:05'),
 	(24, NULL, 0, 0, NULL, NULL, 23, 'whats going on..??', 0, NULL, '2020-03-25 01:45:21', NULL, '2020-03-24 19:45:21', '2020-03-24 19:45:21'),
 	(35, 2, 0, 0, 1, 'test', 15, NULL, 0, NULL, '2020-03-28 00:39:59', 1, '2020-03-27 18:39:59', '2020-03-28 00:41:15'),
-	(36, 3, 0, 0, 1, 'test', 14, NULL, 0, NULL, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-27 18:41:02'),
-	(37, 3, 0, 0, 1, 'test', 20, NULL, 0, NULL, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-27 18:41:02');
+	(36, 3, 0, 0, 1, 'test', 14, NULL, 0, 1, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-31 00:53:48'),
+	(37, 3, 0, 0, 1, 'test', 20, NULL, 0, 1, '2020-03-28 00:41:02', 1, '2020-03-27 18:41:02', '2020-03-31 00:53:46'),
+	(38, NULL, 0, 0, 1, 'test for category', 5, NULL, 0, 1, '2020-03-31 01:19:13', NULL, '2020-03-30 19:19:13', '2020-03-30 19:19:13'),
+	(39, NULL, 0, 0, 1, 'testing', 5, NULL, 0, 1, '2020-03-31 01:22:48', NULL, '2020-03-30 19:22:48', '2020-03-30 19:22:48');
 /*!40000 ALTER TABLE `message_masters` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.migrations
@@ -477,7 +479,7 @@ CREATE TABLE IF NOT EXISTS `publications` (
 -- Dumping data for table bils_new_db.publications: ~0 rows (approximately)
 /*!40000 ALTER TABLE `publications` DISABLE KEYS */;
 INSERT INTO `publications` (`id`, `publication_title`, `details`, `publication_type`, `authors`, `attachment`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-	(3, 'বিশ্বে ১০০ কোটি শিশুর স্কুলে যাওয়া বন্ধ, দেশে ৩ কোটি ৬৭ লাখ', 'মহামারি আকারে করোনাভাইরাস ছড়িয়ে পড়ায় বিশ্বব্যাপী শিক্ষাব্যবস্থা বিপর্যস্ত হয়ে পড়েছে। বিশ্বের ১১০টি দেশের সব শিক্ষাপ্রতিষ্ঠান বন্ধ হয়ে গেছে। প্রায় ১০০ কোটি শিশু-কিশোর স্কুলে যাওয়া বন্ধ করে দিয়েছে। এর মধ্যে সবচেয়ে বেশি শিশু-কিশোর স্কুলে যাওয়া বন্ধ করে দিয়েছে চীনে। ওই তালিকায় চতুর্থ স্থানে রয়েছে বাংলাদেশের নাম। চীনে ২৩ কোটি ৩০ লাখ ও বাংলাদেশে ৩ কোটি ৬৭ লাখ শিশু স্কুলে যাচ্ছে না। ওই তালিকায় দ্বিতীয় ও তৃতীয় স্থানে রয়েছে ইন্দোনেশিয়া ও পাকিস্তানের নাম।\r\n\r\nগত বুধবার জাতিসংঘের দুর্যোগবিষয়ক ওয়েবসাইট রিলিফ ওয়েবে প্রকাশিত এক প্রতিবেদনে এই তথ্য উঠে এসেছে। তবে সংস্থাটি এ–সংক্রান্ত সব তথ্য সংগ্রহ করেছে জাতিসংঘ শিশু তহবিলের (ইউনিসেফ) একটি প্রতিবেদন থেকে। এই পরিস্থিতিতে ইউনিসেফ থেকে বিশ্বের শিশুদের শিক্ষা পরিস্থিতি নিয়ে দুশ্চিন্তায় পড়েছে। তারা গত বৃহস্পতিবার বিশ্বের ৭৩টি দেশের শিক্ষামন্ত্রীদের সঙ্গে বৈঠক করেছে। অনলাইন বা ডিজিটাল মাধ্যমকে ব্যবহার করে এসব শিশুর কীভাবে শিক্ষা কার্যক্রম চালিয়ে নেওয়া যায়, সে বিষয়ে শিক্ষামন্ত্রীদের মতামত জানতে চেয়েছে তারা।', 'News', 'Author 1', '', 1, 'Momit', '', '2020-03-20 16:16:46', '2020-03-20 16:16:46');
+	(3, 'বিশ্বে ১০০ কোটি শিশুর স্কুলে যাওয়া বন্ধ, দেশে ৩ কোটি ৬৭ লাখ', 'মহামারি আকারে করোনাভাইরাস ছড়িয়ে পড়ায় বিশ্বব্যাপী শিক্ষাব্যবস্থা বিপর্যস্ত হয়ে পড়েছে। বিশ্বের ১১০টি দেশের সব শিক্ষাপ্রতিষ্ঠান বন্ধ হয়ে গেছে। প্রায় ১০০ কোটি শিশু-কিশোর স্কুলে যাওয়া বন্ধ করে দিয়েছে। এর মধ্যে সবচেয়ে বেশি শিশু-কিশোর স্কুলে যাওয়া বন্ধ করে দিয়েছে চীনে। ওই তালিকায় চতুর্থ স্থানে রয়েছে বাংলাদেশের নাম। চীনে ২৩ কোটি ৩০ লাখ ও বাংলাদেশে ৩ কোটি ৬৭ লাখ শিশু স্কুলে যাচ্ছে না। ওই তালিকায় দ্বিতীয় ও তৃতীয় স্থানে রয়েছে ইন্দোনেশিয়া ও পাকিস্তানের নাম।\r\n\r\nগত বুধবার জাতিসংঘের দুর্যোগবিষয়ক ওয়েবসাইট রিলিফ ওয়েবে প্রকাশিত এক প্রতিবেদনে এই তথ্য উঠে এসেছে। তবে সংস্থাটি এ–সংক্রান্ত সব তথ্য সংগ্রহ করেছে জাতিসংঘ শিশু তহবিলের (ইউনিসেফ) একটি প্রতিবেদন থেকে। এই পরিস্থিতিতে ইউনিসেফ থেকে বিশ্বের শিশুদের শিক্ষা পরিস্থিতি নিয়ে দুশ্চিন্তায় পড়েছে। তারা গত বৃহস্পতিবার বিশ্বের ৭৩টি দেশের শিক্ষামন্ত্রীদের সঙ্গে বৈঠক করেছে। অনলাইন বা ডিজিটাল মাধ্যমকে ব্যবহার করে এসব শিশুর কীভাবে শিক্ষা কার্যক্রম চালিয়ে নেওয়া যায়, সে বিষয়ে শিক্ষামন্ত্রীদের মতামত জানতে চেয়েছে তারা।', 'News', 'BILS', '', 1, 'Momit', 'Momit', '2020-03-20 16:16:46', '2020-03-30 20:07:01');
 /*!40000 ALTER TABLE `publications` ENABLE KEYS */;
 
 -- Dumping structure for table bils_new_db.publication_categories
@@ -767,7 +769,7 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.teachers: ~3 rows (approximately)
+-- Dumping data for table bils_new_db.teachers: ~2 rows (approximately)
 /*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
 INSERT INTO `teachers` (`id`, `name`, `email`, `contact_no`, `nid`, `address`, `user_type`, `status`, `remarks`, `user_profile_image`, `created_at`, `updated_at`) VALUES
 	(1, 'Teacher 1', 'teacher1@gmail.com', '1234', '1234', 'address1', 3, 1, 'This is teacher 1 profile details.', '', '2020-03-28 02:29:42', '2020-03-27 20:29:42'),
@@ -801,7 +803,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table bils_new_db.users: ~9 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `nid_no`, `contact_no`, `email`, `address`, `user_type`, `user_profile_image`, `password`, `remember_token`, `login_status`, `status`, `remarks`, `last_login`, `created_at`, `updated_at`) VALUES
-	(1, 'Momit', '12345', '01980340482', 'momit@bils.com', 'Mohammadpur,dhaka', 1, '1585081916.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'He is good enough', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-27 14:37:59'),
+	(1, 'Momit', '12345', '01980340482', 'momit@bils.com', 'Mohammadpur,dhaka', 1, '1585081916.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'He is good enough', '2020-01-24 17:30:45', '2020-01-24 06:51:31', '2020-03-30 18:16:27'),
 	(39, 'SiaM', '1231', '01747083028', 'siam@gmail.com', 'asdasdas', 1, '1584702052.jpg', '$2y$10$ta1BmsLnz8H4tUqFJHI8puHxhCldn9DSwVfQjc3g59v9YSxM7.Trq', NULL, 0, 1, 'asdasd', NULL, '2020-03-19 13:16:15', '2020-03-24 19:50:52'),
 	(40, 'Mizanur Rahman', '1231231', '0123123', 'mizanur@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, 'asfsafsafasfas', NULL, '2020-03-19 13:29:16', '2020-03-21 20:35:38'),
 	(41, 'Mr Chaki', '2121', '01757808214', 'chaki@gmail.com', NULL, 1, '', NULL, NULL, NULL, 1, 'sgsdgsdgdsfg sdfgd f sg sdgsda', NULL, '2020-03-19 13:29:42', '2020-03-21 20:35:53'),
@@ -851,7 +853,7 @@ CREATE TABLE IF NOT EXISTS `user_group_members` (
   CONSTRAINT `FK_user_group_members_users` FOREIGN KEY (`emp_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table bils_new_db.user_group_members: ~30 rows (approximately)
+-- Dumping data for table bils_new_db.user_group_members: ~26 rows (approximately)
 /*!40000 ALTER TABLE `user_group_members` DISABLE KEYS */;
 INSERT INTO `user_group_members` (`id`, `emp_id`, `group_id`, `status`, `created_at`, `updated_at`) VALUES
 	(2, 1, 26, 1, '2020-02-09 13:27:08', '2020-03-22 02:35:06'),

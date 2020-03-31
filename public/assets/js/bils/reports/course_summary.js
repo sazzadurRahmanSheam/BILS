@@ -60,7 +60,7 @@ $(document).ready(function () {
 					'              <thead>\n' +
 					'                <tr style="padding: 5px">\n' +
 					'                 <th style="padding: 5px; border: 1px solid grey; text-align: left">Course Name</th>\n' +
-					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center"> Teacher </th>\n' +
+					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center"> Coordinator </th>\n' +
 					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Status</th>\n' +
 					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Publish Status</th>\n' +
 					'                 <th style=" padding: 5px; border: 1px solid grey; text-align: center" >Interested</th>\n' +
@@ -99,7 +99,7 @@ $(document).ready(function () {
 						//console.log(value)
 						html+='<tr>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px">'+value['course_title']+'</td>\n' +
-							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['course_teacher']+'</td>\n' +
+							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+value['teacher']+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center">'+status+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+pub_status+'</td>\n' +
 							'     <td style="border: 1px solid grey; padding: 5px; text-align: center"> '+value['interested']+'</td>\n' +

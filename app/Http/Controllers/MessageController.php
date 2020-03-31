@@ -176,13 +176,18 @@ class MessageController extends Controller
         $edit_permisiion    = $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
         $delete_permisiion  = $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-        $message_list = MessageMaster::Select('id', 'admin_message', 'app_user_id', 'is_seen', 'status')
+        $message_list = MessageMaster::Select('id', 'admin_message', 'app_user_id', 'is_seen', 'status', 'message_category')
                         ->orderBy('id','desc')
                         ->get();
 
         $return_arr = array();
-        foreach($message_list as $data){ 
+        foreach($message_list as $data){
+            $message_category = MessageCategory::select('category_name')->where('id',$data->message_category)->first();
+
+            $data['message_category'] = $message_category['category_name'];
+
             $app_user_name = AppUser::select('name')->where('id', $data->app_user_id)->first();
+
             $data['app_user_name'] = $app_user_name['name'];
             
             $data['is_seen']=($data->is_seen == 1)?"<button class='btn btn-xs btn-success' disabled>Seen</button>":"<button  class='btn btn-xs btn-danger' disabled>Not-seen</button>";       
@@ -253,8 +258,9 @@ class MessageController extends Controller
         $message = DB::table('message_masters as mm')
                             ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
                             ->leftJoin('message_attachments as ma', 'mm.id', '=', 'ma.message_master_id')
+                            ->leftJoin('message_categories as mc', 'mm.message_category', '=', 'mc.id')
                             ->where('mm.app_user_id',$app_user_id_load_msg)
-                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date', 'ma.admin_atachment as admin_atachment', 'mm.is_attachment as is_attachment', 'ma.attachment_type as attachment_type', 'mm.admin_id as admin_id', 'mm.is_attachment_app_user as is_attachment_app_user', 'ma.app_user_attachment as app_user_attachment')
+                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date', 'ma.admin_atachment as admin_atachment', 'mm.is_attachment as is_attachment', 'ma.attachment_type as attachment_type', 'mm.admin_id as admin_id', 'mm.is_attachment_app_user as is_attachment_app_user', 'ma.app_user_attachment as app_user_attachment', 'mc.category_name as category_name')
                             ->orderBy('mm.message_date_time', 'desc')
                             ->limit($number_of_msg)
                             ->get();
@@ -286,6 +292,7 @@ class MessageController extends Controller
     public function newMsgSent(Request $r){
         $app_user_id = $r->app_user_id;
         $admin_message = $r->admin_message;
+        $message_category = $r->message_category;
         $admin_id = Auth::user()->id;
         ## Image
         $attachment = $r->file('attachment');
@@ -294,6 +301,7 @@ class MessageController extends Controller
             $new_msg = new MessageMaster();
             $new_msg->admin_id = $admin_id;
             $new_msg->admin_message = $admin_message;
+            $new_msg->message_category = $message_category;
             $new_msg->app_user_id = $app_user_id;
             $new_msg->is_attachment = 1;
             $new_msg->save();
@@ -334,6 +342,7 @@ class MessageController extends Controller
             $new_msg->admin_id = $admin_id;
             $new_msg->admin_message = $admin_message;
             $new_msg->app_user_id = $app_user_id;
+            $new_msg->message_category = $message_category;
             $new_msg->save();
         }
         
