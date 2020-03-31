@@ -67,10 +67,11 @@
 										<thead>
 											<tr>
 												<th width="5%">ID</th>
-												<th width="40%">Course Title</th>
+												<th width="35%">Course Title</th>
+												<th width="15%">Course Coordinator</th>
 												<th width="10">Duration </th>
 												<th width="10%" class="hidden-xs">Publish Status</th>
-												<th width="10*" class="hidden-xs">Course Status</th>
+												<th width="10%" class="hidden-xs">Course Status</th>
 												<th width="15%">Actions</th>
 											</tr>
 										</thead>
@@ -114,7 +115,7 @@
 									</div>
 
 									<div class="form-group">
-										<label class="control-label col-md-2 col-sm-2 col-xs-6">Duration (H)</label>
+										<label class="control-label col-md-2 col-sm-2 col-xs-6">Duration</label>
 										<div class="col-md-4 col-sm-4 col-xs-6">
 											<input type="text" id="duration" name="duration"  class="form-control col-lg-12"/>
 										</div>

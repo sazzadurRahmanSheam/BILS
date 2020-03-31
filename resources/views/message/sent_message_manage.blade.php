@@ -58,9 +58,8 @@
 									<table class="table table-bordered table-hover message_table" id="message_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th>ID</th>
-												
 												<th>Admin Message </th>
+												<th>Category</th>
 												<th>App User Name </th>
 												<th>Seen Status </th>
 												<th class="hidden-xs">Status</th>

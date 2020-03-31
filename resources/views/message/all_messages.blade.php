@@ -86,13 +86,22 @@
 					<div class="wrap">
 						<form id="sent_message_to_user" name="sent_message_to_user" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 							@csrf
-							<input type="hidden" name="app_user_id" id="app_user_id">
-							<input type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
-							<label for="attachment" class="custom-file-upload">
-								<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-							</label>
-							<input multiple id="attachment" name="attachment[]" type="file"/>
-							<button type="submit" class="submit" id="message_sent_to_user"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+							<div style="width: 90%; float: left;">
+								<input type="hidden" name="app_user_id" id="app_user_id">
+								<div >
+									<input style="width: 70%" type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
+								 	<select name="message_category" id="message_category" class="form-control" style="width: 30%">
+								 		<option disabled="" selected="" value="">Select Category</option>
+								 	</select>
+								</div>
+							</div>
+							<div style="width: 10%; float: left;">
+								<label for="attachment" class="custom-file-upload">
+									<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+								</label>
+								<input multiple id="attachment" name="attachment[]" type="file"/>
+								<button type="submit" class="submit" id="message_sent_to_user"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+							</div>
 						</form>
 					</div>
 				</div>

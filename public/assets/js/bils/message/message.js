@@ -100,10 +100,11 @@ $(document).ready(function () {
 		"serverSide": false,
 		"ajax": url+"/message/sent-message-list",
 		"aoColumns": [
-			{ mData: 'id'},
+			// { mData: 'id'},
 			//{ mData: 'message_id' },
 			//{ mData: 'admin_id'},
 			{ mData: 'admin_message'},
+			{ mData: 'message_category'},
 			{ mData: 'app_user_name'},
 			{ mData: 'is_seen', className: "text-center"},
 			{ mData: 'status', className: "text-center"},
@@ -246,6 +247,7 @@ $('.msg_auto_load').first().trigger('click');
 				var message = response['message'];
 				var app_user_name = response['app_user_name'];
 				var img_id="";
+				var mc;
 				//Messages
 
 				var message_body = "";
@@ -287,7 +289,13 @@ $('.msg_auto_load').first().trigger('click');
 							}
 							
 							html += '</li>';
-							html += '<span class="time_date_sent"> '+message["msg_date"]+'</span>';
+							if (message["category_name"]!=null && message["category_name"]!="") {
+								mc = '<div class="btn btn-xs btn-info disabled" style="font-size:8px !important;border-radius:7px !important;">'+message["category_name"]+'</div>';
+							}
+							else{
+								mc = "";
+							}
+							html += '<span class="time_date_sent"> '+message["msg_date"]+' '+mc+'</span>';
 							
 							
 						}
