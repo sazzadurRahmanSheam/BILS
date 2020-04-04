@@ -610,6 +610,53 @@ $(document).ready(function () {
     });
 
 
+    //App User Group Member
+    $('#load_app_user_from_group ').click(function(event){      
+        event.preventDefault();
+        $.ajaxSetup({
+            headers:{
+                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        var formData = new FormData($('#survey_body')[0]);
+        
+        
+            $.ajax({
+                url: url+"/message/load-app-user-from-group",
+                type:'POST',
+                data:formData,
+                async:false,
+                cache:false,
+                contentType:false,
+                processData:false,
+                success: function(data){
+                    var response = JSON.parse(data);
+                    var html = '<table class="table table-bordered"><thead><tr class="headings"><th class="column-title text-center" class="col-md-8 col-sm-8 col-xs-8" >App Users</th><th class="col-md-2 col-sm-2 col-xs-12"> </th></tr></thead>';
+                    html += '<tr><td colspan="2">';
+                    $.each(response, function(i,row){
+                        $.each(row, function(j,k){
+                            html += '<div class="col-md-3" style="margin-top:5px;"><input type="checkbox"  name="app_users[]"  class=""  value="'+k["app_user_id"]+'"/> '+k["name"]+'</div>';
+                        });
+                    });
+                    html += '</td></tr>';
+                    html +='</table>';
+                    $("#app_user_group_members").html(html);
+                    $('.form').iCheck({
+                        checkboxClass: 'icheckbox_flat-green',
+                        radioClass: 'iradio_flat-green'
+                    }); 
+
+                    $('.flat_radio').iCheck({
+                        radioClass: 'iradio_flat-green'
+                    });
+                 }  
+            });
+        
+    });
+    
+
+
     //Clear form
     $("#clear_button").on('click',function(){
         clear_form();

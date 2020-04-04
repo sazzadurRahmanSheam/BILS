@@ -55,11 +55,12 @@
 									<table class="table table-bordered table-hover notice_table" id="notice_table" style="width:100% !important"> 
 										<thead>
 											<tr>
-												<th width="10%"> ID</th>
-												<th width="50%">Title</th>
+												<th> ID</th>
+												<th>Title</th>
 												{{-- <th>Details </th> --}}
-												<th width="20%" class="hidden-xs">Status</th>
-												<th width="20%">Actions</th>
+												<th>Notice Date </th>
+												<th class="hidden-xs">Status</th>
+												<th>Actions</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -127,6 +128,15 @@
 										<label class="control-label col-md-2 col-sm-2 col-xs-6" >App User Group</label>
 										<div class="col-md-10 col-sm-10 col-xs-6">
 											<div id="app_user_group">
+												
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-2 col-sm-2 col-xs-6" ><button id="load_app_user_from_group" type="submit" class="btn btn-sm btn-info">Load App User</button></label>
+										<div class="col-md-10 col-sm-10 col-xs-6">
+											<div id="app_user_group_members">
 												
 											</div>
 										</div>

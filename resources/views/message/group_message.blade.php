@@ -70,15 +70,7 @@
 						<div class="message_body">
 
 						</div>
-						{{-- <li class="sent">
-						<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-						<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-						</li>
-
-						<li class="replies">
-						<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-						<p>When you're backed against the wall, break the god damn thing down.</p>
-						</li> --}}
+						
 
 					</ul>
 				</div>
@@ -89,10 +81,7 @@
 							<div style="width: 90%; float: left;">
 								<input type="hidden" name="app_user_id" id="app_user_id">
 								<div >
-									<input style="width: 70%" type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
-								 	<select name="message_category" id="message_category" class="form-control" style="width: 30%;border: 0px solid #FFF !important;">
-								 		<option disabled="" selected="" value="">Select Category</option>
-								 	</select>
+									<input style="width: 100%" type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
 								</div>
 							</div>
 							<div style="width: 10%; float: left;">
@@ -108,31 +97,6 @@
 			</div>
 
 
-			{{-- <label for="file-upload" class="custom-file-upload">
-			Custom Upload
-			</label>
-			<input id="file-upload" type="file"/> --}}
-
-
-			{{-- <input type="file" id="file" />
-			<label for="file" class="btn-3"><span>select</span></label> --}}
-
-
-
-			{{-- <div class="input-group">
-			<input type="text" class="form-control" aria-label="...">
-			<div class="input-group-btn">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-			<ul class="dropdown-menu dropdown-menu-right">
-			<li><a href="#">Action</a></li>
-			<li><a href="#">Another action</a></li>
-			<li><a href="#">Something else here</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="#">Separated link</a></li>
-			</ul>
-			</div>
-			</div> --}}
-
 
 			<div id="sidepanel">
 				<div id="profile">
@@ -144,29 +108,19 @@
 
 				<div id="search">
 					<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-					<input type="text" id="search_app_user" name="search_app_user" placeholder="Search App Users...." />
+					<input type="text" id="search_app_user_group" name="search_app_user_group" placeholder="Search Group...." />
 				</div>
 				<div id="contacts">
 					<ul style="list-style-type: none; padding: 0;">
-						<div id="app_user_show">
+						<div id="app_user_group_show">
 
 						</div>
-						{{-- <li class="contact active">
-						<div class="wrap">
-						<span class="contact-status busy"></span>
-						<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-						<div class="meta">
-						<p class="name">Harvey Specter</p>
-						<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
-						</div>
-						</div>
-						</li> --}}
+						
 
 					</ul>
 				</div>
 				<div id="bottom-bar">
-				{{-- <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-				<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button> --}}
+				
 				</div>
 			</div>
 		</div>
