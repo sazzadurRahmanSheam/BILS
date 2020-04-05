@@ -12,6 +12,7 @@ use App\UserGroup;
 use App\AppUserGroupMember;
 use App\MessageMaster;
 use App\MessageAttachment;
+use App\CoursePerticipant;
 use Auth;
 use App\Traits\HasPermission;
 
@@ -436,19 +437,7 @@ class AppUserController extends Controller
 		return json_encode($json);
 	}
 
-	public function getAppUserReport($id){
-		$app_user_report = AppUser::where('id', $id)->get();
-
-		$group_name = DB::table('app_user_group_members as augm')
-					->leftJoin('user_groups as ug', 'augm.group_id', '=', 'ug.id')
-					->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
-					->where('augm.app_user_id', $id)
-					->get();
-		return json_encode(array(
-			'app_user_report'=>$app_user_report,
-			'group_name'=>$group_name,
-		));
-	}
+	
 
 	public function changeAppUserStatus($id){
 		$data = AppUser::where('id', $id)->first();
@@ -460,7 +449,97 @@ class AppUserController extends Controller
 		}
 		
 	}
+
+
+	public function appUserGroupNameAutoComplete(){
+		$name = $_REQUEST['term'];
+		
+		$data = UserGroup::select('id', 'group_name')
+				->where('group_name','like','%'.$name.'%')
+				->where('type',2)
+				->get();
+		$data_count = $data->count();
+
+		 if($data_count>0){
+            foreach ($data as $row) {
+                $json[] = array('id' => $row["id"],'label' => $row["group_name"]);
+            }
+        } 
+        else {
+            $json[] = array('id' => "0",'label' => "Not Found !!!");
+        }
+		return json_encode($json);
+	}
+
+
+	// public function getAppUserReport($id){
+	// 	$app_user_report = AppUser::where('id', $id)->get();
+
+	// 	$group_name = DB::table('app_user_group_members as augm')
+	// 				->leftJoin('user_groups as ug', 'augm.group_id', '=', 'ug.id')
+	// 				->select(DB::raw('group_concat("", ug.group_name, "") AS group_name'))
+	// 				->where('augm.app_user_id', $id)
+	// 				->get();
+	// 	return json_encode(array(
+	// 		'app_user_report'=>$app_user_report,
+	// 		'group_name'=>$group_name,
+	// 	));
+	// }
    
+   	public function getAppUserReport(Request $r){
+		if ($r->app_user_group_id_id!="" && $r->search_criteria!="") {
+			if($r->search_criteria=="0" || $r->search_criteria=="1" ){
+				$app_users = DB::table('app_users as au')
+						->leftJoin('app_user_group_members as augm', 'au.id', '=', 'augm.app_user_id')
+						->where('augm.group_id',$r->app_user_group_id_id)
+						->where('augm.status',1)
+						->where('au.status',$r->search_criteria)
+						->select('au.*')
+						->get();
+			}
+			else{
+				$app_users = "";
+			}
+		}
+		else if($r->app_user_group_id_id!="" && $r->search_criteria==""){
+			$app_users = DB::table('app_users as au')
+					->leftJoin('app_user_group_members as augm', 'au.id', '=', 'augm.app_user_id')
+					->where('augm.group_id',$r->app_user_group_id_id)
+					->where('augm.status',1)
+					->select('au.*')
+					->get();
+		}
+		else if($r->app_user_group_id_id=="" && $r->search_criteria!=""){
+			if($r->search_criteria=="0" || $r->search_criteria=="1" ){
+				$app_users = AppUser::where('status',$r->search_criteria)->get();
+			}
+			else if($r->search_criteria=="3"){
+				// $app_users = CoursePerticipant::select('perticipant_id')->distinct('perticipant_id')->get();
+				$app_users = DB::table('course_perticipants as cp')
+							->leftJoin('app_users as au', 'au.id', '=', 'cp.perticipant_id')
+							->select('au.*','cp.perticipant_id')
+							->distinct('cp.perticipant_id')
+							->get();
+			}
+			else if($r->search_criteria=="4"){
+				// $app_users = CoursePerticipant::select('perticipant_id')->distinct('perticipant_id')->get();
+				$app_users = DB::table('survey_participants as cp')
+							->leftJoin('app_users as au', 'au.id', '=', 'cp.app_user_id')
+							->select('au.*','cp.app_user_id')
+							->distinct('cp.app_user_id')
+							->get();
+			}
+			else{
+				$app_users = "";
+			}
+			
+		}
+
+		
+
+
+		return json_encode($app_users);
+	}
 
 
 

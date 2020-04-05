@@ -373,10 +373,40 @@ class MessageController extends Controller
     }
 
 
-    
+    public function groupMessageManagement(){
+        $data['page_title'] = $this->page_title;
+        $data['module_name']= "Messages";
+        $data['sub_module']= "Group Messages";
+        return view('message.group_message',$data);
+    }
     
 
+    Public function loadAppUserGroup(){
 
+        $app_user_info = MessageCategory::select('category_name', 'id')->get();
+
+        // DB::table('message_masters as mm')
+        //                     ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+        //                     ->select('apu.name as name','apu.id as app_user_id', 'apu.user_profile_image as user_profile_image')
+        //                     ->distinct('mm.app_user_id')
+        //                     //->orderBy('mm.message_date_time', 'desc')
+        //                     ->orderBy('mm.id', 'desc')
+        //                     ->get();
+
+        return json_encode(array(
+            "app_user_info"=>$app_user_info,
+            // "message"=>$message,
+        ));
+    }
+
+    ##Search APP Users Group
+    public function searchAppUsersGroup(){
+        $group_name = $_POST['group_name'];
+        $app_users = MessageCategory::select('id', 'category_name')
+                    ->where('category_name','like', '%'.$group_name.'%')
+                    ->get();
+        return json_encode($app_users);
+    }
 
 
 

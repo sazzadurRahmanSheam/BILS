@@ -138,7 +138,7 @@ $(document).ready(function () {
                 $("#status_btn").html(status_btn);
 
                 var left_sub = "";
-                if(data['duration']!=null){left_sub += "<br><b>Duration: </b>"+data['duration']+" Hours";}
+                if(data['duration']!=null){left_sub += "<br><b>Duration: </b>"+data['duration'];}
                 if(data['appx_start_time']!=null){left_sub += "<br><b>Approximate Start Time: </b>"+data['appx_start_time'];}
                 if(data['act_start_time']!=null){left_sub += "<br><b>Actual Start Time: </b>"+data['act_start_time'];}
                 if(data['category_name']!=null){left_sub += "<br><b>Course Type: </b>"+data['category_name'];}
