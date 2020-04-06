@@ -60,6 +60,7 @@ class NoticeController extends Controller
 		else{
 			/*----- For notification -----*/
 			$app_user_group = $request->input('app_user_group');
+			$app_users = $request->input('app_users');
 			$app_user_name = $request->app_user_name;
 			$app_user_id = $request->app_user_id;
 			$from_id = Auth::user()->id;
@@ -107,22 +108,15 @@ class NoticeController extends Controller
 						
 					}
 					if (isset($app_user_group)&& $app_user_group!="") {
-						foreach ($app_user_group as $row) {
-							$to_user_id = AppUserGroupMember::distinct()
-											->select('app_user_id')
-											->where('group_id',$row)
-											->groupBy('app_user_id')
-											->get();
 
-							foreach ($to_user_id as $k) {
-
-								$old_noti = Notification::select('id')
-											->where('to_id', $k['app_user_id'])
+						 if(isset($app_users)&& $app_users!=""){
+						 	foreach ($app_users as $j) {
+						 		$old_noti = Notification::select('id')
+											->where('to_id', $j)
 											->where('view_url', $view_url)
 											->count();
-								
 								if ($old_noti == 0) {
-									$to_id = $k['app_user_id'];
+									$to_id = $j;
 									$column_value = [
 										'from_id'=>$from_id,
 										'from_user_type'=>$from_user_type,
@@ -134,11 +128,53 @@ class NoticeController extends Controller
 									];
 									$response = Notification::create($column_value);
 								}
+						 	}
+						 }
+						 else{
+						 	foreach ($app_user_group as $row) {
+								$to_user_id = AppUserGroupMember::distinct()
+												->select('app_user_id')
+												->where('group_id',$row)
+												->groupBy('app_user_id')
+												->get();
+
+								foreach ($to_user_id as $k) {
+
+									$old_noti = Notification::select('id')
+												->where('to_id', $k['app_user_id'])
+												->where('view_url', $view_url)
+												->count();
+									
+									if ($old_noti == 0) {
+										$to_id = $k['app_user_id'];
+										$column_value = [
+											'from_id'=>$from_id,
+											'from_user_type'=>$from_user_type,
+											'to_id'=>$to_id,	
+											'to_user_type'=>$to_user_type,	
+											'notification_title'=>$notification_title,	
+											'message'=>$message,	
+											'view_url'=>$view_url,	
+										];
+										$response = Notification::create($column_value);
+									}
+
+								}
+
 
 							}
+						 }
 
 
-						}
+
+
+						
+
+
+
+
+
+
 					}
 
 
@@ -179,7 +215,7 @@ class NoticeController extends Controller
 		$edit_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$edit_action_id);
 		$delete_permisiion 	= $this->PermissionHasOrNot($admin_user_id,$delete_action_id);
 
-		$notice_list = Notice::Select('id', 'title', 'details', 'status')
+		$notice_list = Notice::Select('id', 'title', 'details', 'status','notice_date')
 						->orderBy('id','desc')
 						->get();
 		$return_arr = array();

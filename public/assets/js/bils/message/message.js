@@ -608,7 +608,6 @@ $('.msg_auto_load').first().trigger('click');
 		});
 
 	//App User Group Member
-	//Message Entry And update
 	$('#load_app_user_from_group ').click(function(event){		
 		event.preventDefault();
 		$.ajaxSetup({
@@ -651,6 +650,94 @@ $('.msg_auto_load').first().trigger('click');
 				 }	
 			});
 		
+	});
+
+
+	loadAppUserGroup = function loadAppUserGroup(){
+
+		$.ajax({
+			url: url+'/message/load-app-user-group',
+			success: function(response){
+				var response = JSON.parse(response);
+				var app_user = response['app_user_info'];
+				//Load App user who are chated 
+				if(!jQuery.isEmptyObject(app_user)){
+					var html = '<div class="msg_auto_load">';
+					//var active_chat_class = "active";
+					$.each(app_user, function(i,row){
+						html+='<li onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="contact ">';
+						html+='<div class="wrap">';
+						html+='<span class="contact-status online"></span>';
+						if (row["user_profile_image"]!=null && row["user_profile_image"]!="") {
+							html+='<img src="'+app_user_profile_url+'/'+row["user_profile_image"]+'" alt="" />';
+						}
+						else{
+							html+='<img src="'+app_user_profile_url+'/no-user-image.png" alt="" />';
+						}
+						html+='<div class="meta">';
+						html+='<p class="name">'+row["category_name"]+'</p>';
+						//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+						html+='</div>';
+						html+='</div>';
+						html+='</li>';
+						html+='</div>';
+						//active_chat_class = "";
+
+					});
+				}
+				$("#app_user_group_show").html(html);
+			}
+		});
+	}
+	loadAppUserGroup();
+
+	searchAppUsersGroup = function searchAppUsersGroup(){
+		event.preventDefault();
+		$.ajaxSetup({
+			headers:{
+				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		var group_name = $("#search_app_user_group").val();
+		if(group_name!=""){
+			$.ajax({
+				url: url+"/message/search-app-users-group",
+				type:'POST',
+				data:{group_name:group_name},
+				async:false,
+				success: function(data){
+					var app_users = JSON.parse(data);
+					
+					if(!jQuery.isEmptyObject(app_users)){
+						var html = "";
+						$.each(app_users, function(i,row){
+							html+='<li class="contact">';
+							html+='<div class="wrap">';
+							//html+='<span class="contact-status busy"></span>';
+							html+='<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />';
+							html+='<div class="meta">';
+							html+='<p onclick="loadMessage('+row["id"]+','+number_of_msg+')" class="name">'+row["category_name"]+'</p>';
+							//html+='<p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>';
+							html+='</div>';
+							html+='</div>';
+							html+='</li>';
+							
+						});
+					}
+				$("#app_user_group_show").html(html);
+
+				}	
+			});
+		
+
+		}
+		else {
+			loadAppUserGroup();
+		}
+	}
+
+	$("#search_app_user_group").keyup(function(){
+		searchAppUsersGroup();
 	});
 
 

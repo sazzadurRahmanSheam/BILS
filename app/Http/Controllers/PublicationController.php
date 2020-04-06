@@ -88,36 +88,65 @@ class PublicationController extends Controller
 					## Insert Into Notification 
 					
 					if (isset($app_user_group)&& $app_user_group!="") {
-						foreach ($app_user_group as $row) {
-							$to_user_id = AppUserGroupMember::distinct()
-											->select('app_user_id')
-											->where('group_id',$row)
-											->groupBy('app_user_id')
-											->get();
 
-							foreach ($to_user_id as $k) {
-								$to_id = $k['app_user_id'];
-
-								$old_noti = Notification::select('id')
-											->where('to_id', $to_id)
+						if(isset($app_users)&& $app_users!=""){
+						 	foreach ($app_users as $j) {
+						 		$old_noti = Notification::select('id')
+											->where('to_id', $j)
 											->where('view_url', $view_url)
 											->count();
-								
-								if ($old_noti==0) {
+								if ($old_noti == 0) {
+									$to_id = $j;
 									$column_value = [
 										'from_id'=>$from_id,
 										'from_user_type'=>$from_user_type,
 										'to_id'=>$to_id,	
 										'to_user_type'=>$to_user_type,	
 										'notification_title'=>$notification_title,	
-										'message'=>$message,
+										'message'=>$message,	
 										'view_url'=>$view_url,	
 									];
 									$response = Notification::create($column_value);
 								}
-								
+						 	}
+						 }
+
+						else{
+							foreach ($app_user_group as $row) {
+								$to_user_id = AppUserGroupMember::distinct()
+												->select('app_user_id')
+												->where('group_id',$row)
+												->groupBy('app_user_id')
+												->get();
+
+								foreach ($to_user_id as $k) {
+									$to_id = $k['app_user_id'];
+
+									$old_noti = Notification::select('id')
+												->where('to_id', $to_id)
+												->where('view_url', $view_url)
+												->count();
+									
+									if ($old_noti==0) {
+										$column_value = [
+											'from_id'=>$from_id,
+											'from_user_type'=>$from_user_type,
+											'to_id'=>$to_id,	
+											'to_user_type'=>$to_user_type,	
+											'notification_title'=>$notification_title,	
+											'message'=>$message,
+											'view_url'=>$view_url,	
+										];
+										$response = Notification::create($column_value);
+									}
+									
+								}
 							}
 						}
+
+
+
+
 					}
 
 

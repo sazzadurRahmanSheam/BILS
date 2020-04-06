@@ -170,8 +170,8 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::post('/report/course/course-details',array('as'=>'Get course Title', 'uses' =>'CoursesController@getCourseDetailsReport'));
 	## App user Report
 	Route::get('/report/app-user',array('as'=>'App user report', 'uses' =>'AppUserController@appUserReport'));
-	Route::post('/report/app-user-auto-suggest',array('as'=>'App user name auto-suggest', 'uses' =>'AppUserController@appUserNameAutoComplete'));
-	Route::get('/report/app-user-report/{id}',array('as'=>'Get App user Report', 'uses' =>'AppUserController@getAppUserReport'));
+	Route::post('/report/app-user-auto-suggest',array('as'=>'App user name auto-suggest', 'uses' =>'AppUserController@appUserGroupNameAutoComplete'));
+	Route::post('/report/app-user-report',array('as'=>'Get App user Report', 'uses' =>'AppUserController@getAppUserReport'));
 	
 	Route::get('/message/view-app-user/{id}',array('as'=>'Get App user View', 'uses' =>'AppUserController@app_user_view'));
 	Route::get('/message/change-app-user-status/{id}',array('as'=>'Change App User Status', 'uses' =>'AppUserController@changeAppUserStatus'));
@@ -184,7 +184,9 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	Route::get('/course/verify-payment/{id}',array('as'=>'Payment Varify', 'uses' =>'CoursesController@paymentVerify'));
 
-
+	Route::get('/message/load-app-user-group',array('as'=>'Load Message Group', 'uses' =>'MessageController@loadAppUserGroup'));
+	##Search App Users Group
+	Route::post('/message/search-app-users-group',array('as'=>'Search App Users Group', 'uses' =>'MessageController@searchAppUsersGroup'));
 
 
 
@@ -356,8 +358,9 @@ Route::get('/settings/survey/survey-categories-edit/{id}',array('as'=>'Edit Surv
 	Route::get('/course/teacher/teacher-edit/{id}',array('as'=>'Teacher Update', 'action_id'=>'90', 'uses' =>'TeacherController@teacherEdit'));
 	Route::get('/course/teacher/teacher-delete/{id}',array('as'=>'Teacher Delete', 'action_id'=>'91', 'uses' =>'TeacherController@teacherDelete'));
 	/*--------------  Manage Teacher End  -------------*/
-
-
+	
+	/*--------------  Group Messaage  -------------*/
+	Route::get('messages/group-messages-management',array('as'=>'Manage Group Message', 'action_id'=>'94', 'uses' =>'MessageController@groupMessageManagement'));
 
 
 
