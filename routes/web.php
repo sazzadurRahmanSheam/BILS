@@ -187,7 +187,9 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::get('/message/load-app-user-group',array('as'=>'Load Message Group', 'uses' =>'MessageController@loadAppUserGroup'));
 	##Search App Users Group
 	Route::post('/message/search-app-users-group',array('as'=>'Search App Users Group', 'uses' =>'MessageController@searchAppUsersGroup'));
+	Route::post('/message/admin-message-sent-to-group',array('as'=>'Sent Group Message', 'uses' =>'MessageController@newGroupMessageSent'));
 
+	Route::post('/message/load-group-message',array('as'=>'Load Group Message', 'uses' =>'MessageController@loadGroupMessage'));
 
 
 });
