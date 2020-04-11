@@ -238,6 +238,7 @@ class MessageController extends Controller
         //$app_user = AppUser::get();
         $app_user_info = DB::table('message_masters as mm')
                             ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+                            ->where('is_group_msg', 0)
                             ->select('apu.name as name','apu.id as app_user_id', 'apu.user_profile_image as user_profile_image')
                             ->distinct('mm.app_user_id')
                             //->orderBy('mm.message_date_time', 'desc')
@@ -406,6 +407,99 @@ class MessageController extends Controller
                     ->where('category_name','like', '%'.$group_name.'%')
                     ->get();
         return json_encode($app_users);
+    }
+
+
+    public function newGroupMessageSent(Request $r){
+        $group_id = $r->group_id;
+        $admin_message = $r->admin_message;
+        //$message_category = $r->message_category;
+        $admin_id = Auth::user()->id;
+        ## Image
+        $attachment = $r->file('group_msg_attachment');
+
+        if($r->hasFile('group_msg_attachment')){
+            $new_msg = new MessageMaster();
+            $new_msg->admin_id = $admin_id;
+            $new_msg->admin_message = $admin_message;
+            $new_msg->message_category = $group_id;
+            $new_msg->is_group_msg = 1;
+            $new_msg->is_attachment = 1;
+            $new_msg->save();
+            $mm_id = $new_msg->id;
+
+
+            foreach ($attachment as $attachment) {
+                $attachment_name = rand().time().$attachment->getClientOriginalName();
+                $ext = strtoupper($attachment->getClientOriginalExtension());
+                echo $ext;
+                if ($ext=="JPG" || $ext=="JPEG" || $ext=="PNG" || $ext=="GIF" || $ext=="WEBP" || $ext=="TIFF" || $ext=="PSD" || $ext=="RAW" || $ext=="INDD" || $ext=="SVG") {
+                    $attachment_type = 1;
+                }
+                else if ($ext=="MP4" || $ext=="3GP") {
+                    $attachment_type = 2;
+                }
+                else if ($ext=="MP3") {
+                    $attachment_type = 3;
+                }
+                else{
+                    $attachment_type = 4;
+                }
+                //$attachment_full_name = $attachment_name.'.'.$ext;
+                $upload_path = 'assets/images/message/';
+                    
+                $success=$attachment->move($upload_path,$attachment_name);
+                ##Save image to the message attachment table
+                $msg_attachment = new MessageAttachment();
+                $msg_attachment->message_master_id = $mm_id;
+                $msg_attachment->admin_atachment = $attachment_name;
+                $msg_attachment->attachment_type = $attachment_type;
+                $msg_attachment->save();
+
+                
+            }
+        }
+        else{
+            $new_msg = new MessageMaster();
+            $new_msg->admin_id = $admin_id;
+            $new_msg->admin_message = $admin_message;
+            $new_msg->message_category = $group_id;
+            $new_msg->is_group_msg = 1;
+            $new_msg->save();
+        }
+        
+        
+//need to save notification for group user
+
+    }
+
+
+
+
+    public function loadGroupMessage(){
+        $app_user_id_load_msg = $_POST['app_user_id_load_msg'];
+        $number_of_msg = $_POST['msg_no'];
+        $message = DB::table('message_masters as mm')
+                            ->leftJoin('app_users as apu', 'mm.app_user_id', '=', 'apu.id')
+                            ->leftJoin('message_attachments as ma', 'mm.id', '=', 'ma.message_master_id')
+                            ->leftJoin('message_categories as mc', 'mm.message_category', '=', 'mc.id')
+                            ->where('mm.message_category',$app_user_id_load_msg)
+                            ->where('mm.is_group_msg',1)
+                            ->select('mm.id as id', 'mm.app_user_id as app_user_id', 'mm.app_user_message as app_user_message', 'mm.admin_id as admin_id', 'mm.admin_message as admin_message','mm.created_at as msg_date', 'ma.admin_atachment as admin_atachment', 'mm.is_attachment as is_attachment', 'ma.attachment_type as attachment_type', 'mm.admin_id as admin_id', 'mm.is_attachment_app_user as is_attachment_app_user', 'ma.app_user_attachment as app_user_attachment', 'mc.category_name as category_name')
+                            ->orderBy('mm.message_date_time', 'desc')
+                            ->limit($number_of_msg)
+                            ->get();
+
+        $app_user_name = MessageCategory::select('category_name', 'id')
+                                    ->where('id', $app_user_id_load_msg)
+                                    ->first();
+        
+
+        return json_encode(array(
+            "message"=>$message,
+            "app_user_name"=>$app_user_name,
+            //"msg_date"=>$msg_date,
+        ));
     }
 
 

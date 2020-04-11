@@ -58,7 +58,7 @@
 			<div class="content">
 				<div class="contact-profile">
 					<img id="app_user_image" src="" alt="" />
-					<a onclick="showProfile()" style="cursor:pointer; text-decoration: none;" id="app_user_name"></a>
+					<p id="app_user_name"></p> {{-- onclick="showProfile()" style="cursor:pointer; text-decoration: none;" --}}
 					<div class="social-media">
 						<div id="load_more_message">
 
@@ -76,20 +76,20 @@
 				</div>
 				<div class="message-input">
 					<div class="wrap">
-						<form id="sent_message_to_user" name="sent_message_to_user" enctype="multipart/form-data" class="form form-horizontal form-label-left">
+						<form id="sent_message_to_group" name="sent_message_to_group" enctype="multipart/form-data" class="form form-horizontal form-label-left">
 							@csrf
 							<div style="width: 90%; float: left;">
-								<input type="hidden" name="app_user_id" id="app_user_id">
+								<input type="hidden" name="group_id" id="group_id">
 								<div >
 									<input style="width: 100%" type="text" name="admin_message" id="admin_message" placeholder="Write your message..." />
 								</div>
 							</div>
 							<div style="width: 10%; float: left;">
-								<label for="attachment" class="custom-file-upload">
+								<label for="group_msg_attachment" class="custom-file-upload">
 									<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
 								</label>
-								<input multiple id="attachment" name="attachment[]" type="file"/>
-								<button type="submit" class="submit" id="message_sent_to_user"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+								<input multiple id="group_msg_attachment" name="group_msg_attachment[]" type="file"/>
+								<button type="submit" class="submit" id="message_sent_to_group"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
 							</div>
 						</form>
 					</div>
