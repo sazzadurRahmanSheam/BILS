@@ -4,7 +4,7 @@ $(document).ready(function () {
 	// for get site url
 	var url = $('.site_url').val();
 	var number_of_msg = 10;
-	
+	var loaded = 1;
 	//Load App User Group Using Notice Controller
 	$.ajax({
 		url: url+'/notice/load-app-user-groups',
@@ -182,7 +182,6 @@ $(document).ready(function () {
 
 
 	loadAppUser = function loadAppUser(){
-
 		$.ajax({
 			url: url+'/message/load-app-user',
 			success: function(response){
@@ -217,6 +216,10 @@ $(document).ready(function () {
 				//$('.msg_auto_load:first-child').trigger('click');
 				//$('.msg_auto_load').trigger('click');
 				//$('.msg_auto_load').first().addClass('active');
+				if(loaded == 1){
+					$('.contact:first').trigger('click');
+					loaded++;
+				}
 			}
 		});
 	}
@@ -225,7 +228,8 @@ $(document).ready(function () {
 
 	loadMessage = function loadMessage(app_user_id, number_of_msg){//
 		$("#search_app_user").val("");
-		event.preventDefault();
+		//alert('into loadmessage')
+		//event.preventDefault();
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
@@ -269,7 +273,8 @@ $(document).ready(function () {
 							}
 
 							if(message["is_attachment"]==1){
-
+								//attachment_type = 'JPG,mkv';
+								//admin_atachment = 'aa.jpg,bb.mkv'
 								if(message["attachment_type"]==1){
 									//Image
 									html += '<img  class="zoomImg" style="height:150px !important; width:180px !important; border-top-left-radius: 25px !important; border-top-right-radius: 0px !important; border-bottom-left-radius: 20px !important; border-bottom-right-radius: 20px !important;" src="'+msg_image_url+'/'+message["admin_atachment"]+'" alt="">';
